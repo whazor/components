@@ -549,6 +549,7 @@ export type SizesTokenName =
   | 'sizeIconMedium'
   | 'sizeIconNormal'
   | 'sizeVerticalInput'
+  | 'sizeTableSelectionHorizontal'
   | 'sizeVerticalPanelIconOffset';
 export type SpacingTokenName =
   | 'spaceAlertActionLeft'
@@ -597,6 +598,9 @@ export type SpacingTokenName =
   | 'spaceTableFooterHorizontal'
   | 'spaceTableHeaderHorizontal'
   | 'spaceTableHorizontal'
+  | 'spaceTableHorizontalEdge'
+  | 'spaceTableHorizontalEdgeSelectable'
+  | 'spaceTableSortingRight'
   | 'spaceTabsFocusOutlineGutter'
   | 'spaceTextGridVertical'
   | 'spaceL'

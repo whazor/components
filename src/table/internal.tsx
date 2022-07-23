@@ -269,7 +269,11 @@ const InternalTable = React.forwardRef(
                     return (
                       <tr
                         key={getItemKey(trackBy, item, rowIndex)}
-                        className={clsx(styles.row, isSelected && styles['row-selected'])}
+                        className={clsx(
+                          styles.row,
+                          isSelected && styles['row-selected'],
+                          selectionType !== undefined && styles.selectable
+                        )}
                         onFocus={({ currentTarget }) => {
                           // When an element inside table row receives focus we want to adjust the scroll.
                           // However, that behaviour is unwanted when the focus is received as result of a click
@@ -288,6 +292,7 @@ const InternalTable = React.forwardRef(
                             isFirstRow={firstVisible}
                             isLastRow={lastVisible}
                             isSelected={isSelected}
+                            isSelectable={true}
                             isNextSelected={isNextSelected}
                             isPrevSelected={isPrevSelected}
                             wrapLines={false}
@@ -317,6 +322,7 @@ const InternalTable = React.forwardRef(
                             wrapLines={wrapLines}
                             isFirstRow={firstVisible}
                             isLastRow={lastVisible}
+                            isSelectable={selectionType !== undefined}
                             isSelected={isSelected}
                             isNextSelected={isNextSelected}
                             isPrevSelected={isPrevSelected}
