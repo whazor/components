@@ -500,6 +500,7 @@ export type BordersTokenName =
   | 'borderRadiusTiles'
   | 'borderRadiusToken'
   | 'borderRadiusTutorialPanelItem'
+  | 'borderTableHeaderHorizontalWidth'
   | 'borderTableStickyWidth'
   | 'borderLinkFocusRingOutline'
   | 'borderLinkFocusRingShadowSpread';
@@ -551,6 +552,7 @@ export type SizesTokenName =
   | 'sizeIconMedium'
   | 'sizeIconNormal'
   | 'sizeVerticalInput'
+  | 'sizeTableSelectionHorizontal'
   | 'sizeVerticalPanelIconOffset';
 export type SpacingTokenName =
   | 'spaceAlertActionLeft'
@@ -599,6 +601,11 @@ export type SpacingTokenName =
   | 'spaceTableFooterHorizontal'
   | 'spaceTableHeaderHorizontal'
   | 'spaceTableHorizontal'
+  | 'spaceTableHorizontalEdge'
+  | 'spaceTableHorizontalEdgeSelectable'
+  | 'spaceTableSelectionOffset'
+  | 'spaceTableSortingEdgeRight'
+  | 'spaceTableSortingRight'
   | 'spaceTabsFocusOutlineGutter'
   | 'spaceTextGridVertical'
   | 'spaceL'
