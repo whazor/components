@@ -498,6 +498,7 @@ export type BordersTokenName =
   | 'borderRadiusTiles'
   | 'borderRadiusToken'
   | 'borderRadiusTutorialPanelItem'
+  | 'borderTableHeaderHorizontalWidth'
   | 'borderTableStickyWidth'
   | 'borderLinkFocusRingOutline'
   | 'borderLinkFocusRingShadowSpread';
@@ -600,6 +601,8 @@ export type SpacingTokenName =
   | 'spaceTableHorizontal'
   | 'spaceTableHorizontalEdge'
   | 'spaceTableHorizontalEdgeSelectable'
+  | 'spaceTableSelectionOffset'
+  | 'spaceTableSortingEdgeRight'
   | 'spaceTableSortingRight'
   | 'spaceTabsFocusOutlineGutter'
   | 'spaceTextGridVertical'
