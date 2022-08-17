@@ -1,13 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
-import React, { useImperativeHandle, useRef } from 'react';
+import React, { useImperativeHandle, useRef, useState } from 'react';
 import { TableForwardRefType, TableProps } from './interfaces';
 import InternalContainer from '../container/internal';
 import { getBaseProps } from '../internal/base-component';
 import ToolsHeader from './tools-header';
 import Thead, { TheadProps } from './thead';
-import { TableBodyCell, TableBodyCellContent } from './body-cell';
+import { TableTdElement, TableBodyCell } from './body-cell';
 import InternalStatusIndicator from '../status-indicator/internal';
 import { useContainerQuery } from '../internal/hooks/container-queries';
 import { supportsStickyPosition } from '../internal/utils/dom';
@@ -61,6 +61,8 @@ const InternalTable = React.forwardRef(
       onRowClick,
       onRowContextMenu,
       wrapLines,
+      submitEdit,
+      onEditCancel,
       resizableColumns,
       onColumnWidthsChange,
       variant,
@@ -84,8 +86,17 @@ const InternalTable = React.forwardRef(
     const theadRef = useRef<HTMLTableRowElement>(null);
     const stickyHeaderRef = React.useRef<StickyHeaderRef>(null);
     const scrollbarRef = React.useRef<HTMLDivElement>(null);
+    const [currentEditCell, setCurrentEditCell] = useState<[number, number] | null>(null);
+    const [currentEditLoading, setCurrentEditLoading] = useState(false);
 
-    useImperativeHandle(ref, () => ({ scrollToTop: stickyHeaderRef.current?.scrollToTop || (() => undefined) }));
+    useImperativeHandle(
+      ref,
+      () => ({
+        scrollToTop: stickyHeaderRef.current?.scrollToTop || (() => undefined),
+        cancelEdit: () => setCurrentEditCell(null),
+      }),
+      []
+    );
 
     const handleScroll = useScrollSync(
       [wrapperRefObject, scrollbarRef, secondaryWrapperRef],
@@ -157,6 +168,22 @@ const InternalTable = React.forwardRef(
       ? { role: 'region', tabIndex: 0, 'aria-label': ariaLabels?.tableLabel }
       : {};
     const focusVisibleProps = useFocusVisible();
+
+    const wrapWithInlineLoadingState = (submitEdit: TableProps['submitEdit']) => {
+      if (!submitEdit) {
+        return undefined;
+      }
+      return (...args: Parameters<TableProps.SubmitEditFunction<any>>) => {
+        setCurrentEditLoading(true);
+        return submitEdit(...args).then(
+          () => setCurrentEditLoading(false),
+          error => {
+            setCurrentEditLoading(false);
+            throw error;
+          }
+        );
+      };
+    };
 
     return (
       <ColumnWidthsProvider
@@ -273,7 +300,7 @@ const InternalTable = React.forwardRef(
                         onContextMenu={onRowContextMenuHandler && onRowContextMenuHandler.bind(null, rowIndex, item)}
                       >
                         {selectionType !== undefined && (
-                          <TableBodyCell
+                          <TableTdElement
                             className={styles['selection-control']}
                             isFirstRow={firstVisible}
                             isLastRow={lastVisible}
@@ -288,30 +315,43 @@ const InternalTable = React.forwardRef(
                               onShiftToggle={updateShiftToggle}
                               {...getItemSelectionProps(item)}
                             />
-                          </TableBodyCell>
+                          </TableTdElement>
                         )}
-                        {visibleColumnDefinitions.map((column, colIndex) => (
-                          <TableBodyCellContent
-                            key={getColumnKey(column, colIndex)}
-                            style={
-                              resizableColumns
-                                ? {}
-                                : {
-                                    width: column.width,
-                                    minWidth: column.minWidth,
-                                    maxWidth: column.maxWidth,
-                                  }
-                            }
-                            column={column}
-                            item={item}
-                            wrapLines={wrapLines}
-                            isFirstRow={firstVisible}
-                            isLastRow={lastVisible}
-                            isSelected={isSelected}
-                            isNextSelected={isNextSelected}
-                            isPrevSelected={isPrevSelected}
-                          />
-                        ))}
+                        {visibleColumnDefinitions.map((column, colIndex) => {
+                          const isEditActive =
+                            !!currentEditCell && currentEditCell[0] === rowIndex && currentEditCell[1] === colIndex;
+                          return (
+                            <TableBodyCell
+                              key={getColumnKey(column, colIndex)}
+                              style={
+                                resizableColumns
+                                  ? {}
+                                  : {
+                                      width: column.width,
+                                      minWidth: column.minWidth,
+                                      maxWidth: column.maxWidth,
+                                    }
+                              }
+                              ariaLabels={ariaLabels}
+                              column={column}
+                              item={item}
+                              wrapLines={wrapLines}
+                              isEditable={!!column.editable && !currentEditLoading}
+                              isEditActive={isEditActive}
+                              isFirstRow={firstVisible}
+                              isLastRow={lastVisible}
+                              isSelected={isSelected}
+                              isNextSelected={isNextSelected}
+                              isPrevSelected={isPrevSelected}
+                              onEditStart={() => setCurrentEditCell([rowIndex, colIndex])}
+                              onEditEnd={() => {
+                                setCurrentEditCell(null);
+                                fireNonCancelableEvent(onEditCancel);
+                              }}
+                              submitEdit={wrapWithInlineLoadingState(submitEdit)}
+                            />
+                          );
+                        })}
                       </tr>
                     );
                   })
