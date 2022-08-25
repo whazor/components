@@ -4,7 +4,6 @@ import styles from './styles.css.js';
 import clsx from 'clsx';
 import { useMergeRefs } from '../../hooks/use-merge-refs';
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { createPortal } from 'react-dom';
 import { fireNonCancelableEvent } from '../../events';
 import { DropdownProps } from './interfaces';
 import { DropdownPosition, InteriorDropdownPosition, calculatePosition } from './dropdown-fit-handler';
@@ -13,8 +12,9 @@ import { useVisualRefresh } from '../../hooks/use-visual-mode';
 import { usePortalModeClasses } from '../../hooks/use-portal-mode-classes';
 import { DropdownContextProvider, DropdownContextProviderProps } from './context';
 import { useMobile } from '../../hooks/use-mobile';
-import TabTrap from '../tab-trap/index.js';
-import { getFirstFocusable, getLastFocusable } from '../focus-lock/utils.js';
+import FocusDetector from '../focus-detector';
+import { getFirstTabbable, getLastTabbable } from '../../utils/tabbables';
+import FocusPortal from '../focus-portal/index.js';
 
 interface DropdownContainerProps {
   children?: React.ReactNode;
@@ -25,11 +25,7 @@ interface DropdownContainerProps {
 
 const DropdownContainer = ({ children, renderWithPortal = false, id, open }: DropdownContainerProps) => {
   if (renderWithPortal) {
-    if (open) {
-      return createPortal(<div id={id}>{children}</div>, document.body);
-    } else {
-      return null;
-    }
+    return <FocusPortal container={document.body}>{open && <div id={id}>{children}</div>}</FocusPortal>;
   } else {
     return <>{children}</>;
   }
@@ -335,8 +331,8 @@ const Dropdown = ({
         {trigger}
       </div>
 
-      <TabTrap
-        focusNextCallback={() => dropdownRef.current && getFirstFocusable(dropdownRef.current)?.focus()}
+      <FocusDetector
+        onFocus={() => dropdownRef.current && getFirstTabbable(dropdownRef.current)?.focus()}
         disabled={!open || !trapFocus}
       />
 
@@ -344,8 +340,8 @@ const Dropdown = ({
         <Transition in={open ?? false} exit={false}>
           {(state, ref) => (
             <div onBlur={event => trapFocus && event.stopPropagation()}>
-              <TabTrap
-                focusNextCallback={() => triggerRef.current && getLastFocusable(triggerRef.current)?.focus()}
+              <FocusDetector
+                onFocus={() => triggerRef.current && getLastTabbable(triggerRef.current)?.focus()}
                 disabled={!open || !trapFocus}
               />
 
@@ -368,8 +364,8 @@ const Dropdown = ({
                 {children}
               </TransitionContent>
 
-              <TabTrap
-                focusNextCallback={() => triggerRef.current && getFirstFocusable(triggerRef.current)?.focus()}
+              <FocusDetector
+                onFocus={() => triggerRef.current && getFirstTabbable(triggerRef.current)?.focus()}
                 disabled={!open || !trapFocus}
               />
             </div>
