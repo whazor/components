@@ -201,7 +201,6 @@ const InternalTable = React.forwardRef(
           footer={
             footer && (
               <div className={clsx(styles['footer-wrapper'], styles[`variant-${computedVariant}`])}>
-                <hr className={styles.divider} />
                 <div className={styles.footer}>{footer}</div>
               </div>
             )

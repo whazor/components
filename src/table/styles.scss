@@ -65,10 +65,8 @@
   border-top-left-radius: awsui.$border-radius-container;
   &.variant-stacked,
   &.variant-container {
-    & > .table {
-      padding-left: awsui.$space-table-horizontal;
-      padding-right: awsui.$space-table-horizontal;
-    }
+    padding-left: awsui.$space-table-horizontal;
+    padding-right: awsui.$space-table-horizontal;
   }
   &.variant-embedded {
     padding-bottom: awsui.$space-table-embedded-content-bottom;
@@ -78,6 +76,9 @@
   }
   &.has-footer {
     padding-bottom: 0px;
+    & > .table {
+      border-bottom: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
+    }
   }
 
   @include focus-visible.when-visible {
@@ -177,13 +178,6 @@
   & + .header-secondary {
     border-top: awsui.$border-divider-list-width solid awsui.$color-border-container-divider;
   }
-}
-
-.divider {
-  border: none;
-  margin: 0;
-  height: 0;
-  @include container.divider;
 }
 
 .footer-wrapper {
