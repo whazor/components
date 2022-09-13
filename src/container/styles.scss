@@ -12,6 +12,7 @@
   display: flex;
   flex-flow: column nowrap;
   word-wrap: break-word;
+  position: relative;
 
   &.variant {
     &-default,
@@ -54,7 +55,7 @@
     z-index: 800;
   }
 
-  &-stuck {
+  &-stuck:not(.header-variant-cards) {
     box-shadow: awsui.$shadow-sticky-embedded;
     border: 0;
     border-radius: 0;
@@ -79,6 +80,9 @@
   }
 
   &-variant-cards {
+    &:not(.header-sticky-enabled) {
+      position: relative;
+    }
     @include shared.borders-and-shadows;
 
     &:not(:empty) {
@@ -93,8 +97,10 @@
     }
 
     &.header-stuck {
-      border-top-left-radius: 0;
-      border-top-right-radius: 0;
+      &::after {
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+      }
     }
   }
 
