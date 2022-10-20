@@ -1,12 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-const fs = require('fs-extra');
-const path = require('path');
-const globby = require('globby');
-const prettier = require('prettier');
 const { task } = require('../utils/gulp-utils');
-const { pascalCase } = require('change-case');
 
 const prettierConfigPath = path.join(process.cwd(), '.prettierrc');
 const prettierOptions = prettier.resolveConfig.sync(prettierConfigPath);
