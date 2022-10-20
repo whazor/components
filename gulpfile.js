@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-const { series, parallel, watch, task } = require('gulp');
+const { series, parallel, watch } = require('gulp');
 const {
   clean,
   docs,
@@ -14,8 +14,7 @@ const {
   styles,
   typescript,
   buildPages,
-  buildI18nInterfaces,
-  buildI18nMessages,
+  buildI18n,
   testUtils,
   a11y,
   integ,
@@ -31,7 +30,7 @@ const quickBuild = series(
 );
 
 exports.clean = clean;
-exports['build-i18n'] = task('build-i18n', parallel(buildI18nInterfaces, buildI18nMessages));
+exports['build-i18n'] = buildI18n;
 exports['quick-build'] = quickBuild;
 exports.build = series(quickBuild, bundleVendorFiles, parallel(buildPages, themeableSource, docs));
 exports.test = series(unit, integ, a11y);
