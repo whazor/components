@@ -26,3 +26,7 @@ export type SomeRequired<Type, Keys extends keyof Type> = Type & {
  * ```
  */
 export type Optional<Type> = Type | undefined;
+
+export type DeepPartial<T> = {
+  [P in keyof T]?: DeepPartial<T[P]>;
+};
