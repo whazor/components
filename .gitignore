@@ -15,3 +15,4 @@ vendor/generated-third-party-licenses.txt
 src/i18n/interfaces
 src/i18n/messages
 src/i18n/exports
+src/*/i18n.tsx
