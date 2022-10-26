@@ -65,6 +65,8 @@ export default function Tabs({
         role: 'tabpanel',
         id: `${idNamespace}-${tab.id}-panel`,
         key: `${idNamespace}-${tab.id}-panel`,
+        'aria-labelledby': `${idNamespace}-${tab.id}-panel`,
+        tabIndex: 0,
       };
 
       return <div {...contentAttributes}>{isContentActive && selectedTab.content}</div>;

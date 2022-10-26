@@ -53,6 +53,11 @@ export interface TabsProps extends BaseComponentProps {
   ariaLabelledby?: string;
 
   /**
+   * An object containing all the necessary localized strings required by the component.
+   */
+  i18nStrings?: TabsProps.I18nStrings;
+
+  /**
    * Determines whether the tab content has padding. If `true`, removes the default padding from the tab content area.
    */
   disableContentPaddings?: boolean;
@@ -85,6 +90,17 @@ export namespace TabsProps {
      * using the `activeTabHref` property of the `change` event's detail.
      */
     href?: string;
+  }
+
+  export interface I18nStrings {
+    /**
+     * The aria label applied to the scroll left button on narrow screens.
+     */
+    scrollLeftAriaLabel: string;
+    /**
+     * The aria label applied to the scroll right button on narrow screens.
+     */
+    scrollRightAriaLabel: string;
   }
 
   export interface ChangeDetail {

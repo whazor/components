@@ -24,6 +24,7 @@ export interface TabHeaderBarProps {
   tabs: TabsProps['tabs'];
   variant: TabsProps['variant'];
   idNamespace: string;
+  i18nStrings?: TabsProps['i18nStrings'];
   ariaLabel?: string;
   ariaLabelledby?: string;
 }
@@ -34,6 +35,7 @@ export function TabHeaderBar({
   tabs,
   variant,
   idNamespace,
+  i18nStrings,
   ariaLabel,
   ariaLabelledby,
 }: TabHeaderBarProps) {
@@ -122,11 +124,6 @@ export function TabHeaderBar({
     [styles['pagination-button-right-scrollable']]: rightOverflow,
   });
 
-  const paginationButtonAttributes = {
-    'aria-hidden': true,
-    tabIndex: -1,
-  };
-
   return (
     //converted span to div as list should not be a child of span for HTML validation
     <div className={classes} ref={containerRef}>
@@ -136,7 +133,7 @@ export function TabHeaderBar({
             formAction="none"
             variant="icon"
             iconName="angle-left"
-            __nativeAttributes={paginationButtonAttributes}
+            ariaLabel={i18nStrings?.scrollLeftAriaLabel}
             disabled={!leftOverflow}
             onClick={() => onPaginationClick(headerBarRef, -1)}
           />
@@ -158,7 +155,7 @@ export function TabHeaderBar({
             formAction="none"
             variant="icon"
             iconName="angle-right"
-            __nativeAttributes={paginationButtonAttributes}
+            ariaLabel={i18nStrings?.scrollRightAriaLabel}
             disabled={!rightOverflow}
             onClick={() => onPaginationClick(headerBarRef, 1)}
           />
@@ -265,6 +262,7 @@ export function TabHeaderBar({
       className: classes,
       ...focusVisible,
       role: 'tab',
+      id: `${idNamespace}-${tab.id}-tab`,
       'aria-selected': tab.id === activeTabId,
       'aria-controls': `${idNamespace}-${tab.id}-panel`,
       'data-testid': tab.id,
