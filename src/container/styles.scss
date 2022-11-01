@@ -21,12 +21,17 @@
       background-color: awsui.$color-background-container-content;
     }
 
-    &-stacked:not(:last-child) {
+    &-stacked:not(:last-child),
+    &-stacked + &-stacked {
+      border-radius: 0;
+    }
+
+    &-stacked:not(:last-child)::after {
       border-bottom-right-radius: 0;
       border-bottom-left-radius: 0;
     }
 
-    &-stacked + &-stacked {
+    &-stacked + &-stacked::after {
       @include shared.divider;
       border-top-left-radius: 0;
       border-top-right-radius: 0;
