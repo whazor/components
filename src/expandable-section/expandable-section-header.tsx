@@ -25,7 +25,8 @@ interface ExpandableDefaultHeaderProps {
   icon: JSX.Element;
 }
 
-interface ExpandableNavigationHeaderProps extends Omit<ExpandableDefaultHeaderProps, 'onKeyUp' | 'onKeyDown'> {
+interface ExpandableNavigationHeaderProps
+  extends Omit<ExpandableDefaultHeaderProps, 'onKeyUp' | 'onKeyDown' | 'onClick'> {
   ariaLabelledBy?: string;
 }
 
@@ -81,7 +82,6 @@ const ExpandableDefaultHeader = ({
 const ExpandableNavigationHeader = ({
   id,
   className,
-  onClick,
   ariaLabelledBy,
   ariaLabel,
   ariaControls,
@@ -91,7 +91,7 @@ const ExpandableNavigationHeader = ({
 }: ExpandableNavigationHeaderProps) => {
   const focusVisible = useFocusVisible();
   return (
-    <div id={id} className={className} onClick={onClick}>
+    <div id={id} className={className}>
       <button
         className={styles['icon-container']}
         aria-labelledby={ariaLabelledBy}
@@ -128,7 +128,7 @@ const ExpandableContainerHeader = ({
     <div id={id} className={className} onClick={onClick} {...focusVisible}>
       <InternalHeader
         variant={'h2'}
-        description={headerDescription}
+        description={headerDescription && <div className={styles['header-content-overlay']}>{headerDescription}</div>}
         counter={headerCounter}
         headingTagOverride={headingTagOverride}
       >
@@ -145,7 +145,7 @@ const ExpandableContainerHeader = ({
           aria-expanded={expanded}
         >
           <span className={styles['icon-container']}>{icon}</span>
-          <span>{children}</span>
+          <span className={styles['header-content-overlay']}>{children}</span>
         </span>
       </InternalHeader>
       <ScreenreaderOnly id={screenreaderContentId}>
