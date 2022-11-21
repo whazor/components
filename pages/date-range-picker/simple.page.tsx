@@ -17,9 +17,8 @@ import { i18nStrings, i18nStringsDateOnly, isValid, relativeOptions } from './co
 export default function DatePickerScenario() {
   const [showRelativeOptions, setShowRelativeOptions] = useState(true);
   const [dateOnly, setDateOnly] = useState(false);
-  const [rangeSelectorMode, setRangeSelectorMode] = useState<DateRangePickerProps.RangeSelectorMode>('default');
+  const [rangeSelectorMode, setRangeSelectorMode] = useState<DateRangePickerProps.RangeSelectorMode>('absolute-only');
   const [value, setValue] = useState<DateRangePickerProps['value']>(null);
-  console.log(value);
 
   return (
     <Box padding="s">
@@ -57,25 +56,47 @@ export default function DatePickerScenario() {
             rangeSelectorMode={rangeSelectorMode}
             isDateEnabled={date => date.getDate() !== 15}
             getTimeOffset={date => -1 * date.getTimezoneOffset()}
-            shortcuts={(selectedDate: any, setSelectedDate: any) => (
-              <SpaceBetween direction="horizontal" size="xs">
-                <Button
-                  variant="link"
-                  onClick={() => {
-                    console.log('aaa');
-                    setSelectedDate({
-                      type: 'absolute',
-                      startDate: '2022-11-18T00:00:00',
-                      endDate: '2022-11-19T23:59:59',
-                    });
-                  }}
-                >
-                  1D
-                </Button>
-                <Button variant="link">7D</Button>
-                <Button variant="link">1M</Button>
-              </SpaceBetween>
-            )}
+            shortcuts={(selectedDate, setSelectedDate) => {
+              console.log(selectedDate);
+              return (
+                <>
+                  Auto-select:{' '}
+                  <Link
+                    onFollow={() => {
+                      setSelectedDate({
+                        type: 'absolute',
+                        startDate: '2022-11-18T00:00:00',
+                        endDate: '2022-11-18T23:59:59',
+                      });
+                    }}
+                  >
+                    1D
+                  </Link>{' '}
+                  <Link onFollow={() => {}}>7D</Link> <Link onFollow={() => {}}>Current month</Link>{' '}
+                  <Link onFollow={() => {}}>3M</Link> <Link onFollow={() => {}}>6M</Link>{' '}
+                  <Link onFollow={() => {}}>1Y</Link> <Link onFollow={() => {}}>MTD</Link>{' '}
+                  <Link onFollow={() => {}}>YTD</Link> <Link onFollow={() => {}}>+3M</Link>{' '}
+                  <Link onFollow={() => {}}>+12M</Link>
+                </>
+              );
+            }}
+          />
+        </FormField>
+        <FormField label="Second example">
+          <DateRangePicker
+            value={value}
+            locale="en-GB"
+            i18nStrings={dateOnly ? i18nStringsDateOnly : i18nStrings}
+            placeholder={'Filter by a date and time range'}
+            onChange={e => setValue(e.detail.value)}
+            relativeOptions={showRelativeOptions ? relativeOptions : []}
+            isValidRange={isValid}
+            dateOnly={dateOnly}
+            timeInputFormat="hh:mm"
+            rangeSelectorMode={rangeSelectorMode}
+            isDateEnabled={date => date.getDate() !== 15}
+            getTimeOffset={date => -1 * date.getTimezoneOffset()}
+            shortcuts={() => <div style={{ background: 'indianred', padding: 10 }}>This is your custom area</div>}
           />
         </FormField>
         <Link id="focusable-element-after-date-picker">Focusable element after the date range picker</Link>

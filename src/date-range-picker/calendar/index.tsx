@@ -14,7 +14,7 @@ import { useUniqueId } from '../../internal/hooks/use-unique-id';
 import { getDateLabel, renderTimeLabel } from '../../calendar/utils/intl';
 import LiveRegion from '../../internal/components/live-region';
 import { normalizeLocale, normalizeStartOfWeek } from '../../internal/utils/locale';
-import { joinDateTime, parseDate } from '../../internal/utils/date-time';
+import { formatDate, joinDateTime, parseDate } from '../../internal/utils/date-time';
 import { getBaseDate } from '../../calendar/utils/navigation';
 import { useMobile } from '../../internal/hooks/use-mobile/index.js';
 import RangeInputs from './range-inputs.js';
@@ -80,23 +80,17 @@ export default function DateRangePickerCalendar({
     return selectFocusedDate(rangeStart.date, currentMonth, isDateEnabled);
   });
 
-  // This effect "synchronizes" the local state update back up to the parent component.
-  useEffect(() => {
-    const startDate = joinDateTime(rangeStart.dateString, rangeStart.timeString);
-    const endDate = joinDateTime(rangeEnd.dateString, rangeEnd.timeString);
+  const onRangeChange = (
+    newStart: { dateString: string; timeString: string },
+    newEnd: { dateString: string; timeString: string }
+  ) => {
+    const startDate = joinDateTime(newStart.dateString, newStart.timeString);
+    const endDate = joinDateTime(newEnd.dateString, newEnd.timeString);
 
     if (startDate !== initialStartDate || endDate !== initialEndDate) {
       onChange({ startDate, endDate });
     }
-  }, [
-    rangeStart.dateString,
-    rangeStart.timeString,
-    rangeEnd.dateString,
-    rangeEnd.timeString,
-    initialStartDate,
-    initialEndDate,
-    onChange,
-  ]);
+  };
 
   const onSelectDateHandler = (selectedDate: Date) => {
     // recommended to include the start/end time announced with the selection
@@ -140,7 +134,7 @@ export default function DateRangePickerCalendar({
     // If both fields are empty, we set the start date
     if (!rangeStart.dateString && !rangeEnd.dateString) {
       const startDate = startOfDay(selectedDate);
-      rangeStart.setDate(startDate);
+      onRangeChange({ dateString: formatDate(startDate), timeString: rangeStart.timeString }, rangeEnd);
       setAnnouncement(announceStart(startDate));
       return;
     }
@@ -148,8 +142,10 @@ export default function DateRangePickerCalendar({
     // If both fields are set, we start new
     if (rangeStart.dateString && rangeEnd.dateString) {
       const startDate = startOfDay(selectedDate);
-      rangeStart.setDate(startDate);
-      rangeEnd.setDate(null);
+      onRangeChange(
+        { dateString: formatDate(startDate), timeString: rangeStart.timeString },
+        { dateString: '', timeString: '' }
+      );
       setAnnouncement(announceStart(startDate));
       return;
     }
@@ -164,12 +160,14 @@ export default function DateRangePickerCalendar({
         const startDate = startOfDay(selectedDate);
         const endDate = endOfDay(parsedStartDate);
 
-        rangeStart.setDate(startDate);
-        rangeEnd.setDate(endDate);
+        onRangeChange(
+          { dateString: formatDate(startDate), timeString: rangeStart.timeString },
+          { dateString: formatDate(endDate), timeString: rangeEnd.timeString }
+        );
         setAnnouncement(announceStart(startDate) + announceRange(startDate, endDate));
       } else {
         const endDate = endOfDay(selectedDate);
-        rangeEnd.setDate(endDate);
+        onRangeChange(rangeStart, { dateString: formatDate(endDate), timeString: rangeEnd.timeString });
         setAnnouncement(announceEnd(endDate) + announceRange(parsedStartDate, endDate));
       }
       return;

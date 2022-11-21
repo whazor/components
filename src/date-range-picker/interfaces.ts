@@ -5,6 +5,7 @@ import { FormFieldValidationControlProps } from '../internal/context/form-field-
 import { NonCancelableEventHandler } from '../internal/events';
 import { TimeInputProps } from '../time-input/interfaces';
 import { ExpandToViewport } from '../internal/components/dropdown/interfaces';
+import React from 'react';
 
 export interface DateRangePickerBaseProps {
   /**
@@ -234,7 +235,7 @@ export namespace DateRangePickerProps {
 
   export type Shortcuts = (
     value: DateRangePickerProps.AbsoluteValue | null,
-    setValue: React.Dispatch<DateRangePickerProps.AbsoluteValue>
+    setValue: React.Dispatch<DateRangePickerProps.AbsoluteValue | null>
   ) => React.ReactNode;
 
   export interface I18nStrings {
