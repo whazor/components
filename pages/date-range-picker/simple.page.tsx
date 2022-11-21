@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import {
   Box,
+  Button,
   DateRangePicker,
   DateRangePickerProps,
   Link,
@@ -18,6 +19,7 @@ export default function DatePickerScenario() {
   const [dateOnly, setDateOnly] = useState(false);
   const [rangeSelectorMode, setRangeSelectorMode] = useState<DateRangePickerProps.RangeSelectorMode>('default');
   const [value, setValue] = useState<DateRangePickerProps['value']>(null);
+  console.log(value);
 
   return (
     <Box padding="s">
@@ -55,6 +57,25 @@ export default function DatePickerScenario() {
             rangeSelectorMode={rangeSelectorMode}
             isDateEnabled={date => date.getDate() !== 15}
             getTimeOffset={date => -1 * date.getTimezoneOffset()}
+            shortcuts={(selectedDate: any, setSelectedDate: any) => (
+              <SpaceBetween direction="horizontal" size="xs">
+                <Button
+                  variant="link"
+                  onClick={() => {
+                    console.log('aaa');
+                    setSelectedDate({
+                      type: 'absolute',
+                      startDate: '2022-11-18T00:00:00',
+                      endDate: '2022-11-19T23:59:59',
+                    });
+                  }}
+                >
+                  1D
+                </Button>
+                <Button variant="link">7D</Button>
+                <Button variant="link">1M</Button>
+              </SpaceBetween>
+            )}
           />
         </FormField>
         <Link id="focusable-element-after-date-picker">Focusable element after the date range picker</Link>

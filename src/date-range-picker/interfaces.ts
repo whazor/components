@@ -152,6 +152,11 @@ export interface DateRangePickerProps
    * allows the user to clear the selected value.
    */
   showClearButton?: boolean;
+
+  /**
+   * Additional controls displayed below date and time inputs of the absolute range selection mode.
+   */
+  shortcuts?: DateRangePickerProps.Shortcuts;
 }
 
 export namespace DateRangePickerProps {
@@ -226,6 +231,11 @@ export namespace DateRangePickerProps {
      */
     focus(): void;
   }
+
+  export type Shortcuts = (
+    value: DateRangePickerProps.AbsoluteValue | null,
+    setValue: React.Dispatch<DateRangePickerProps.AbsoluteValue>
+  ) => React.ReactNode;
 
   export interface I18nStrings {
     /**

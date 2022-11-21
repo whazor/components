@@ -103,6 +103,7 @@ const DateRangePicker = React.forwardRef(
       timeInputFormat = 'hh:mm:ss',
       expandToViewport = false,
       rangeSelectorMode = 'default',
+      shortcuts,
       ...rest
     }: DateRangePickerProps,
     ref: Ref<DateRangePickerProps.Ref>
@@ -273,6 +274,7 @@ const DateRangePicker = React.forwardRef(
               rangeSelectorMode={rangeSelectorMode}
               ariaLabelledby={ariaLabelledby}
               ariaDescribedby={ariaDescribedby}
+              shortcuts={shortcuts}
             />
           )}
         </Dropdown>

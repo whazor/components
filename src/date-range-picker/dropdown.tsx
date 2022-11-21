@@ -43,6 +43,7 @@ export interface DateRangePickerDropdownProps
 
   ariaLabelledby?: string;
   ariaDescribedby?: string;
+  shortcuts?: DateRangePickerProps.Shortcuts;
 }
 
 export function DateRangePickerDropdown({
@@ -63,6 +64,7 @@ export function DateRangePickerDropdown({
   rangeSelectorMode,
   ariaLabelledby,
   ariaDescribedby,
+  shortcuts,
 }: DateRangePickerDropdownProps) {
   const [rangeSelectionMode, setRangeSelectionMode] = useState<'absolute' | 'relative'>(
     getDefaultMode(value, relativeOptions, rangeSelectorMode)
@@ -172,6 +174,10 @@ export function DateRangePickerDropdown({
                       dateOnly={dateOnly}
                       timeInputFormat={timeInputFormat}
                     />
+                  )}
+
+                  {rangeSelectionMode === 'absolute' && shortcuts && (
+                    <div>{shortcuts(selectedAbsoluteRange, setSelectedAbsoluteRange)}</div>
                   )}
 
                   {rangeSelectionMode === 'relative' && (
