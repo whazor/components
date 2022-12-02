@@ -343,6 +343,7 @@ const OldAppLayout = React.forwardRef(
     };
 
     const contentWrapperProps: ContentWrapperProps = {
+      contentType,
       navigationPadding: navigationHide || !!navigationOpen,
       toolsPadding:
         // tools padding is displayed in one of the three cases
