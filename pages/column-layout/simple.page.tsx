@@ -3,6 +3,8 @@
 import * as React from 'react';
 import ScreenshotArea from '../utils/screenshot-area';
 import ColumnLayout from '~components/column-layout';
+import ExpandableSection from '~components/expandable-section';
+import SpaceBetween from '~components/space-between';
 
 export default function ColumnLayoutPage() {
   return (
@@ -63,6 +65,27 @@ export default function ColumnLayoutPage() {
           </ColumnLayout>
           <div>a</div>
         </ColumnLayout>
+
+        <h2>Expandable section with bordered column layout</h2>
+        <ExpandableSection headerText="Expandable section" expanded={true}>
+          <ColumnLayout columns={4} borders="all">
+            {[...Array(8)].map((_, index) => (
+              <div key={index}>Option {index + 1}</div>
+            ))}
+          </ColumnLayout>
+        </ExpandableSection>
+
+        <h2>Expandable section with text-grid column layout</h2>
+        <ExpandableSection headerText="Expandable section" variant="default" expanded={true}>
+          <ColumnLayout variant="text-grid" borders="none" columns={3}>
+            {[...Array(6)].map((_, index) => (
+              <SpaceBetween size="l" key={index}>
+                <div>Option {index + 1 + 'a'}</div>
+                <div>Option {index + 1 + 'b'}</div>
+              </SpaceBetween>
+            ))}
+          </ColumnLayout>
+        </ExpandableSection>
       </ScreenshotArea>
     </>
   );

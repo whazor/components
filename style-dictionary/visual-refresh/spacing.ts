@@ -31,7 +31,7 @@ const tokens: StyleDictionary.SpacingDictionary = {
   spaceFlashbarActionLeft: '{spaceS}',
   spaceFlashbarDismissRight: '0px',
   spaceFlashbarHorizontal: '{spaceM}',
-  spaceGridGutter: { comfortable: '{spaceL}', compact: '{spaceM}' },
+  spaceGridGutter: '{spaceScaledL}',
   spaceLayoutContentBottom: '{spaceScaled2xXxxl}',
   spaceLayoutToggleDiameter: '40px',
   spaceLayoutTogglePadding: '{spaceScaledL}',
