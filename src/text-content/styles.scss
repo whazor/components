@@ -80,6 +80,16 @@
   }
   /* stylelint-enable no-descending-specificity */
 
+  dl,
+  dd {
+    margin: 0;
+  }
+  dt {
+    @include styles.font-label;
+    color: awsui.$color-text-label;
+    margin-bottom: awsui.$space-scaled-xxxs;
+  }
+
   ul,
   ol {
     padding-left: awsui.$space-l;

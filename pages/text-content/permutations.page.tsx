@@ -28,6 +28,11 @@ export default function TextContentPermutations() {
         </div>
         <p>just a paragraph</p>
 
+        <dl>
+          <dt>Description list term</dt>
+          <dd>Description list detail</dd>
+        </dl>
+
         <ul>
           <li>This is an item.</li>
           <li>This is another item.</li>
