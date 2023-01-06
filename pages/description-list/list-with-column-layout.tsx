@@ -26,13 +26,16 @@ export default function ListWithColumnLayout() {
 
             <DescriptionList.List>
               <DescriptionList.ListItem>
-                <DescriptionList.Term>Distribution ID</DescriptionList.Term>
+                <DescriptionList.Term>Distribution IDs</DescriptionList.Term>
                 <DescriptionList.Details>E1WG1ZNPRXT0D4</DescriptionList.Details>
+                <DescriptionList.Details>E1WG1ZNPRXJKFKD</DescriptionList.Details>
               </DescriptionList.ListItem>
 
               <DescriptionList.ListItem>
-                <DescriptionList.Term>Domain name</DescriptionList.Term>
-                <DescriptionList.Details>example.com</DescriptionList.Details>
+                <DescriptionList.Term>Domain names</DescriptionList.Term>
+                <DescriptionList.Details>example1.com</DescriptionList.Details>
+                <DescriptionList.Details>example2.com</DescriptionList.Details>
+                <DescriptionList.Details>example3.com</DescriptionList.Details>
               </DescriptionList.ListItem>
 
               <DescriptionList.ListItem>

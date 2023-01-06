@@ -22,7 +22,7 @@ export default function DescriptionListPermutations() {
             display: 'grid',
             gap: '20px',
             gridAutoFlow: 'row',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(500px, 1fr))',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
           }}
         >
           <ListVerticallItemVertical />
