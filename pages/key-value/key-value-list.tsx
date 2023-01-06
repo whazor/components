@@ -9,7 +9,7 @@ import { SpaceBetween } from '~components';
 
 export default function KeyValueList() {
   return (
-    <Container header={<Header variant="h2">KeyValue.List</Header>}>
+    <Container header={<Header variant="h2">KeyValue.List - using ColumnLayout and SpaceBetween</Header>}>
       <SpaceBetween size="xxl">
         <List pairsList={pairs1} />
         <List pairsList={pairs1.concat(pairs2)} />

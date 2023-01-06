@@ -23,7 +23,7 @@ const Pair = ({ label, value }: KeyValueProps.Pair) => (
         </InternalBox>
       </dt>
     )}
-    <dd className={styles.value}>{value || '-'}</dd>
+    <dd className={styles.value}>{value || '–'}</dd>
   </div>
 );
 
@@ -98,18 +98,18 @@ const List = ({ pairsList, ...restProps }: KeyValueProps.List) => {
 
   return (
     <div {...baseComponentProps} className={className}>
-      <dl className={styles.list}>
-        <InternalColumnLayout columns={columnCount} variant="text-grid" __breakpoint={breakpoint} ref={ref}>
-          {columnsConfig.map((column, colIndex) => (
-            // <InternalSpaceBetween key={colIndex} direction="vertical" size="l">
-            //   {column.map((pair, pairIndex) => (
-            //     <Pair key={pairIndex} {...pair} />
-            //   ))}
-            // </InternalSpaceBetween>
-            <Group key={colIndex} pairs={column} />
-          ))}
-        </InternalColumnLayout>
-      </dl>
+      <InternalColumnLayout columns={columnCount} variant="text-grid" __breakpoint={breakpoint} ref={ref}>
+        {columnsConfig.map((column, colIndex) => (
+          // <dl key={colIndex} className={styles.list}>
+          //   <InternalSpaceBetween direction="vertical" size="l">
+          //     {column.map((pair, pairIndex) => (
+          //       <Pair key={pairIndex} {...pair} />
+          //     ))}
+          //   </InternalSpaceBetween>
+          // </dl>
+          <Group key={colIndex} pairs={column} />
+        ))}
+      </InternalColumnLayout>
     </div>
   );
 };

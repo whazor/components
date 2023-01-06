@@ -34,6 +34,9 @@ export const pairs2: KeyValueProps.Pair[] = [
   },
   {
     label: 'Label for key',
+  },
+  {
+    label: 'Label for key',
     value: (
       <Link href="https://whatever/" external={true}>
         Value with external link
@@ -46,7 +49,7 @@ export const pairs3: KeyValueProps.Pair[] = [
   {
     label: 'ARN',
     value: (
-      <div>
+      <div style={{ wordBreak: 'break-all' }}>
         <Box margin={{ right: 'xxs' }} display="inline-block">
           <Popover
             size="small"
@@ -67,6 +70,17 @@ export const pairs3: KeyValueProps.Pair[] = [
     value: 'Very long value that wraps onto the second line because it does not fit in one line',
   },
 ];
+
+interface ValueWithLabelProps {
+  label?: React.ReactNode;
+  children?: React.ReactNode;
+}
+export const ValueWithLabel = ({ label, children }: ValueWithLabelProps) => (
+  <div>
+    <Box variant="awsui-key-label">{label}</Box>
+    <div>{children || '–'}</div>
+  </div>
+);
 
 // export const groups = [
 //   {

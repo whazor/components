@@ -21,7 +21,7 @@ export namespace KeyValueProps {
     /**
      * Renders a <dd> element or empty state "-" if undefined.
      */
-    value: React.ReactNode;
+    value?: React.ReactNode;
   }
 
   /**

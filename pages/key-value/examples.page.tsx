@@ -4,6 +4,7 @@ import React from 'react';
 import Box from '~components/box';
 import SpaceBetween from '~components/space-between';
 import ScreenshotArea from '../utils/screenshot-area';
+import CurrentKeyValuePairs from './current';
 import KeyValueGroups from './key-value-groups';
 import KeyValueList from './key-value-list';
 import TextContentDescriptionList from './text-content';
@@ -16,6 +17,7 @@ export default function KeyValuePairsExamples() {
         <TextContentDescriptionList />
         <KeyValueList />
         <KeyValueGroups />
+        <CurrentKeyValuePairs />
       </SpaceBetween>
     </ScreenshotArea>
   );
