@@ -6,6 +6,7 @@
 @use '../internal/styles' as styles;
 
 .list[data-direction='horizontal'] {
+  align-items: start;
   column-gap: calc(2 * #{awsui.$space-grid-gutter});
   display: grid;
   grid-auto-flow: row;

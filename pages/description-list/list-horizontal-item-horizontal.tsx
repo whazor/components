@@ -22,7 +22,7 @@ export default function ListHorizontalItemHorizontal() {
       <DescriptionList.List>
         <DescriptionList.ListItem direction="horizontal">
           <DescriptionList.Term>Distribution IDs</DescriptionList.Term>
-          <DescriptionList.Details>E1WG1ZNPRXT0D4</DescriptionList.Details>
+          <DescriptionList.Details>E1WG1ZNPRXT0D44</DescriptionList.Details>
           <DescriptionList.Details>E1WG1ZNPRXJKFKD</DescriptionList.Details>
         </DescriptionList.ListItem>
 
