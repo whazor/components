@@ -24,7 +24,6 @@ export default function ListVerticallItemHorizontal() {
           <DescriptionList.Term>Distribution IDs</DescriptionList.Term>
           <DescriptionList.Details>E1WG1ZNPRXT0D4</DescriptionList.Details>
           <DescriptionList.Details>E1WG1ZNPRXJKFKD</DescriptionList.Details>
-          <DescriptionList.Details>E1WG1ZNPRJFKDJ8</DescriptionList.Details>
         </DescriptionList.ListItem>
 
         <DescriptionList.ListItem direction="horizontal">
