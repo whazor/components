@@ -4,6 +4,7 @@ import React from 'react';
 import Box from '~components/box';
 import ListHorizontalItemHorizontal from './list-horizontal-item-horizontal';
 import ListHoriztonalItemVertical from './list-horizontal-item-vertical';
+import ListServiceOverview from './list-service-overview';
 import ListVerticallItemVertical from './list-vertical-item-vertical';
 import ListVerticallItemHorizontal from './list-vertical-item-horizontal';
 import ListWithColumnLayout from './list-with-column-layout';
@@ -31,6 +32,7 @@ export default function DescriptionListPermutations() {
 
         <ListHorizontalItemHorizontal />
         <ListWithColumnLayout />
+        <ListServiceOverview />
       </SpaceBetween>
     </ScreenshotArea>
   );

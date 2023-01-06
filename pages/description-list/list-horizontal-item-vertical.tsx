@@ -1,14 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import Box from '~components/box';
-import Button from '~components/button';
-import Container from '~components/container';
+import { Box, Button, Container, Link, Popover, ProgressBar, StatusIndicator } from '~components';
 import DescriptionList from '~components/description-list';
-import Link from '~components/link';
-import Popover from '~components/popover';
-import ProgressBar from '~components/progress-bar';
-import StatusIndicator from '~components/status-indicator';
 
 export default function ListHoriztonalItemVertical() {
   return (
