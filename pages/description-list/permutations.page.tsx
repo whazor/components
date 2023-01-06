@@ -6,6 +6,7 @@ import ListHorizontalItemHorizontal from './list-horizontal-item-horizontal';
 import ListHoriztonalItemVertical from './list-horizontal-item-vertical';
 import ListVerticallItemVertical from './list-vertical-item-vertical';
 import ListVerticallItemHorizontal from './list-vertical-item-horizontal';
+import ListWithColumnLayout from './list-with-column-layout';
 import ScreenshotArea from '../utils/screenshot-area';
 import SpaceBetween from '~components/space-between';
 
@@ -14,11 +15,22 @@ export default function DescriptionListPermutations() {
     <ScreenshotArea disableAnimations={true}>
       <SpaceBetween size="l">
         <Box variant="h1">Description List permutations</Box>
-
         <ListHoriztonalItemVertical />
-        <ListVerticallItemVertical />
-        <ListVerticallItemHorizontal />
+
+        <div
+          style={{
+            display: 'grid',
+            gap: '20px',
+            gridAutoFlow: 'row',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(500px, 1fr))',
+          }}
+        >
+          <ListVerticallItemVertical />
+          <ListVerticallItemHorizontal />
+        </div>
+
         <ListHorizontalItemHorizontal />
+        <ListWithColumnLayout />
       </SpaceBetween>
     </ScreenshotArea>
   );

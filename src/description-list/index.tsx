@@ -23,12 +23,8 @@ function Term({ children }: any) {
   return <dt className={styles.term}>{children}</dt>;
 }
 
-function Details({ children, style }: any) {
-  return (
-    <dd className={styles.details} style={{ wordBreak: style?.wordBreak }}>
-      {children}
-    </dd>
-  );
+function Details({ children }: any) {
+  return <dd className={styles.details}>{children}</dd>;
 }
 
 export default {

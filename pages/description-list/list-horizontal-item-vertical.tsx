@@ -22,13 +22,11 @@ export default function ListHoriztonalItemVertical() {
       <DescriptionList.List>
         <DescriptionList.ListItem>
           <DescriptionList.Term>Distribution ID</DescriptionList.Term>
-
           <DescriptionList.Details>E1WG1ZNPRXT0D4</DescriptionList.Details>
         </DescriptionList.ListItem>
 
         <DescriptionList.ListItem>
           <DescriptionList.Term>Status</DescriptionList.Term>
-
           <DescriptionList.Details>
             <StatusIndicator>Available</StatusIndicator>
           </DescriptionList.Details>
@@ -36,7 +34,6 @@ export default function ListHoriztonalItemVertical() {
 
         <DescriptionList.ListItem>
           <DescriptionList.Term>SSL Certificate</DescriptionList.Term>
-
           <DescriptionList.Details>
             <ProgressBar description="Update in progress" value={37} />
           </DescriptionList.Details>
@@ -44,26 +41,22 @@ export default function ListHoriztonalItemVertical() {
 
         <DescriptionList.ListItem>
           <DescriptionList.Term>Domain name</DescriptionList.Term>
-
           <DescriptionList.Details>example.com</DescriptionList.Details>
         </DescriptionList.ListItem>
 
         <DescriptionList.ListItem>
           <DescriptionList.Term>Price class</DescriptionList.Term>
-
           <DescriptionList.Details>Use only US, Canada, Europe, and Asia</DescriptionList.Details>
         </DescriptionList.ListItem>
 
         <DescriptionList.ListItem>
           <DescriptionList.Term>Custom SSL client support</DescriptionList.Term>
-
           <DescriptionList.Details>-</DescriptionList.Details>
         </DescriptionList.ListItem>
 
         <DescriptionList.ListItem>
           <DescriptionList.Term>ARN</DescriptionList.Term>
-
-          <DescriptionList.Details style={{ wordBreak: 'break-all' }}>
+          <DescriptionList.Details>
             <Popover
               content={<StatusIndicator type="success">ARN copied</StatusIndicator>}
               dismissButton={false}
@@ -73,13 +66,12 @@ export default function ListHoriztonalItemVertical() {
             >
               <Button ariaLabel="Copy ARN" iconName="copy" variant="inline-icon" />
             </Popover>
-            arn:aws:cloudfront::111122223333:distribution/E1WG1ZNPRXT0D4
+            <span style={{ wordBreak: 'break-all' }}>arn:aws:cloudfront::111122223333:distribution/E1WG1ZNPRXT0D4</span>
           </DescriptionList.Details>
         </DescriptionList.ListItem>
 
         <DescriptionList.ListItem>
           <DescriptionList.Term>CNAMEs</DescriptionList.Term>
-
           <DescriptionList.Details>
             <Link external={true} href="https://www.google.com">
               Value with external link
@@ -89,7 +81,6 @@ export default function ListHoriztonalItemVertical() {
 
         <DescriptionList.ListItem>
           <DescriptionList.Term>Logging</DescriptionList.Term>
-
           <DescriptionList.Details>Off</DescriptionList.Details>
         </DescriptionList.ListItem>
       </DescriptionList.List>
