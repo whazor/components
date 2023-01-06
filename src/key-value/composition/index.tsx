@@ -7,7 +7,6 @@ import useBaseComponent from '../../internal/hooks/use-base-component';
 import { useContainerBreakpoints } from '../../internal/hooks/container-queries';
 import InternalBox from '../../box/internal';
 import InternalColumnLayout, { COLUMN_TRIGGERS } from '../../column-layout/internal';
-import InternalSpaceBetween from '../../space-between/internal';
 
 import { KeyValueProps } from '../interfaces';
 import styles from './styles.css.js';
@@ -29,20 +28,18 @@ const Pair = ({ label, value }: KeyValueProps.Pair) => (
 
 const Group = ({ title, pairs }: KeyValueProps.Group) => {
   return (
-    <InternalSpaceBetween className={styles.group} size="l">
+    <>
       {title && (
-        <InternalBox className={styles.title} variant="h3" padding="n">
+        <InternalBox className={styles.title} variant="h3" padding={{ top: 'n', bottom: 'l' }}>
           {title}
         </InternalBox>
       )}
       <dl className={styles.list}>
-        <InternalSpaceBetween size="l">
-          {pairs.map((pair: KeyValueProps.Pair, index: number) => (
-            <Pair key={index} label={pair.label} value={pair.value} />
-          ))}
-        </InternalSpaceBetween>
+        {pairs.map((pair: KeyValueProps.Pair, index: number) => (
+          <Pair key={index} label={pair.label} value={pair.value} />
+        ))}
       </dl>
-    </InternalSpaceBetween>
+    </>
   );
 };
 
@@ -100,13 +97,6 @@ const List = ({ pairsList, ...restProps }: KeyValueProps.List) => {
     <div {...baseComponentProps} className={className}>
       <InternalColumnLayout columns={columnCount} variant="text-grid" __breakpoint={breakpoint} ref={ref}>
         {columnsConfig.map((column, colIndex) => (
-          // <dl key={colIndex} className={styles.list}>
-          //   <InternalSpaceBetween direction="vertical" size="l">
-          //     {column.map((pair, pairIndex) => (
-          //       <Pair key={pairIndex} {...pair} />
-          //     ))}
-          //   </InternalSpaceBetween>
-          // </dl>
           <Group key={colIndex} pairs={column} />
         ))}
       </InternalColumnLayout>

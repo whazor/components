@@ -2,35 +2,53 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import TextContent from '~components/text-content';
-import ColumnLayout from '~components/column-layout';
 import Container from '~components/container';
 import Header from '~components/header';
-import { generate } from './utils';
+import SpaceBetween from '~components/space-between';
+
+import { pairs1, pairs2, pairs3 } from './utils';
 
 export default function TextContentDescriptionList() {
   return (
-    <Container header={<Header variant="h2">Text content description list - dl, dt, dd</Header>}>
+    <Container header={<Header variant="h2">Text content - dl, dt, dd</Header>}>
       <TextContent>
-        <dl>
-          <ColumnLayout columns={3} variant="text-grid">
-            {generate(
-              <div>
-                <dt>Key</dt>
-                <dd>Value</dd>
+        <SpaceBetween size="xxl">
+          <dl>
+            {pairs1.map((pair, index) => (
+              <div key={index}>
+                <dt>{pair.label}</dt>
+                <dd>{pair.value || '–'}</dd>
               </div>
-            )}
-          </ColumnLayout>
-        </dl>
-        <dl>
-          <ColumnLayout columns={3} variant="text-grid">
+            ))}
+          </dl>
+          <dl>
+            {pairs1.concat(pairs2).map((pair, index) => (
+              <div key={index}>
+                <dt>{pair.label}</dt>
+                <dd>{pair.value || '–'}</dd>
+              </div>
+            ))}
+          </dl>
+          <dl>
+            {pairs1
+              .concat(pairs2)
+              .concat(pairs3)
+              .map((pair, index) => (
+                <div key={index}>
+                  <dt>{pair.label}</dt>
+                  <dd>{pair.value || '–'}</dd>
+                </div>
+              ))}
+          </dl>
+          {/* <dl>
             {generate(
               <div>
                 <dt>Key</dt>
                 {generate(<dd>Value</dd>)}
               </div>
             )}
-          </ColumnLayout>
-        </dl>
+          </dl> */}
+        </SpaceBetween>
       </TextContent>
     </Container>
   );
