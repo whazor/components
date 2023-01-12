@@ -33,7 +33,6 @@ export function InlineEditor<ItemType>({
   const [currentEditValue, setCurrentEditValue] = useState<Optional<any>>();
 
   const cellContext = {
-    isEditing: true,
     currentValue: currentEditValue,
     setValue: setCurrentEditValue,
   };
@@ -104,7 +103,7 @@ export function InlineEditor<ItemType>({
         errorText={validation(item, currentEditValue)}
       >
         <div className={styles['body-cell-editor-row']}>
-          {column.cell(item, cellContext)}
+          {column.editConfig?.editingCell(item, cellContext)}
           <span className={styles['body-cell-editor-controls']}>
             <SpaceBetween direction="horizontal" size="xxs">
               {!currentEditLoading ? (
