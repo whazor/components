@@ -30,6 +30,10 @@ $radio-size: awsui.$size-control;
   @include styles.make-control-size($radio-size);
 }
 
+.radio ~ .secondary-control {
+  margin: awsui.$space-scaled-xxs 0 awsui.$space-scaled-xxs calc(1em + awsui.$space-scaled-xs);
+}
+
 .outline {
   @include styles.focus-highlight(2px, awsui.$border-radius-control-circular-focus-ring);
 }
