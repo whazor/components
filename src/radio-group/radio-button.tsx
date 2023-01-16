@@ -3,6 +3,7 @@
 import clsx from 'clsx';
 import React, { useRef } from 'react';
 import AbstractSwitch from '../internal/components/abstract-switch';
+import LiveRegion from '../internal/components/live-region';
 import { fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/events';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
@@ -16,7 +17,7 @@ interface RadioButtonProps extends RadioGroupProps.RadioButtonDefinition {
 }
 
 export default React.forwardRef(function RadioButton(
-  { name, label, value, checked, description, disabled, controlId, onChange }: RadioButtonProps,
+  { name, label, value, checked, description, disabled, controlId, onChange, secondaryControl }: RadioButtonProps,
   ref: React.Ref<HTMLInputElement>
 ) {
   const isVisualRefresh = useVisualRefresh();
@@ -24,54 +25,61 @@ export default React.forwardRef(function RadioButton(
   const mergedRefs = useMergeRefs(radioButtonRef, ref);
 
   return (
-    <AbstractSwitch
-      className={clsx(styles.radio, description && styles['radio--has-description'])}
-      controlClassName={styles['radio-control']}
-      outlineClassName={styles.outline}
-      label={label}
-      description={description}
-      disabled={disabled}
-      controlId={controlId}
-      nativeControl={nativeControlProps => (
-        <input
-          {...nativeControlProps}
-          type="radio"
-          ref={mergedRefs}
-          name={name}
-          value={value}
-          checked={checked}
-          // empty handler to suppress React controllability warning
-          onChange={() => {}}
-        />
-      )}
-      onClick={() => {
-        radioButtonRef.current?.focus();
-        if (checked) {
-          return;
+    <>
+      <AbstractSwitch
+        className={clsx(styles.radio, description && styles['radio--has-description'])}
+        controlClassName={styles['radio-control']}
+        outlineClassName={styles.outline}
+        label={label}
+        description={description}
+        disabled={disabled}
+        controlId={controlId}
+        nativeControl={nativeControlProps => (
+          <input
+            {...nativeControlProps}
+            type="radio"
+            ref={mergedRefs}
+            name={name}
+            value={value}
+            checked={checked}
+            // empty handler to suppress React controllability warning
+            onChange={() => {}}
+          />
+        )}
+        onClick={() => {
+          radioButtonRef.current?.focus();
+          if (checked) {
+            return;
+          }
+          fireNonCancelableEvent(onChange, { value });
+        }}
+        styledControl={
+          <svg viewBox="0 0 100 100" focusable="false" aria-hidden="true">
+            <circle
+              className={clsx(styles['styled-circle-border'], { [styles['styled-circle-disabled']]: disabled })}
+              strokeWidth={isVisualRefresh ? 12 : 8}
+              cx={50}
+              cy={50}
+              r={isVisualRefresh ? 44 : 46}
+            />
+            <circle
+              className={clsx(styles['styled-circle-fill'], {
+                [styles['styled-circle-disabled']]: disabled,
+                [styles['styled-circle-checked']]: checked,
+              })}
+              strokeWidth={30}
+              cx={50}
+              cy={50}
+              r={35}
+            />
+          </svg>
         }
-        fireNonCancelableEvent(onChange, { value });
-      }}
-      styledControl={
-        <svg viewBox="0 0 100 100" focusable="false" aria-hidden="true">
-          <circle
-            className={clsx(styles['styled-circle-border'], { [styles['styled-circle-disabled']]: disabled })}
-            strokeWidth={isVisualRefresh ? 12 : 8}
-            cx={50}
-            cy={50}
-            r={isVisualRefresh ? 44 : 46}
-          />
-          <circle
-            className={clsx(styles['styled-circle-fill'], {
-              [styles['styled-circle-disabled']]: disabled,
-              [styles['styled-circle-checked']]: checked,
-            })}
-            strokeWidth={30}
-            cx={50}
-            cy={50}
-            r={35}
-          />
-        </svg>
-      }
-    />
+      />
+      {secondaryControl ? (
+        <div className={styles['secondary-control']}>
+          <LiveRegion visible={true}>{secondaryControl}</LiveRegion>
+        </div>
+      ) : null}
+    </>
   );
 });
