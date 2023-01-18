@@ -19,6 +19,9 @@ $cell-horizontal-padding-w-border: calc(#{$cell-edge-horizontal-padding} + #{aws
 $selected-border: awsui.$border-item-width solid awsui.$color-border-item-selected;
 $selected-border-placeholder: awsui.$border-divider-list-width solid awsui.$color-border-item-placeholder;
 $border-placeholder: awsui.$border-item-width solid transparent;
+$full-offset: #{awsui.$border-divider-list-width};
+$half-offset: calc(#{$full-offset} / 2);
+$focus-default-offset: calc(-1 * #{awsui.$space-scaled-xxs});
 
 .body-cell {
   box-sizing: border-box;
@@ -39,11 +42,9 @@ $border-placeholder: awsui.$border-item-width solid transparent;
     padding-right: $cell-edge-horizontal-padding;
   }
   &.is-visual-refresh:first-child {
-    &:not(.has-striped-rows) {
-      padding-left: awsui.$space-xxxs;
-      &:not(.body-cell-edit-active).body-cell-editable:hover {
-        padding-left: calc(#{awsui.$space-xxxs} + #{awsui.$border-divider-list-width});
-      }
+    &:not(.body-cell-edit-active).body-cell-editable {
+      padding-left: calc(#{awsui.$space-xxxs} + #{awsui.$border-divider-list-width});
+      border-left-width: awsui.$border-divider-list-width;
     }
 
     /*
@@ -148,13 +149,9 @@ $border-placeholder: awsui.$border-item-width solid transparent;
     padding-right: awsui.$space-xs;
 
     &-form {
-      margin: calc(-1 * #{awsui.$space-xs}) calc(-1.5 * #{awsui.$space-xs});
-      .is-visual-refresh.body-cell:first-child.has-striped-rows > & {
-        margin-left: calc(-1 * #{awsui.$space-xxs});
-      }
-
-      .is-visual-refresh.body-cell:first-child:not(.has-striped-rows) > & {
-        margin-left: calc(-1 * #{awsui.$space-xxxs});
+      margin: calc(-1 * #{awsui.$space-xs}) calc(-1.75 * #{awsui.$space-xs});
+      .is-visual-refresh > &:first-child {
+        margin-left: calc(-0.5 * #{awsui.$space-xs});
       }
     }
 
@@ -185,43 +182,73 @@ $border-placeholder: awsui.$border-item-width solid transparent;
         opacity: 0;
       }
       &:hover {
-        position: relative;
         background-color: awsui.$color-background-dropdown-item-hover;
         border: awsui.$border-divider-list-width solid awsui.$color-border-control-default;
-        left: calc(-1 * #{awsui.$border-divider-list-width});
-        right: calc(-1 * #{awsui.$border-divider-list-width});
-        & > .body-cell-editor {
-          padding-right: calc(#{awsui.$space-xs} - (2 * #{awsui.$border-divider-list-width}));
+        &.is-visual-refresh {
+          &:not(.body-cell-selected) {
+            &.body-cell-first-row,
+            &.body-cell-prev-selected {
+              top: $half-offset;
+            }
+            &.body-cell-last-row:not(.body-cell-prev-selected) {
+              bottom: $half-offset;
+            }
+            &.body-cell-next-selected {
+              border-bottom-width: 0;
+            }
+            &.body-cell-prev-selected {
+              border-top-width: 0;
+            }
+          }
+          &.body-cell-selected {
+            border-top-width: awsui.$border-item-width;
+            border-bottom-width: awsui.$border-item-width;
+            &.body-cell-next-selected {
+              border-bottom-width: awsui.$border-divider-list-width;
+            }
+            &.body-cell-prev-selected {
+              border-top-width: awsui.$border-divider-list-width;
+            }
+          }
+          &.has-striped-rows.body-cell-first-row {
+            box-shadow: inset 0 calc(#{$half-offset} * -1) 0 awsui.$color-border-control-default;
+          }
         }
-        &.body-cell-last-row.body-cell-selected,
-        &.body-cell-next-selected {
-          padding-top: calc(#{$cell-vertical-padding} - calc(#{awsui.$border-divider-list-width} / 2));
-          padding-bottom: calc(#{$cell-vertical-padding} - calc(#{awsui.$border-divider-list-width} / 2));
+        &.body-cell-next-selected:not(.is-visual-refresh):not(.body-cell-selected) {
+          border-bottom-width: 0;
         }
-        &.body-cell-last-row:not(.body-cell-selected) {
-          padding-top: calc(#{$cell-vertical-padding} - calc(#{awsui.$border-divider-list-width}));
-        }
-        &.body-cell-first-row:not(.body-cell-selected) {
-          padding-top: calc(#{$cell-vertical-padding} - calc(#{awsui.$border-divider-list-width}));
-          padding-bottom: calc(#{$cell-vertical-padding} - calc(#{awsui.$border-divider-list-width}));
-        }
+      }
+      &[data-awsui-focus-visible='true']:focus-within {
+        @include styles.focus-highlight($focus-default-offset);
       }
       &:hover,
       &[data-awsui-focus-visible='true']:focus-within {
+        left: calc(-1 * #{awsui.$border-divider-list-width});
+        right: calc(-1 * #{awsui.$border-divider-list-width});
+
         padding-right: calc(#{$cell-horizontal-padding} + #{awsui.$space-l});
+
+        border-left: awsui.$border-divider-list-width solid transparent;
+        border-right: awsui.$border-divider-list-width solid transparent;
+        &:hover {
+          border-left-color: awsui.$color-border-control-default;
+          border-right-color: awsui.$color-border-control-default;
+        }
+        &:first-child {
+          left: 0;
+          right: 0;
+        }
         & > .body-cell-editor {
           opacity: 1;
+          padding-right: calc(#{awsui.$space-xs} - (2 * #{awsui.$border-divider-list-width}));
         }
       }
-      &:hover:first-child {
-        left: 0;
-        right: 0;
-      }
-      &[data-awsui-focus-visible='true']:not(:hover):focus-within {
+
+      &[data-awsui-focus-visible='true']:focus-within:first-child {
         @include styles.focus-highlight(
           (
-            'vertical': calc(-1 * #{awsui.$space-scaled-xxs}),
-            'horizontal': calc(-1 * #{awsui.$space-scaled-xxs}),
+            'vertical': $focus-default-offset,
+            'horizontal': calc(#{$focus-default-offset} + #{awsui.$space-xxxs}),
           )
         );
       }
@@ -235,9 +262,6 @@ $border-placeholder: awsui.$border-item-width solid transparent;
     &:last-child {
       border-top-right-radius: awsui.$border-radius-control-default-focus-ring;
       border-bottom-right-radius: awsui.$border-radius-control-default-focus-ring;
-    }
-    &.body-cell-first-row > .body-cell-editor {
-      padding-top: awsui.$border-divider-list-width;
     }
   }
 }
