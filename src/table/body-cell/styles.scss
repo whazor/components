@@ -19,6 +19,9 @@ $cell-horizontal-padding-w-border: calc(#{$cell-edge-horizontal-padding} + #{aws
 $selected-border: awsui.$border-item-width solid awsui.$color-border-item-selected;
 $selected-border-placeholder: awsui.$border-divider-list-width solid awsui.$color-border-item-placeholder;
 $border-placeholder: awsui.$border-item-width solid transparent;
+$full-offset: #{awsui.$border-divider-list-width};
+$half-offset: calc(#{$full-offset} / 2);
+$focus-default-offset: calc(-1 * #{awsui.$space-scaled-xxs});
 
 .body-cell {
   box-sizing: border-box;
@@ -181,8 +184,6 @@ $border-placeholder: awsui.$border-item-width solid transparent;
       &:hover {
         background-color: awsui.$color-background-dropdown-item-hover;
         border: awsui.$border-divider-list-width solid awsui.$color-border-control-default;
-        $full-offset: #{awsui.$border-divider-list-width};
-        $half-offset: calc(#{$full-offset} / 2);
         &.is-visual-refresh {
           &:not(.body-cell-selected) {
             &.body-cell-first-row,
@@ -218,7 +219,6 @@ $border-placeholder: awsui.$border-item-width solid transparent;
         }
       }
       &[data-awsui-focus-visible='true']:focus-within {
-        $focus-default-offset: calc(-1 * #{awsui.$space-scaled-xxs});
         @include styles.focus-highlight($focus-default-offset);
       }
       &:hover,
