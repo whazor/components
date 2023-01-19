@@ -32,8 +32,8 @@ export default function RadiosPage() {
               value: 'specific',
               description:
                 'If you know the language spoken in the source media, choose this option for optimal results.',
-              secondaryControl: value === 'specific' && (
-                <FormField label="Language">
+              secondaryControl: (
+                <FormField label="Specific language">
                   <Select
                     options={languageOptions}
                     selectedOption={language}

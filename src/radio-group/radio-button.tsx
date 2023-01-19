@@ -3,7 +3,6 @@
 import clsx from 'clsx';
 import React, { useRef } from 'react';
 import AbstractSwitch from '../internal/components/abstract-switch';
-import LiveRegion from '../internal/components/live-region';
 import { fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/events';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
@@ -17,7 +16,7 @@ interface RadioButtonProps extends RadioGroupProps.RadioButtonDefinition {
 }
 
 export default React.forwardRef(function RadioButton(
-  { name, label, value, checked, description, disabled, controlId, onChange, secondaryControl }: RadioButtonProps,
+  { name, label, value, checked, description, disabled, controlId, onChange }: RadioButtonProps,
   ref: React.Ref<HTMLInputElement>
 ) {
   const isVisualRefresh = useVisualRefresh();
@@ -75,11 +74,6 @@ export default React.forwardRef(function RadioButton(
           </svg>
         }
       />
-      {secondaryControl ? (
-        <div className={styles['secondary-control']}>
-          <LiveRegion visible={true}>{secondaryControl}</LiveRegion>
-        </div>
-      ) : null}
     </>
   );
 });

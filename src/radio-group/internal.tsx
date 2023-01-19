@@ -30,37 +30,57 @@ const InternalRadioGroup = React.forwardRef(
     const { ariaDescribedby, ariaLabelledby } = useFormFieldContext(props);
     const baseProps = getBaseProps(props);
     const generatedName = useUniqueId('awsui-radio-');
+    const secondaryControlName = useUniqueId('awsui-radio-secondary-content-');
 
     const [radioButtonRef, radioButtonRefIndex] = useRadioGroupForwardFocus(ref, items, value);
 
+    const secondaryControlExists = items?.some(item => item?.secondaryControl);
+    const currentSecondaryControl = items?.reduce((controls, item) => {
+      if (item.value === value && item.secondaryControl) {
+        return [...controls, item.secondaryControl];
+      }
+      return controls;
+    }, [] as React.ReactNode[]);
+
+    const groupProps: React.HTMLAttributes<HTMLDivElement> = {
+      ...baseProps,
+      ...(secondaryControlExists ? { 'aria-controls': secondaryControlName } : {}),
+    };
+
     return (
-      <div
-        role="radiogroup"
-        aria-labelledby={ariaLabelledby}
-        aria-label={ariaLabel}
-        aria-describedby={ariaDescribedby}
-        aria-required={ariaRequired}
-        {...baseProps}
-        className={clsx(baseProps.className, styles.root)}
-        ref={__internalRootRef}
-      >
-        {items &&
-          items.map((item, index) => (
-            <RadioButton
-              key={item.value}
-              ref={index === radioButtonRefIndex ? radioButtonRef : undefined}
-              checked={item.value === value}
-              name={name || generatedName}
-              value={item.value}
-              label={item.label}
-              description={item.description}
-              disabled={item.disabled}
-              onChange={onChange}
-              controlId={item.controlId}
-              secondaryControl={item?.secondaryControl}
-            />
-          ))}
-      </div>
+      <>
+        <div
+          role="radiogroup"
+          aria-labelledby={ariaLabelledby}
+          aria-label={ariaLabel}
+          aria-describedby={ariaDescribedby}
+          aria-required={ariaRequired}
+          {...groupProps}
+          className={clsx(baseProps.className, styles.root)}
+          ref={__internalRootRef}
+        >
+          {items &&
+            items.map((item, index) => (
+              <RadioButton
+                key={item.value}
+                ref={index === radioButtonRefIndex ? radioButtonRef : undefined}
+                checked={item.value === value}
+                name={name || generatedName}
+                value={item.value}
+                label={item.label}
+                description={item.description}
+                disabled={item.disabled}
+                onChange={onChange}
+                controlId={item.controlId}
+              />
+            ))}
+        </div>
+        {secondaryControlExists ? (
+          <div className={styles['secondary-controls']} id={secondaryControlName}>
+            {currentSecondaryControl}
+          </div>
+        ) : null}
+      </>
     );
   }
 );
