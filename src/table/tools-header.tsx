@@ -15,19 +15,34 @@ interface ToolsHeaderProps {
 export default function ToolsHeader({ header, filter, pagination, preferences }: ToolsHeaderProps) {
   const [breakpoint, ref] = useContainerBreakpoints(['xs']);
   const isSmall = breakpoint === 'default';
-  const hasTools = filter || pagination || preferences;
   return (
     <>
-      {header}
-      {hasTools && (
-        <div ref={ref} className={clsx(styles.tools, isSmall && styles['tools-small'])}>
-          {filter && <div className={styles['tools-filtering']}>{filter}</div>}
-          <div className={styles['tools-align-right']}>
-            {pagination && <div className={styles['tools-pagination']}>{pagination}</div>}
-            {preferences && <div className={styles['tools-preferences']}>{preferences}</div>}
-          </div>
+      {filter && header}
+      {
+        <div
+          ref={ref}
+          className={clsx(styles.tools, isSmall && styles['tools-small'], !filter && styles['tools-flex'])}
+        >
+          {filter && (
+            <>
+              <div className={styles['tools-filtering']}>{filter}</div>
+              <div className={styles['tools-absolute']}>
+                {pagination && <div className={styles['tools-pagination']}>{pagination}</div>}
+                {preferences && <div className={styles['tools-preferences']}>{preferences}</div>}
+              </div>
+            </>
+          )}
+          {!filter && (
+            <>
+              {header}
+              <div className={styles['tools-align-right']}>
+                {pagination && <div className={styles['tools-pagination']}>{pagination}</div>}
+                {preferences && <div className={styles['tools-preferences']}>{preferences}</div>}
+              </div>
+            </>
+          )}
         </div>
-      )}
+      }
     </>
   );
 }

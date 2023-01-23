@@ -14,20 +14,31 @@
 }
 
 .tools {
-  display: flex;
-  align-items: flex-start;
-  flex-wrap: wrap;
+  position: relative;
   padding: awsui.$space-scaled-xs 0 awsui.$space-scaled-xxs;
+
+  &-flex {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-end;
+  }
 
   &-filtering {
     flex: 1 1 0%;
     max-width: 100%;
-    margin-right: awsui.$space-l;
   }
 
   &-align-right {
     display: flex;
-    margin-left: auto;
+    min-width: max-content;
+    padding: awsui.$space-scaled-xxs 0 0 awsui.$space-scaled-m;
+  }
+
+  &-absolute {
+    display: flex;
+    position: absolute;
+    top: awsui.$space-scaled-s;
+    right: 0;
   }
 
   &-pagination + &-preferences {

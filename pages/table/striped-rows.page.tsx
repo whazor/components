@@ -8,16 +8,8 @@ import CollectionPreferences, { CollectionPreferencesProps } from '~components/c
 import Header from '~components/header';
 import Pagination from '~components/pagination';
 import Table, { TableProps } from '~components/table';
-import TextFilter from '~components/text-filter';
 import { Instance, generateItems } from './generate-data';
-import {
-  columnsConfig,
-  EmptyState,
-  getMatchesCountText,
-  paginationLabels,
-  pageSizeOptions,
-  visibleContentOptions,
-} from './shared-configs';
+import { columnsConfig, EmptyState, paginationLabels, pageSizeOptions, visibleContentOptions } from './shared-configs';
 
 const allItems = generateItems();
 const ariaLabels: TableProps<Instance>['ariaLabels'] = {
@@ -38,29 +30,26 @@ export default function App() {
   });
   const [selectedItems, setSelectedItems] = React.useState<any>([]);
 
-  const { items, actions, filteredItemsCount, collectionProps, filterProps, paginationProps } = useCollection(
-    allItems,
-    {
-      filtering: {
-        empty: (
-          <EmptyState
-            title="No resources"
-            subtitle="No resources to display."
-            action={<Button>Create resource</Button>}
-          />
-        ),
-        noMatch: (
-          <EmptyState
-            title="No matches"
-            subtitle="We can’t find a match."
-            action={<Button onClick={() => actions.setFiltering('')}>Clear filter</Button>}
-          />
-        ),
-      },
-      pagination: { pageSize: preferences.pageSize },
-      sorting: {},
-    }
-  );
+  const { items, actions, collectionProps, paginationProps } = useCollection(allItems, {
+    filtering: {
+      empty: (
+        <EmptyState
+          title="No resources"
+          subtitle="No resources to display."
+          action={<Button>Create resource</Button>}
+        />
+      ),
+      noMatch: (
+        <EmptyState
+          title="No matches"
+          subtitle="We can’t find a match."
+          action={<Button onClick={() => actions.setFiltering('')}>Clear filter</Button>}
+        />
+      ),
+    },
+    pagination: { pageSize: preferences.pageSize },
+    sorting: {},
+  });
 
   return (
     <ScreenshotArea>
@@ -68,7 +57,7 @@ export default function App() {
         {...collectionProps}
         header={
           <Header headingTagOverride="h1" counter={`(${allItems.length})`}>
-            Instances
+            Tomato
           </Header>
         }
         ariaLabels={ariaLabels}
@@ -80,13 +69,13 @@ export default function App() {
         columnDefinitions={columnsConfig}
         items={items}
         pagination={<Pagination {...paginationProps} ariaLabels={paginationLabels} />}
-        filter={
-          <TextFilter
-            {...filterProps!}
-            countText={getMatchesCountText(filteredItemsCount!)}
-            filteringAriaLabel="Filter instances"
-          />
-        }
+        // filter={
+        //   <TextFilter
+        //     {...filterProps!}
+        //     countText={getMatchesCountText(filteredItemsCount!)}
+        //     filteringAriaLabel="Filter instances"
+        //   />
+        // }
         visibleColumns={preferences.visibleContent}
         preferences={
           <CollectionPreferences
