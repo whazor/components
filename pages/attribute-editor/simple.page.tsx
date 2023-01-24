@@ -94,6 +94,7 @@ export default function AttributeEditorPage() {
         definition={definition}
         onAddButtonClick={onAddButtonClick}
         onRemoveButtonClick={onRemoveButtonClick}
+        onRemoveAnnouncement={itemIndex => `Removed item number ${itemIndex + 1} of ${items.length}.`}
       />
     </Box>
   );

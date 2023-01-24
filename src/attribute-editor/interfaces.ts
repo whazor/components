@@ -109,6 +109,12 @@ export interface AttributeEditorProps<T> extends BaseComponentProps {
   onRemoveButtonClick?: NonCancelableEventHandler<AttributeEditorProps.RemoveButtonClickDetail>;
 
   /**
+   * Use this function to announce removal of an item to screen readers.
+   * The function is called with the index of the removed item.
+   */
+  onRemoveAnnouncement?(itemIndex: number): string;
+
+  /**
    * An object containing all the necessary localized strings required by the component.
    */
   i18nStrings?: AttributeEditorProps.I18nStrings;
