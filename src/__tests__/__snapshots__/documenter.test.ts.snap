@@ -1116,6 +1116,24 @@ By default, all items are removable.",
       "type": "AttributeEditorProps.IsItemRemovableFunction<T>",
     },
     Object {
+      "description": "Use this function to announce removal of an item to screen readers.
+The function is called with the index of the removed item.",
+      "inlineType": Object {
+        "name": "AttributeEditorProps.ItemRemovalAriaLiveFunction",
+        "parameters": Array [
+          Object {
+            "name": "itemIndex",
+            "type": "number",
+          },
+        ],
+        "returnType": "string",
+        "type": "function",
+      },
+      "name": "itemRemovalAriaLive",
+      "optional": true,
+      "type": "AttributeEditorProps.ItemRemovalAriaLiveFunction",
+    },
+    Object {
       "defaultValue": "[]",
       "description": "Specifies the items that serve as the data source for all rows.
 The display of a row is handled by the \`definition\` property.",
