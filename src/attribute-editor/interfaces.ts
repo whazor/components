@@ -23,6 +23,10 @@ export namespace AttributeEditorProps {
     (item: T): boolean;
   }
 
+  export interface ItemRemovalAnnouncementFunction {
+    (itemIndex: number): string;
+  }
+
   export type FieldRenderable<T> = (item: T, itemIndex: number) => React.ReactNode;
   export interface FieldDefinition<T> {
     label?: React.ReactNode;
@@ -107,6 +111,12 @@ export interface AttributeEditorProps<T> extends BaseComponentProps {
    * The event `detail` contains the index of the corresponding item.
    */
   onRemoveButtonClick?: NonCancelableEventHandler<AttributeEditorProps.RemoveButtonClickDetail>;
+
+  /**
+   * Use this function to announce removal of an item to screen readers.
+   * The function is called with the index of the removed item.
+   */
+  onRemoveAnnouncement?: AttributeEditorProps.ItemRemovalAnnouncementFunction;
 
   /**
    * An object containing all the necessary localized strings required by the component.
