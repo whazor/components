@@ -84,6 +84,12 @@ export default function AttributeEditorPage() {
   );
 
   const additionalInfo = useMemo(() => `You can add ${tagLimit - items.length} more tags.`, [items.length]);
+
+  const itemRemovalAriaLive = useCallback(
+    (itemIndex: number) => `Removed item number ${itemIndex + 1} of ${items.length}.`,
+    [items.length]
+  );
+
   return (
     <Box margin="xl">
       <h1>Attribute Editor - Functional</h1>
@@ -94,6 +100,7 @@ export default function AttributeEditorPage() {
         definition={definition}
         onAddButtonClick={onAddButtonClick}
         onRemoveButtonClick={onRemoveButtonClick}
+        itemRemovalAriaLive={itemRemovalAriaLive}
       />
     </Box>
   );
