@@ -40,7 +40,7 @@ const langReducer: React.Reducer<State, Action> = (state = initialState, action)
     case 'update/en':
       return { ...state, en: action.payload };
     case 'update/de':
-      return { ...state, deu: action.payload };
+      return { ...state, de: action.payload };
     default:
       return state;
   }
