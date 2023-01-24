@@ -45,6 +45,7 @@ const TagEditor = React.forwardRef(
       keysRequest,
       valuesRequest,
       onChange,
+      tagRemovalAriaLive,
       ...restProps
     }: TagEditorProps,
     ref: React.Ref<TagEditorProps.Ref>
@@ -158,6 +159,11 @@ const TagEditor = React.forwardRef(
       };
     });
 
+    const handleRemovalAnnouncement = useCallback(
+      (tagIndex: number) => tagRemovalAriaLive?.(tags[tagIndex], tagIndex, tags.length) ?? '',
+      [tags, tagRemovalAriaLive]
+    );
+
     const definition = useMemo(
       () => [
         {
@@ -257,6 +263,7 @@ const TagEditor = React.forwardRef(
         isItemRemovable={isItemRemovable}
         onAddButtonClick={onAddButtonClick}
         onRemoveButtonClick={onRemoveButtonClick}
+        itemRemovalAriaLive={handleRemovalAnnouncement}
         addButtonText={i18nStrings.addButton}
         removeButtonText={i18nStrings.removeButton}
         disableAddButton={remainingTags <= 0}
