@@ -1081,6 +1081,11 @@ A maximum of four fields are supported.
             "optional": true,
             "type": "string",
           },
+          Object {
+            "name": "removalAnnouncement",
+            "optional": true,
+            "type": "string",
+          },
         ],
         "type": "object",
       },
@@ -11883,6 +11888,11 @@ character validation. You should use this property only when absolutely necessar
           Object {
             "name": "optional",
             "optional": false,
+            "type": "string",
+          },
+          Object {
+            "name": "removalAnnouncement",
+            "optional": true,
             "type": "string",
           },
           Object {

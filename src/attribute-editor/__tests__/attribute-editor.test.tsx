@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { render } from '@testing-library/react';
+import { render, waitFor } from '@testing-library/react';
 import createWrapper, { AttributeEditorWrapper } from '../../../lib/components/test-utils/dom';
 import AttributeEditor, { AttributeEditorProps } from '../../../lib/components/attribute-editor';
 import styles from '../../../lib/components/attribute-editor/styles.css.js';
@@ -78,6 +78,26 @@ const expectRowErrorTextContent = (wrapper: AttributeEditorWrapper, rowIndex: nu
     expect(errorField!.getElement()).toHaveTextContent(expectedValue);
   });
 };
+
+function TestComponent(propOverrides: Partial<AttributeEditorProps<Item>> = {}) {
+  const [items, setItems] = React.useState(defaultProps.items!);
+  const onRemoveButtonClick = (event: any) => {
+    const newItems = items.slice();
+    newItems.splice(event.detail.itemIndex, 1);
+    setItems(newItems);
+  };
+
+  return (
+    <AttributeEditor
+      {...defaultProps}
+      items={items}
+      onRemoveButtonClick={onRemoveButtonClick}
+      i18nStrings={{ ...defaultProps.i18nStrings, removalAnnouncement: 'An item was removed.' }}
+      additionalInfo="+++ADDN+++"
+      {...propOverrides}
+    />
+  );
+}
 
 describe('Attribute Editor', () => {
   describe('items property', () => {
@@ -185,6 +205,27 @@ describe('Attribute Editor', () => {
       wrapper.findRow(1)!.findRemoveButton()!.click();
 
       expect(onRemoveButtonClick).toHaveBeenCalledWith(expect.objectContaining({ detail: { itemIndex: 0 } }));
+    });
+
+    test('renders removalAnnouncement on remove button click', async () => {
+      const { container } = render(<TestComponent />);
+      const wrapper = createWrapper(container).findAttributeEditor()!;
+
+      wrapper.findRow(1)!.findRemoveButton()!.click();
+      await waitFor(() =>
+        expect(wrapper.findAdditionalInfo()?.getElement()).toHaveTextContent('An item was removed.+++ADDN+++')
+      );
+    });
+
+    test('renders LiveRegion properly', async () => {
+      const { container, rerender } = render(<TestComponent />);
+      const wrapper = createWrapper(container).findAttributeEditor()!;
+      expect(wrapper.findAdditionalInfo()?.getElement()).toHaveTextContent('+++ADDN+++');
+      expect(wrapper.find(`[data-testid="no-additional-info-remove-announcement"]`)?.getElement()).toBeUndefined();
+      wrapper.findRow(1)!.findRemoveButton()!.click();
+      expect(wrapper.findAdditionalInfo()?.getElement()).toHaveTextContent('An item was removed.+++ADDN+++');
+      rerender(<TestComponent items={[...defaultProps.items!]} />);
+      await waitFor(() => expect(wrapper.findAdditionalInfo()?.getElement()).toHaveTextContent('+++ADDN+++'));
     });
   });
 

@@ -19,6 +19,7 @@ const i18nStrings = {
   addButtonText: 'Add new item',
   removeButtonText: 'Remove',
   empty: 'No tags associated to the resource',
+  removalAnnouncement: 'An item was removed.',
 };
 const tagLimit = 50;
 
@@ -84,6 +85,7 @@ export default function AttributeEditorPage() {
   );
 
   const additionalInfo = useMemo(() => `You can add ${tagLimit - items.length} more tags.`, [items.length]);
+
   return (
     <Box margin="xl">
       <h1>Attribute Editor - Functional</h1>

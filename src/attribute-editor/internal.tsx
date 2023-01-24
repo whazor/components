@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useImperativeHandle, useRef } from 'react';
+import React, { useImperativeHandle, useRef, useState } from 'react';
 import clsx from 'clsx';
 
 import { getBaseProps } from '../internal/base-component';
@@ -19,6 +19,9 @@ import { InternalBaseComponentProps } from '../internal/hooks/use-base-component
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { SomeRequired } from '../internal/types';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
+import LiveRegion from '../internal/components/live-region';
+import ScreenreaderOnly from '../internal/components/screenreader-only';
+import { usePrevious } from '../internal/hooks/use-previous';
 
 type InternalAttributeEditorProps<T> = SomeRequired<AttributeEditorProps<T>, 'items'> & InternalBaseComponentProps;
 
@@ -44,6 +47,7 @@ const InternalAttributeEditor = React.forwardRef(
     const [breakpoint, breakpointRef] = useContainerBreakpoints(['default', 'xxs', 'xs']);
     const removeButtonRefs = useRef<Array<ButtonProps.Ref | undefined>>([]);
     const wasNonEmpty = useRef<boolean>(false);
+    const [removalAnnouncement, setRemovalAnnouncement] = useState<string>();
 
     const baseProps = getBaseProps(props);
     const isEmpty = items && items.length === 0;
@@ -60,6 +64,18 @@ const InternalAttributeEditor = React.forwardRef(
 
     const additionalInfoId = useUniqueId('attribute-editor-info');
     const infoAriaDescribedBy = additionalInfo ? additionalInfoId : undefined;
+
+    const prevItemsLength = usePrevious(items.length);
+
+    React.useEffect(() => {
+      if (prevItemsLength && prevItemsLength > items.length) {
+        setRemovalAnnouncement(i18nStrings?.removalAnnouncement);
+      } else {
+        setRemovalAnnouncement(undefined);
+      }
+      // we only want to announce when the number of items decreases (i.e. when an item is removed)
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [items, i18nStrings?.removalAnnouncement]);
 
     return (
       <div {...baseProps} ref={mergedRef} className={clsx(baseProps.className, styles.root)}>
@@ -80,6 +96,7 @@ const InternalAttributeEditor = React.forwardRef(
             />
           ))}
         </InternalBox>
+
         <InternalButton
           className={styles['add-button']}
           disabled={disableAddButton}
@@ -89,7 +106,18 @@ const InternalAttributeEditor = React.forwardRef(
         >
           {addButtonText}
         </InternalButton>
-        {additionalInfo && <AdditionalInfo id={infoAriaDescribedBy}>{additionalInfo}</AdditionalInfo>}
+        {additionalInfo ? (
+          <AdditionalInfo id={infoAriaDescribedBy}>
+            {/* We are hooking on to this LiveRegion to ensure the order of announcement.
+            If the component is rendered without additionalInfo, we use a separate LiveRegion. */}
+            <ScreenreaderOnly>{removalAnnouncement}</ScreenreaderOnly>
+            {additionalInfo}
+          </AdditionalInfo>
+        ) : (
+          <LiveRegion delay={0} data-testid="no-additional-info-remove-announcement">
+            <span>{removalAnnouncement}</span>
+          </LiveRegion>
+        )}
       </div>
     );
   }
