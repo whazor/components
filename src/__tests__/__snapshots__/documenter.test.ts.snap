@@ -9398,7 +9398,7 @@ Object {
   "name": "RadioGroup",
   "properties": Array [
     Object {
-      "description": "Adds \`aria-controls\` to the group. Use this property if the radio group controls the visibility of other elements on the page.",
+      "description": "Adds \`aria-controls\` attribute to the radio group. Use this property if the radio group controls the visibility of other elements on the page.",
       "name": "ariaControls",
       "optional": true,
       "type": "string",
