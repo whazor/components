@@ -9,7 +9,9 @@ export default function Simple() {
     <article>
       <ScreenshotArea>
         <div data-analytics="customer-context" data-analytics-type="eventContext">
-          <Button variant="primary">Primary</Button>
+          <Button data-analytics="Submit" data-analytics-type="eventValue" variant="primary">
+            Primary
+          </Button>
         </div>
       </ScreenshotArea>
     </article>
