@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
+import React, { useEffect } from 'react';
 import clsx from 'clsx';
 import { getBaseProps } from '../internal/base-component';
 import InternalAlert from '../alert/internal';
@@ -9,6 +9,7 @@ import styles from './styles.css.js';
 import { FormProps } from './interfaces';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import LiveRegion from '../internal/components/live-region';
+import { Metrics } from '../internal/metrics';
 
 type InternalFormProps = FormProps & InternalBaseComponentProps;
 
@@ -23,6 +24,13 @@ export default function InternalForm({
   ...props
 }: InternalFormProps) {
   const baseProps = getBaseProps(props);
+
+  useEffect(() => {
+    if (errorText) {
+      Metrics.track(__internalRootRef!.current, { context: 'csa_form', componentName: 'form', type: 'validation' });
+    }
+  }, [__internalRootRef, errorText]);
+
   return (
     <div {...baseProps} ref={__internalRootRef} className={clsx(styles.root, baseProps.className)}>
       {header && <div className={styles.header}>{header}</div>}

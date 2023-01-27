@@ -161,6 +161,21 @@ export const Metrics = {
     }
   },
 
+  /**
+   * Calls Console Platform's client v2 logging JS API with provided metric name and detail.
+   * Does nothing if Console Platform client logging JS is not present in page.
+   */
+  track(targetNode: HTMLElement, metric: any): void {
+    const panorama = findPanorama(window);
+    if (typeof panorama === 'function') {
+      panorama('trackCloudscapeEvent', {
+        targetNode,
+        ...metric,
+        timestamp: Date.now(),
+      });
+    }
+  },
+
   sendMetricObject(metric: MetricsLogItem, value: number): void {
     this.sendMetric(buildMetricName(metric), value, buildMetricDetail(metric));
   },

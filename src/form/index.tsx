@@ -6,11 +6,19 @@ import { FormProps } from './interfaces';
 import InternalForm from './internal';
 import useBaseComponent from '../internal/hooks/use-base-component';
 
+import { useTelemetryContext, TelemetryContext } from '../internal/context/telemetry-context';
+
 export { FormProps };
 
 export default function Form(props: FormProps) {
   const baseComponentProps = useBaseComponent('Form');
-  return <InternalForm {...props} {...baseComponentProps} />;
+  const { context } = useTelemetryContext();
+
+  return (
+    <TelemetryContext.Provider value={{ context: [...context, 'form'] }}>
+      <InternalForm {...props} {...baseComponentProps} />
+    </TelemetryContext.Provider>
+  );
 }
 
 applyDisplayName(Form, 'Form');

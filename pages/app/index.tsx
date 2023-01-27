@@ -18,6 +18,8 @@ import Header from './components/header';
 import StrictModeWrapper from './components/strict-mode-wrapper';
 import AppContext, { AppContextProvider, parseQuery } from './app-context';
 
+import panorama from './panorama';
+
 function App() {
   const {
     mode,
@@ -72,6 +74,8 @@ const { visualRefresh } = parseQuery(history.location.search);
 
 // The VR class needs to be set before any React rendering occurs.
 document.body.classList.toggle('awsui-visual-refresh', visualRefresh);
+
+(window as any).panorama = panorama;
 
 render(
   <HashRouter>

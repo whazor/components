@@ -13,6 +13,8 @@ import { checkSafeUrl } from '../internal/utils/check-safe-url';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import LiveRegion from '../internal/components/live-region';
 
+import { Metrics } from '../internal/metrics';
+
 type InternalButtonProps = Omit<ButtonProps, 'variant'> & {
   variant?: ButtonProps['variant'] | 'flashbar-icon' | 'breadcrumb-group' | 'menu-trigger' | 'modal-dismiss';
   __nativeAttributes?: Record<string, any>;
@@ -71,6 +73,8 @@ export const InternalButton = React.forwardRef(
         if (isAnchor && isPlainLeftClick(event)) {
           fireCancelableEvent(onFollow, null, event);
         }
+
+        Metrics.track(event.currentTarget as any, { type: 'click', context: 'csa_button', componentName: 'button' });
 
         const { altKey, button, ctrlKey, metaKey, shiftKey } = event;
         fireCancelableEvent(onClick, { altKey, button, ctrlKey, metaKey, shiftKey }, event);

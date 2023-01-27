@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
+import React, { useEffect } from 'react';
 import clsx from 'clsx';
 
 import { getBaseProps } from '../internal/base-component';
@@ -15,6 +15,8 @@ import { getAriaDescribedBy, getGridDefinition, getSlotIds } from './util';
 import styles from './styles.css.js';
 import { InternalFormFieldProps } from './interfaces';
 import { joinStrings } from '../internal/utils/strings';
+import { Metrics } from '../internal/metrics';
+import { useTelemetryContext } from '../internal/context/telemetry-context';
 
 interface FormFieldErrorProps {
   id?: string;
@@ -75,6 +77,18 @@ export default function InternalFormField({
     invalid: !!errorText || !!parentInvalid,
     __useReactAutofocus,
   };
+
+  const { context } = useTelemetryContext();
+
+  useEffect(() => {
+    if (errorText) {
+      Metrics.track(__internalRootRef!.current, {
+        context: context.join('_'),
+        componentName: 'form-field',
+        type: 'validation',
+      });
+    }
+  }, [__internalRootRef, errorText, context]);
 
   return (
     <div {...baseProps} className={clsx(baseProps.className, styles.root)} ref={__internalRootRef}>
