@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useImperativeHandle, useRef } from 'react';
+import React, { useCallback, useImperativeHandle, useRef, useState } from 'react';
 import clsx from 'clsx';
 
 import { getBaseProps } from '../internal/base-component';
@@ -11,6 +11,7 @@ import { InternalButton } from '../button/internal';
 import { AttributeEditorForwardRefType, AttributeEditorProps } from './interfaces';
 import { AdditionalInfo } from './additional-info';
 import { Row } from './row';
+import { callBoth } from './utils';
 
 import styles from './styles.css.js';
 import { useContainerBreakpoints } from '../internal/hooks/container-queries';
@@ -22,15 +23,6 @@ import { useUniqueId } from '../internal/hooks/use-unique-id';
 import LiveRegion from '../internal/components/live-region';
 
 type InternalAttributeEditorProps<T> = SomeRequired<AttributeEditorProps<T>, 'items'> & InternalBaseComponentProps;
-
-type AnyFn<T, U> = (...args: T[]) => U;
-type SideEffect<T> = (...args: T[]) => void;
-function withSideEffect<T, U>(fn?: AnyFn<T, U>, effect?: SideEffect<T>) {
-  return (...args: T[]) => {
-    effect?.(...args);
-    return fn?.(...args);
-  };
-}
 
 const InternalAttributeEditor = React.forwardRef(
   <T,>(
@@ -46,7 +38,7 @@ const InternalAttributeEditor = React.forwardRef(
       i18nStrings,
       onAddButtonClick,
       onRemoveButtonClick,
-      onRemoveAnnouncement,
+      itemRemovalAriaLive,
       __internalRootRef = null,
       ...props
     }: InternalAttributeEditorProps<T>,
@@ -55,7 +47,7 @@ const InternalAttributeEditor = React.forwardRef(
     const [breakpoint, breakpointRef] = useContainerBreakpoints(['default', 'xxs', 'xs']);
     const removeButtonRefs = useRef<Array<ButtonProps.Ref | undefined>>([]);
     const wasNonEmpty = useRef<boolean>(false);
-    const [removalAnnouncement, setRemovalAnnouncement] = React.useState<string>();
+    const [removalAnnouncement, setRemovalAnnouncement] = useState<string>();
 
     const baseProps = getBaseProps(props);
     const isEmpty = items && items.length === 0;
@@ -73,18 +65,14 @@ const InternalAttributeEditor = React.forwardRef(
     const additionalInfoId = useUniqueId('attribute-editor-info');
     const infoAriaDescribedBy = additionalInfo ? additionalInfoId : undefined;
 
-    const updateRemovalAnnouncement: typeof onRemoveButtonClick = event => {
-      setRemovalAnnouncement(onRemoveAnnouncement?.(event.detail.itemIndex));
-    };
+    const updateRemovalAnnouncement = useCallback<NonNullable<typeof onRemoveButtonClick>>(
+      event => setRemovalAnnouncement(itemRemovalAriaLive?.(event.detail.itemIndex)),
+      [itemRemovalAriaLive]
+    );
 
     return (
       <div {...baseProps} ref={mergedRef} className={clsx(baseProps.className, styles.root)}>
         <InternalBox margin={{ bottom: 'l' }}>
-          {!!removalAnnouncement && (
-            <LiveRegion assertive={true}>
-              <span>{removalAnnouncement}</span>
-            </LiveRegion>
-          )}
           {isEmpty && <div className={clsx(styles.empty, wasNonEmpty.current && styles['empty-appear'])}>{empty}</div>}
           {items.map((item, index) => (
             <Row
@@ -97,10 +85,15 @@ const InternalAttributeEditor = React.forwardRef(
               removable={isItemRemovable(item)}
               removeButtonText={removeButtonText}
               removeButtonRefs={removeButtonRefs.current}
-              onRemoveButtonClick={withSideEffect(onRemoveButtonClick, updateRemovalAnnouncement)}
+              onRemoveButtonClick={callBoth(onRemoveButtonClick, updateRemovalAnnouncement)}
             />
           ))}
         </InternalBox>
+        {!!removalAnnouncement && (
+          <LiveRegion delay={0}>
+            <span>{removalAnnouncement}</span>
+          </LiveRegion>
+        )}
         <InternalButton
           className={styles['add-button']}
           disabled={disableAddButton}

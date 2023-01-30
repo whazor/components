@@ -23,7 +23,7 @@ export namespace AttributeEditorProps {
     (item: T): boolean;
   }
 
-  export interface ItemRemovalAnnouncementFunction {
+  export interface ItemRemovalAriaLiveFunction {
     (itemIndex: number): string;
   }
 
@@ -116,7 +116,7 @@ export interface AttributeEditorProps<T> extends BaseComponentProps {
    * Use this function to announce removal of an item to screen readers.
    * The function is called with the index of the removed item.
    */
-  onRemoveAnnouncement?: AttributeEditorProps.ItemRemovalAnnouncementFunction;
+  itemRemovalAriaLive?: AttributeEditorProps.ItemRemovalAriaLiveFunction;
 
   /**
    * An object containing all the necessary localized strings required by the component.

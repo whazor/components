@@ -42,7 +42,8 @@ export interface RadioGroupProps extends BaseComponentProps, FormFieldControlPro
   ariaRequired?: boolean;
 
   /**
-   * Adds `aria-controls` attribute to the radio group. Use this property if the radio group controls the visibility of other elements on the page.
+   * Adds `aria-controls` attribute to the radio group.
+   * If the radio group controls any secondary content (for example, another form field), use this to provide an ID referring to the secondary content.
    */
   ariaControls?: string;
 

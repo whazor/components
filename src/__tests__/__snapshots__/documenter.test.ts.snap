@@ -1006,12 +1006,6 @@ Object {
       "name": "onAddButtonClick",
     },
     Object {
-      "cancelable": true,
-      "description": "Use this function to announce removal of an item to screen readers.
-The function is called with the index of the removed item.",
-      "name": "onRemoveAnnouncement",
-    },
-    Object {
       "cancelable": false,
       "description": "Called when remove button is clicked.
 The event \`detail\` contains the index of the corresponding item.",
@@ -1120,6 +1114,24 @@ By default, all items are removable.",
       "name": "isItemRemovable",
       "optional": true,
       "type": "AttributeEditorProps.IsItemRemovableFunction<T>",
+    },
+    Object {
+      "description": "Use this function to announce removal of an item to screen readers.
+The function is called with the index of the removed item.",
+      "inlineType": Object {
+        "name": "AttributeEditorProps.ItemRemovalAriaLiveFunction",
+        "parameters": Array [
+          Object {
+            "name": "itemIndex",
+            "type": "number",
+          },
+        ],
+        "returnType": "string",
+        "type": "function",
+      },
+      "name": "itemRemovalAriaLive",
+      "optional": true,
+      "type": "AttributeEditorProps.ItemRemovalAriaLiveFunction",
     },
     Object {
       "defaultValue": "[]",
@@ -5551,7 +5563,6 @@ Object {
       "type": "string",
     },
     Object {
-      "deprecatedTag": "Replaced by \`action\`.",
       "description": "Specifies flash messages that appear in the same order that they are listed.
 The value is an array of flash message definition objects.
 A flash message object contains the following properties:
@@ -5569,7 +5580,8 @@ user's attention.
 * \`action\` (ReactNode) - Specifies an action for the flash message. Although it is technically possible to insert any content,
 our UX guidelines only allow you to add a button.
 * \`buttonText\` (string) - Specifies that an action button should be displayed, with the specified text.
-When a user clicks on this button the \`onButtonClick\` handler is called. If the \`action\` property is set, this property is ignored.
+When a user clicks on this button the \`onButtonClick\` handler is called.
+If the \`action\` property is set, this property is ignored. **Deprecated**, replaced by \`action\`.
 * \`onButtonClick\` (event => void) - Called when a user clicks on the action button. This is not called if you create a custom button
   using the \`action\` property. **Deprecated**, replaced by \`action\`.
 * \`id\` (string) - Specifies a unique flash message identifier. This property  is used in two ways:
@@ -9398,7 +9410,8 @@ Object {
   "name": "RadioGroup",
   "properties": Array [
     Object {
-      "description": "Adds \`aria-controls\` attribute to the radio group. Use this property if the radio group controls the visibility of other elements on the page.",
+      "description": "Adds \`aria-controls\` attribute to the radio group.
+If the radio group controls any secondary content (for example, another form field), use this to provide an ID referring to the secondary content.",
       "name": "ariaControls",
       "optional": true,
       "type": "string",
