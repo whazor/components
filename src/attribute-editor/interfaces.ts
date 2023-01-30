@@ -114,7 +114,9 @@ export interface AttributeEditorProps<T> extends BaseComponentProps {
 
   /**
    * Use this function to announce removal of an item to screen readers.
-   * The function is called with the index of the removed item.
+   * The function is called with index of the removed item.
+   *
+   * Return the string that should be announced to screen readers.
    */
   itemRemovalAriaLive?: AttributeEditorProps.ItemRemovalAriaLiveFunction;
 

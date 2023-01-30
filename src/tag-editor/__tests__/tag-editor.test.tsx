@@ -346,6 +346,17 @@ describe('Tag Editor component', () => {
     });
   });
 
+  test('should trigger tagRemovalAriaLive when a tag is removed', () => {
+    const tagRemovalAriaLiveSpy = jest.fn();
+    const tags = [{ key: 'key', value: 'value', existing: true }];
+    const { wrapper } = renderTagEditor({
+      tags,
+      tagRemovalAriaLive: tagRemovalAriaLiveSpy,
+    });
+    wrapper.findRow(1)!.findRemoveButton()!.click();
+    expect(tagRemovalAriaLiveSpy).toHaveBeenCalledWith(tags[0], 0, 1);
+  });
+
   describe('Undo removal', () => {
     test('should remove `markedForRemoval` flag from a marked tag', () => {
       const { wrapper, onChangeSpy } = renderTagEditor({

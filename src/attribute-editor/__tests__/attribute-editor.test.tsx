@@ -186,6 +186,15 @@ describe('Attribute Editor', () => {
 
       expect(onRemoveButtonClick).toHaveBeenCalledWith(expect.objectContaining({ detail: { itemIndex: 0 } }));
     });
+
+    test('triggers itemRemovalAriaLive on remove button click', () => {
+      const itemRemovalAriaLive = jest.fn();
+      const wrapper = renderAttributeEditor({ ...defaultProps, itemRemovalAriaLive });
+
+      wrapper.findRow(1)!.findRemoveButton()!.click();
+
+      expect(itemRemovalAriaLive).toHaveBeenCalledWith(0);
+    });
   });
 
   ['control', 'errorText', 'constraintText'].forEach(renderableFn => {

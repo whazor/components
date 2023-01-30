@@ -1117,7 +1117,9 @@ By default, all items are removable.",
     },
     Object {
       "description": "Use this function to announce removal of an item to screen readers.
-The function is called with the index of the removed item.",
+The function is called with index of the removed item.
+Return the string that should be announced to screen readers.
+",
       "inlineType": Object {
         "name": "AttributeEditorProps.ItemRemovalAriaLiveFunction",
         "parameters": Array [
@@ -11996,6 +11998,15 @@ resolves to a list of strings of all the keys (for example, \`['key1', 'key2']\`
       "name": "tagLimit",
       "optional": true,
       "type": "number",
+    },
+    Object {
+      "description": "Use this function to announce removal of a tag to screen readers.
+The function is called with the removed tag, its index, and the total number of tags present as parameters.
+Return the string that should be announced to screen readers.
+",
+      "name": "tagRemovalAriaLive",
+      "optional": true,
+      "type": "(tag: TagEditorProps.Tag, index: number, totalTagsCount: number) => string",
     },
     Object {
       "description": "Specifies an array of tags that are displayed to the user. Each tag item has the following properties:

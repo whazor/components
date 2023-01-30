@@ -21,6 +21,7 @@ import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { SomeRequired } from '../internal/types';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
 import LiveRegion from '../internal/components/live-region';
+import ScreenreaderOnly from '../internal/components/screenreader-only';
 
 type InternalAttributeEditorProps<T> = SomeRequired<AttributeEditorProps<T>, 'items'> & InternalBaseComponentProps;
 
@@ -89,11 +90,6 @@ const InternalAttributeEditor = React.forwardRef(
             />
           ))}
         </InternalBox>
-        {!!removalAnnouncement && (
-          <LiveRegion delay={0}>
-            <span>{removalAnnouncement}</span>
-          </LiveRegion>
-        )}
         <InternalButton
           className={styles['add-button']}
           disabled={disableAddButton}
@@ -103,7 +99,17 @@ const InternalAttributeEditor = React.forwardRef(
         >
           {addButtonText}
         </InternalButton>
-        {additionalInfo && <AdditionalInfo id={infoAriaDescribedBy}>{additionalInfo}</AdditionalInfo>}
+        {!!removalAnnouncement && !additionalInfo && (
+          <LiveRegion delay={0}>
+            <span>{removalAnnouncement}</span>
+          </LiveRegion>
+        )}
+        {additionalInfo && (
+          <AdditionalInfo id={infoAriaDescribedBy}>
+            {!!removalAnnouncement && <ScreenreaderOnly>{removalAnnouncement}</ScreenreaderOnly>}
+            {additionalInfo}
+          </AdditionalInfo>
+        )}
       </div>
     );
   }
