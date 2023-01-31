@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { render } from '@testing-library/react';
+import { render, waitFor } from '@testing-library/react';
 import createWrapper, { AttributeEditorWrapper } from '../../../lib/components/test-utils/dom';
 import AttributeEditor, { AttributeEditorProps } from '../../../lib/components/attribute-editor';
 import styles from '../../../lib/components/attribute-editor/styles.css.js';
@@ -188,12 +188,35 @@ describe('Attribute Editor', () => {
     });
 
     test('triggers itemRemovalAriaLive on remove button click', () => {
-      const itemRemovalAriaLive = jest.fn();
+      const itemRemovalAriaLive = jest.fn() as AttributeEditorProps.ItemRemovalAriaLiveFunction;
       const wrapper = renderAttributeEditor({ ...defaultProps, itemRemovalAriaLive });
 
       wrapper.findRow(1)!.findRemoveButton()!.click();
 
       expect(itemRemovalAriaLive).toHaveBeenCalledWith(0);
+    });
+
+    test('renders LiveRegion properly', async () => {
+      const itemRemovalAriaLive = jest.fn(() => 'test-text') as AttributeEditorProps.ItemRemovalAriaLiveFunction;
+      const wrapper = renderAttributeEditor({
+        ...defaultProps,
+        itemRemovalAriaLive,
+        additionalInfo: 'additional-test',
+      });
+      wrapper.findRow(1)!.findRemoveButton()!.click();
+      expect(itemRemovalAriaLive).toHaveBeenCalledWith(0);
+      await waitFor(() => expect(wrapper.findAdditionalInfo()?.getElement()).toHaveTextContent('additional-test'));
+
+      const propsWithoutAdditionInfo: AttributeEditorProps<Item> = {
+        ...defaultProps,
+        itemRemovalAriaLive,
+        additionalInfo: undefined,
+      };
+      const wrapperWithoutAdditionInfo = renderAttributeEditor(propsWithoutAdditionInfo);
+      wrapperWithoutAdditionInfo.findRow(1)!.findRemoveButton()!.click();
+      expect(
+        wrapperWithoutAdditionInfo.find(`[data-testid="no-additional-info-remove-announcement"]`)?.getElement()
+      ).toBeInTheDocument();
     });
   });
 

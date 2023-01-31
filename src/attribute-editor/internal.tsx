@@ -90,6 +90,7 @@ const InternalAttributeEditor = React.forwardRef(
             />
           ))}
         </InternalBox>
+
         <InternalButton
           className={styles['add-button']}
           disabled={disableAddButton}
@@ -100,7 +101,7 @@ const InternalAttributeEditor = React.forwardRef(
           {addButtonText}
         </InternalButton>
         {!!removalAnnouncement && !additionalInfo && (
-          <LiveRegion delay={0}>
+          <LiveRegion delay={0} data-testid="no-additional-info-remove-announcement">
             <span>{removalAnnouncement}</span>
           </LiveRegion>
         )}
