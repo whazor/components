@@ -78,12 +78,12 @@ export default function InternalFormField({
     __useReactAutofocus,
   };
 
-  const { context } = useTelemetryContext();
+  const context = useTelemetryContext();
 
   useEffect(() => {
     if (errorText) {
       Metrics.track(__internalRootRef!.current, {
-        context: context.join('_'),
+        context,
         componentName: 'form-field',
         type: 'validation',
       });

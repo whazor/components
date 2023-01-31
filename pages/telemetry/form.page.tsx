@@ -34,20 +34,36 @@ export default function FormScenario() {
           errorText="This is an error!"
           errorIconAriaLabel="Error"
         >
-          <Container
-            data-analytics="form-section"
-            data-analytics-type="eventContext"
-            header={<Header variant="h2">Form section header 1</Header>}
-          >
-            <SpaceBetween direction="vertical" size="l">
-              <FormField label="First field" errorText="This is a form field error">
-                <Input value="" readOnly={true} />
-              </FormField>
-              <FormField label="Second field">
-                <Input value="" readOnly={true} />
-              </FormField>
-            </SpaceBetween>
-          </Container>
+          <SpaceBetween direction="vertical" size="l">
+            <Container
+              data-analytics="form-section-1"
+              data-analytics-type="eventContext"
+              header={<Header variant="h2">Form section header 1</Header>}
+            >
+              <SpaceBetween direction="vertical" size="l">
+                <FormField label="First field" errorText="This is a form field error">
+                  <Input value="" readOnly={true} />
+                </FormField>
+                <FormField label="Second field" errorText="This is a form field error">
+                  <Input value="" readOnly={true} />
+                </FormField>
+              </SpaceBetween>
+            </Container>
+            <Container
+              data-analytics="form-section-2"
+              data-analytics-type="eventContext"
+              header={<Header variant="h2">Form section header 2</Header>}
+            >
+              <SpaceBetween direction="vertical" size="l">
+                <FormField label="Third field" errorText="This is a form field error">
+                  <Input value="" readOnly={true} />
+                </FormField>
+                <FormField label="Forth field">
+                  <Input value="" readOnly={true} />
+                </FormField>
+              </SpaceBetween>
+            </Container>
+          </SpaceBetween>
         </Form>
       </div>
     </ScreenshotArea>

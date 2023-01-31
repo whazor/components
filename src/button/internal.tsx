@@ -14,6 +14,7 @@ import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import LiveRegion from '../internal/components/live-region';
 
 import { Metrics } from '../internal/metrics';
+import { useTelemetryContext } from '../internal/context/telemetry-context';
 
 type InternalButtonProps = Omit<ButtonProps, 'variant'> & {
   variant?: ButtonProps['variant'] | 'flashbar-icon' | 'breadcrumb-group' | 'menu-trigger' | 'modal-dismiss';
@@ -63,6 +64,7 @@ export const InternalButton = React.forwardRef(
 
     const buttonRef = useRef<HTMLElement>(null);
     useForwardFocus(ref, buttonRef);
+    const context = useTelemetryContext();
 
     const handleClick = useCallback(
       (event: React.MouseEvent) => {
@@ -74,12 +76,16 @@ export const InternalButton = React.forwardRef(
           fireCancelableEvent(onFollow, null, event);
         }
 
-        Metrics.track(event.currentTarget as any, { type: 'click', context: 'csa_button', componentName: 'button' });
+        Metrics.track(event.currentTarget as any, {
+          type: formAction === 'none' ? 'click' : 'submit',
+          context,
+          componentName: 'button',
+        });
 
         const { altKey, button, ctrlKey, metaKey, shiftKey } = event;
         fireCancelableEvent(onClick, { altKey, button, ctrlKey, metaKey, shiftKey }, event);
       },
-      [isAnchor, isDisabled, onClick, onFollow]
+      [isAnchor, isDisabled, onClick, onFollow, context, formAction]
     );
 
     const buttonClass = clsx(props.className, styles.button, styles[`variant-${variant}`], {

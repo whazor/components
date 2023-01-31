@@ -7,11 +7,9 @@ import { getExternalProps } from '../internal/utils/external-props';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import useBaseComponent from '../internal/hooks/use-base-component';
 
-import { useTelemetryContext, TelemetryContext } from '../internal/context/telemetry-context';
+import { TelemetryContextProvider } from '../internal/context/telemetry-context';
 
-export { ContainerProps };
-
-export default function Container({
+function Container({
   variant = 'default',
   disableHeaderPaddings = false,
   disableContentPaddings = false,
@@ -19,10 +17,9 @@ export default function Container({
 }: ContainerProps) {
   const baseComponentProps = useBaseComponent('Container');
   const externalProps = getExternalProps(props);
-  const { context } = useTelemetryContext();
 
   return (
-    <TelemetryContext.Provider value={{ context: [...context, 'container'] }}>
+    <TelemetryContextProvider value="container">
       <InternalContainer
         variant={variant}
         disableHeaderPaddings={disableHeaderPaddings}
@@ -30,8 +27,11 @@ export default function Container({
         {...externalProps}
         {...baseComponentProps}
       />
-    </TelemetryContext.Provider>
+    </TelemetryContextProvider>
   );
 }
 
 applyDisplayName(Container, 'Container');
+
+export { ContainerProps };
+export default Container;

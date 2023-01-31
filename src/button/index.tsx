@@ -6,66 +6,21 @@ import { ButtonProps } from './interfaces';
 import { InternalButton } from './internal';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import useBaseComponent from '../internal/hooks/use-base-component';
+import { TelemetryContextProvider } from '../internal/context/telemetry-context';
 
 export { ButtonProps };
 
-const Button = React.forwardRef(
-  (
-    {
-      children,
-      iconName,
-      iconAlign = 'left',
-      iconUrl,
-      iconSvg,
-      iconAlt,
-      variant = 'normal',
-      loading = false,
-      loadingText,
-      disabled = false,
-      wrapText = true,
-      href,
-      target,
-      download,
-      formAction = 'submit',
-      ariaLabel,
-      onClick,
-      onFollow,
-      ariaExpanded,
-      ...props
-    }: ButtonProps,
-    ref: React.Ref<ButtonProps.Ref>
-  ) => {
-    const baseComponentProps = useBaseComponent('Button');
-    const baseProps = getBaseProps(props);
-    return (
-      <InternalButton
-        {...baseProps}
-        {...baseComponentProps}
-        ref={ref}
-        iconName={iconName}
-        iconAlign={iconAlign}
-        iconUrl={iconUrl}
-        iconSvg={iconSvg}
-        iconAlt={iconAlt}
-        variant={variant}
-        loading={loading}
-        loadingText={loadingText}
-        disabled={disabled}
-        wrapText={wrapText}
-        href={href}
-        target={target}
-        download={download}
-        formAction={formAction}
-        ariaLabel={ariaLabel}
-        onClick={onClick}
-        onFollow={onFollow}
-        ariaExpanded={ariaExpanded}
-      >
+const Button = React.forwardRef(({ children, ...props }: ButtonProps, ref: React.Ref<ButtonProps.Ref>) => {
+  const baseComponentProps = useBaseComponent('Button');
+  const baseProps = getBaseProps(props);
+  return (
+    <TelemetryContextProvider value="button">
+      <InternalButton {...baseProps} {...baseComponentProps} {...props} ref={ref}>
         {children}
       </InternalButton>
-    );
-  }
-);
+    </TelemetryContextProvider>
+  );
+});
 
 applyDisplayName(Button, 'Button');
 export default Button;

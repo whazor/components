@@ -8,6 +8,7 @@ import { InputProps } from './interfaces';
 import styles from './styles.css.js';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import useBaseComponent from '../internal/hooks/use-base-component';
+import { TelemetryContextProvider } from '../internal/context/telemetry-context';
 
 export { InputProps };
 
@@ -61,39 +62,41 @@ const Input = React.forwardRef(
     );
 
     return (
-      <InternalInput
-        ref={inputRef}
-        {...{
-          ...baseProps,
-          ...baseComponentProps,
-          autoComplete,
-          ariaLabel,
-          ariaRequired,
-          autoFocus,
-          disabled,
-          disableBrowserAutocorrect,
-          name,
-          onKeyDown,
-          onKeyUp,
-          onChange,
-          onBlur,
-          onFocus,
-          placeholder,
-          readOnly,
-          type,
-          step,
-          inputMode,
-          spellcheck,
-          value,
-          ariaDescribedby,
-          ariaLabelledby,
-          invalid,
-          controlId,
-          clearAriaLabel,
-        }}
-        className={clsx(styles.root, baseProps.className)}
-        __inheritFormFieldProps={true}
-      />
+      <TelemetryContextProvider value="input">
+        <InternalInput
+          ref={inputRef}
+          {...{
+            ...baseProps,
+            ...baseComponentProps,
+            autoComplete,
+            ariaLabel,
+            ariaRequired,
+            autoFocus,
+            disabled,
+            disableBrowserAutocorrect,
+            name,
+            onKeyDown,
+            onKeyUp,
+            onChange,
+            onBlur,
+            onFocus,
+            placeholder,
+            readOnly,
+            type,
+            step,
+            inputMode,
+            spellcheck,
+            value,
+            ariaDescribedby,
+            ariaLabelledby,
+            invalid,
+            controlId,
+            clearAriaLabel,
+          }}
+          className={clsx(styles.root, baseProps.className)}
+          __inheritFormFieldProps={true}
+        />
+      </TelemetryContextProvider>
     );
   }
 );

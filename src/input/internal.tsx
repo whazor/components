@@ -14,6 +14,8 @@ import { useDebounceCallback } from '../internal/hooks/use-debounce-callback';
 import { FormFieldValidationControlProps, useFormFieldContext } from '../internal/context/form-field-context';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import styles from './styles.css.js';
+import { useTelemetryContext } from '../internal/context/telemetry-context';
+import { Metrics } from '../internal/metrics';
 
 export interface InternalInputProps
   extends BaseComponentProps,
@@ -82,6 +84,7 @@ function InternalInput(
 ) {
   const baseProps = getBaseProps(rest);
   const fireDelayedInput = useDebounceCallback((value: string) => fireNonCancelableEvent(__onDelayedInput, { value }));
+  const context = useTelemetryContext();
 
   const handleChange = (value: string) => {
     fireDelayedInput(value);
@@ -136,10 +139,24 @@ function InternalInput(
     value: value ?? '',
     onChange: onChange && (event => handleChange(event.target.value)),
     onBlur: e => {
+      Metrics.track(e.currentTarget as any, {
+        type: 'blur',
+        context,
+        componentName: 'input',
+      });
+
       onBlur && fireNonCancelableEvent(onBlur);
       __onBlurWithDetail && fireNonCancelableEvent(__onBlurWithDetail, { relatedTarget: e.relatedTarget });
     },
-    onFocus: onFocus && (() => fireNonCancelableEvent(onFocus)),
+    onFocus: e => {
+      Metrics.track(e.currentTarget as any, {
+        type: 'focus',
+        context,
+        componentName: 'input',
+      });
+
+      onFocus && fireNonCancelableEvent(onFocus);
+    },
     ...__nativeAttributes,
     ...reactAutofocusProps,
   };

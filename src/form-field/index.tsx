@@ -6,19 +6,19 @@ import { applyDisplayName } from '../internal/utils/apply-display-name';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { FormFieldProps } from './interfaces';
 
-import { useTelemetryContext, TelemetryContext } from '../internal/context/telemetry-context';
+import { TelemetryContextProvider } from '../internal/context/telemetry-context';
 
-export { FormFieldProps };
-
-export default function FormField({ stretch = false, ...props }: FormFieldProps) {
+function FormField({ stretch = false, ...props }: FormFieldProps) {
   const baseComponentProps = useBaseComponent('FormField');
-  const { context } = useTelemetryContext();
 
   return (
-    <TelemetryContext.Provider value={{ context: [...context, 'form-field'] }}>
+    <TelemetryContextProvider value="form-field">
       <InternalFormField stretch={stretch} {...props} __hideLabel={false} {...baseComponentProps} />
-    </TelemetryContext.Provider>
+    </TelemetryContextProvider>
   );
 }
 
 applyDisplayName(FormField, 'FormField');
+
+export { FormFieldProps };
+export default FormField;
