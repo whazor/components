@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useCallback, useImperativeHandle, useRef, useState } from 'react';
+import React, { useImperativeHandle, useRef, useState } from 'react';
 import clsx from 'clsx';
 
 import { getBaseProps } from '../internal/base-component';
@@ -11,7 +11,6 @@ import { InternalButton } from '../button/internal';
 import { AttributeEditorForwardRefType, AttributeEditorProps } from './interfaces';
 import { AdditionalInfo } from './additional-info';
 import { Row } from './row';
-import { callBoth } from './utils';
 
 import styles from './styles.css.js';
 import { useContainerBreakpoints } from '../internal/hooks/container-queries';
@@ -22,6 +21,7 @@ import { SomeRequired } from '../internal/types';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
 import LiveRegion from '../internal/components/live-region';
 import ScreenreaderOnly from '../internal/components/screenreader-only';
+import { usePrevious } from '../internal/hooks/use-previous';
 
 type InternalAttributeEditorProps<T> = SomeRequired<AttributeEditorProps<T>, 'items'> & InternalBaseComponentProps;
 
@@ -39,7 +39,6 @@ const InternalAttributeEditor = React.forwardRef(
       i18nStrings,
       onAddButtonClick,
       onRemoveButtonClick,
-      itemRemovalAriaLive,
       __internalRootRef = null,
       ...props
     }: InternalAttributeEditorProps<T>,
@@ -66,10 +65,17 @@ const InternalAttributeEditor = React.forwardRef(
     const additionalInfoId = useUniqueId('attribute-editor-info');
     const infoAriaDescribedBy = additionalInfo ? additionalInfoId : undefined;
 
-    const updateRemovalAnnouncement = useCallback<NonNullable<typeof onRemoveButtonClick>>(
-      event => setRemovalAnnouncement(itemRemovalAriaLive?.(event.detail.itemIndex)),
-      [itemRemovalAriaLive]
-    );
+    const prevItemsLength = usePrevious(items.length);
+
+    React.useEffect(() => {
+      if (prevItemsLength && prevItemsLength > items.length) {
+        setRemovalAnnouncement(i18nStrings?.removalAnnouncement);
+      } else {
+        setRemovalAnnouncement(undefined);
+      }
+      // we only want to announce when the number of items decreases (i.e. when an item is removed)
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [items, i18nStrings?.removalAnnouncement]);
 
     return (
       <div {...baseProps} ref={mergedRef} className={clsx(baseProps.className, styles.root)}>
@@ -86,7 +92,7 @@ const InternalAttributeEditor = React.forwardRef(
               removable={isItemRemovable(item)}
               removeButtonText={removeButtonText}
               removeButtonRefs={removeButtonRefs.current}
-              onRemoveButtonClick={callBoth(onRemoveButtonClick, updateRemovalAnnouncement)}
+              onRemoveButtonClick={onRemoveButtonClick}
             />
           ))}
         </InternalBox>
@@ -100,16 +106,17 @@ const InternalAttributeEditor = React.forwardRef(
         >
           {addButtonText}
         </InternalButton>
-        {!!removalAnnouncement && !additionalInfo && (
+        {additionalInfo ? (
+          <AdditionalInfo id={infoAriaDescribedBy}>
+            {/* We are hooking on to this LiveRegion to ensure the order of announcement.
+            If the component is rendered without additionalInfo, we use a separate LiveRegion. */}
+            <ScreenreaderOnly>{removalAnnouncement}</ScreenreaderOnly>
+            {additionalInfo}
+          </AdditionalInfo>
+        ) : (
           <LiveRegion delay={0} data-testid="no-additional-info-remove-announcement">
             <span>{removalAnnouncement}</span>
           </LiveRegion>
-        )}
-        {additionalInfo && (
-          <AdditionalInfo id={infoAriaDescribedBy}>
-            {!!removalAnnouncement && <ScreenreaderOnly>{removalAnnouncement}</ScreenreaderOnly>}
-            {additionalInfo}
-          </AdditionalInfo>
         )}
       </div>
     );

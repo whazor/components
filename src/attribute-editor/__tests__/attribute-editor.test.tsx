@@ -79,6 +79,26 @@ const expectRowErrorTextContent = (wrapper: AttributeEditorWrapper, rowIndex: nu
   });
 };
 
+function TestComponent(propOverrides: Partial<AttributeEditorProps<Item>> = {}) {
+  const [items, setItems] = React.useState(defaultProps.items!);
+  const onRemoveButtonClick = (event: any) => {
+    const newItems = items.slice();
+    newItems.splice(event.detail.itemIndex, 1);
+    setItems(newItems);
+  };
+
+  return (
+    <AttributeEditor
+      {...defaultProps}
+      items={items}
+      onRemoveButtonClick={onRemoveButtonClick}
+      i18nStrings={{ ...defaultProps.i18nStrings, removalAnnouncement: 'An item was removed.' }}
+      additionalInfo="+++ADDN+++"
+      {...propOverrides}
+    />
+  );
+}
+
 describe('Attribute Editor', () => {
   describe('items property', () => {
     let wrapper: AttributeEditorWrapper;
@@ -187,36 +207,25 @@ describe('Attribute Editor', () => {
       expect(onRemoveButtonClick).toHaveBeenCalledWith(expect.objectContaining({ detail: { itemIndex: 0 } }));
     });
 
-    test('triggers itemRemovalAriaLive on remove button click', () => {
-      const itemRemovalAriaLive = jest.fn() as AttributeEditorProps.ItemRemovalAriaLiveFunction;
-      const wrapper = renderAttributeEditor({ ...defaultProps, itemRemovalAriaLive });
+    test('renders removalAnnouncement on remove button click', async () => {
+      const { container } = render(<TestComponent />);
+      const wrapper = createWrapper(container).findAttributeEditor()!;
 
       wrapper.findRow(1)!.findRemoveButton()!.click();
-
-      expect(itemRemovalAriaLive).toHaveBeenCalledWith(0);
+      await waitFor(() =>
+        expect(wrapper.findAdditionalInfo()?.getElement()).toHaveTextContent('An item was removed.+++ADDN+++')
+      );
     });
 
     test('renders LiveRegion properly', async () => {
-      const itemRemovalAriaLive = jest.fn(() => 'test-text') as AttributeEditorProps.ItemRemovalAriaLiveFunction;
-      const wrapper = renderAttributeEditor({
-        ...defaultProps,
-        itemRemovalAriaLive,
-        additionalInfo: 'additional-test',
-      });
+      const { container, rerender } = render(<TestComponent />);
+      const wrapper = createWrapper(container).findAttributeEditor()!;
+      expect(wrapper.findAdditionalInfo()?.getElement()).toHaveTextContent('+++ADDN+++');
+      expect(wrapper.find(`[data-testid="no-additional-info-remove-announcement"]`)?.getElement()).toBeUndefined();
       wrapper.findRow(1)!.findRemoveButton()!.click();
-      expect(itemRemovalAriaLive).toHaveBeenCalledWith(0);
-      await waitFor(() => expect(wrapper.findAdditionalInfo()?.getElement()).toHaveTextContent('additional-test'));
-
-      const propsWithoutAdditionInfo: AttributeEditorProps<Item> = {
-        ...defaultProps,
-        itemRemovalAriaLive,
-        additionalInfo: undefined,
-      };
-      const wrapperWithoutAdditionInfo = renderAttributeEditor(propsWithoutAdditionInfo);
-      wrapperWithoutAdditionInfo.findRow(1)!.findRemoveButton()!.click();
-      expect(
-        wrapperWithoutAdditionInfo.find(`[data-testid="no-additional-info-remove-announcement"]`)?.getElement()
-      ).toBeInTheDocument();
+      expect(wrapper.findAdditionalInfo()?.getElement()).toHaveTextContent('An item was removed.+++ADDN+++');
+      rerender(<TestComponent items={[...defaultProps.items!]} />);
+      await waitFor(() => expect(wrapper.findAdditionalInfo()?.getElement()).toHaveTextContent('+++ADDN+++'));
     });
   });
 

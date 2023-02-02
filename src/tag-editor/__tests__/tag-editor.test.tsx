@@ -32,6 +32,14 @@ function renderTagEditor(props: Partial<TagEditorProps> = {}): RenderResult {
   };
 }
 
+function StatefulTestComponent(props: Partial<TagEditorProps>) {
+  const [internalTags, setInternalTags] = React.useState(props.tags || []);
+  const onChange = (event: any) => {
+    setInternalTags(event.detail.tags);
+  };
+  return <TagEditor {...defaultProps} {...props} tags={internalTags} onChange={onChange} />;
+}
+
 describe('Tag Editor component', () => {
   test('should set a tag key', () => {
     const { wrapper, onChangeSpy } = renderTagEditor({
@@ -346,15 +354,23 @@ describe('Tag Editor component', () => {
     });
   });
 
-  test('should trigger tagRemovalAriaLive when a tag is removed', () => {
-    const tagRemovalAriaLiveSpy = jest.fn();
-    const tags = [{ key: 'key', value: 'value', existing: true }];
-    const { wrapper } = renderTagEditor({
-      tags,
-      tagRemovalAriaLive: tagRemovalAriaLiveSpy,
-    });
+  test('should render removalAnnouncement when a tag is removed', () => {
+    const tags = [
+      { key: 'key', value: 'value', existing: false },
+      { key: 'key2', value: 'value', existing: false },
+      { key: 'key3', value: 'value', existing: false },
+    ];
+
+    const { container } = render(
+      <StatefulTestComponent tags={tags} i18nStrings={{ ...i18nStrings, removalAnnouncement: 'removal-text-test' }} />
+    );
+    const wrapper = createWrapper(container).findTagEditor()!;
+
     wrapper.findRow(1)!.findRemoveButton()!.click();
-    expect(tagRemovalAriaLiveSpy).toHaveBeenCalledWith(tags[0], 0, 1);
+
+    waitFor(() => {
+      expect(wrapper.findAdditionalInfo()!.getElement()).toHaveTextContent('removal-text-test');
+    });
   });
 
   describe('Undo removal', () => {

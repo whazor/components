@@ -56,15 +56,23 @@ export interface FlashbarProps extends BaseComponentProps {
   items: ReadonlyArray<FlashbarProps.MessageDefinition>;
 }
 
-export interface StackedFlashbarProps {
-  stackItems: true;
-  ariaLabels?: StackedFlashbarProps.AriaLabels;
+export type FlashType = FlashbarProps.Type | 'progress';
+
+export interface CollapsibleFlashbarProps {
   items: ReadonlyArray<FlashbarProps.MessageDefinition>;
+  stackItems?: boolean;
+  i18nStrings?: CollapsibleFlashbarProps.I18nStrings;
 }
 
-export namespace StackedFlashbarProps {
-  export interface AriaLabels {
-    stackCollapseLabel?: string;
-    stackExpandLabel?: string;
+export namespace CollapsibleFlashbarProps {
+  export interface I18nStrings {
+    ariaLabel: string;
+    errorIconAriaLabel?: string;
+    infoIconAriaLabel?: string;
+    inProgressIconAriaLabel?: string;
+    notificationBarAriaLabel?: string;
+    notificationBarText?: string;
+    successIconAriaLabel?: string;
+    warningIconAriaLabel?: string;
   }
 }

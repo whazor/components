@@ -62,14 +62,6 @@ export interface TagEditorProps extends BaseComponentProps {
    * and whether the component is in a `valid` state.
    */
   onChange?: NonCancelableEventHandler<TagEditorProps.ChangeDetail>;
-
-  /**
-   * Use this function to announce removal of a tag to screen readers.
-   * The function is called with the removed tag, its index, and the total number of tags present as parameters.
-   *
-   * Return the string that should be announced to screen readers.
-   */
-  tagRemovalAriaLive?: (tag: TagEditorProps.Tag, index: number, totalTagsCount: number) => string;
 }
 
 export namespace TagEditorProps {
@@ -129,6 +121,7 @@ export namespace TagEditorProps {
     invalidValueError: string;
     awsPrefixError: string;
     clearAriaLabel?: string;
+    removalAnnouncement?: string;
     tagLimit: (availableTags: number, tagLimit: number) => string;
     tagLimitReached: (tagLimit: number) => string;
     tagLimitExceeded: (tagLimit: number) => string;

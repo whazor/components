@@ -43,10 +43,6 @@ export default function () {
     tagEditorRef.current?.focus();
   }, []);
 
-  const tagRemovalAnnouncement = useCallback((tag: TagEditorProps.Tag, tagIndex: number, totalTags: number) => {
-    return `Removed ${tag.value}, number ${tagIndex + 1} of ${totalTags}.`;
-  }, []);
-
   useEffect(() => {
     const timer = setTimeout(() => setLoading(false), 1000);
     return () => clearTimeout(timer);
@@ -65,7 +61,6 @@ export default function () {
         onChange={onChange}
         keysRequest={requestKeys}
         valuesRequest={requestValues}
-        tagRemovalAriaLive={tagRemovalAnnouncement}
       />
     </>
   );

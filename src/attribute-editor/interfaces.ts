@@ -23,10 +23,6 @@ export namespace AttributeEditorProps {
     (item: T): boolean;
   }
 
-  export interface ItemRemovalAriaLiveFunction {
-    (itemIndex: number): string;
-  }
-
   export type FieldRenderable<T> = (item: T, itemIndex: number) => React.ReactNode;
   export interface FieldDefinition<T> {
     label?: React.ReactNode;
@@ -46,6 +42,8 @@ export namespace AttributeEditorProps {
 
   export interface I18nStrings {
     errorIconAriaLabel?: string;
+
+    removalAnnouncement?: string;
   }
 }
 
@@ -111,14 +109,6 @@ export interface AttributeEditorProps<T> extends BaseComponentProps {
    * The event `detail` contains the index of the corresponding item.
    */
   onRemoveButtonClick?: NonCancelableEventHandler<AttributeEditorProps.RemoveButtonClickDetail>;
-
-  /**
-   * Use this function to announce removal of an item to screen readers.
-   * The function is called with index of the removed item.
-   *
-   * Return the string that should be announced to screen readers.
-   */
-  itemRemovalAriaLive?: AttributeEditorProps.ItemRemovalAriaLiveFunction;
 
   /**
    * An object containing all the necessary localized strings required by the component.
