@@ -17,8 +17,9 @@ interface TelemetryContextProviderProps {
 const contextSet = new Set<string>();
 
 const toContextString = (...context: string[]) => context.filter(Boolean).join('_');
+
 function getContext(rootContext = '', value: string) {
-  let contextId = 0;
+  let contextId = 1;
 
   let context = toContextString(rootContext, `${value}-${contextId}`);
   while (contextSet.has(context)) {
