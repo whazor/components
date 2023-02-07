@@ -11,6 +11,7 @@ interface AppUrlParams {
   density: Density;
   visualRefresh: boolean;
   motionDisabled: boolean;
+  locale: string;
 }
 
 export interface AppContextType<T = unknown> {
@@ -28,6 +29,7 @@ const appContextDefaults: AppContextType = {
     density: Density.Comfortable,
     visualRefresh: THEME === 'default',
     motionDisabled: false,
+    locale: 'en-US',
   },
   setMode: () => {},
   setUrlParams: () => {},

@@ -1,0 +1,8 @@
+{
+  "i18nStrings.chartAriaRoleDescription": "Mixed chart",
+  "i18nStrings.detailPopoverDismissAriaLabel": "{Tokens.dismiss}",
+  "i18nStrings.filterSelectedAriaLabel": "{Tokens.selected}",
+  "i18nStrings.legendAriaLabel": "{Tokens.legend}",
+  "i18nStrings.xAxisAriaRoleDescription": "{Tokens.xAxis}",
+  "i18nStrings.yAxisAriaRoleDescription": "{Tokens.yAxis}"
+}

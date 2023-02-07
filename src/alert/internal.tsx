@@ -15,6 +15,7 @@ import { AlertProps } from './interfaces';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { SomeRequired } from '../internal/types';
+import { useI18NContext } from '../i18n/context';
 
 const typeToIcon: Record<AlertProps.Type, IconProps['name']> = {
   error: 'status-negative',
@@ -25,7 +26,7 @@ const typeToIcon: Record<AlertProps.Type, IconProps['name']> = {
 
 type InternalAlertProps = SomeRequired<AlertProps, 'type'> & InternalBaseComponentProps;
 
-export default function InternalAlert({
+function InternalAlert({
   type,
   statusIconAriaLabel,
   visible = true,
@@ -100,4 +101,9 @@ export default function InternalAlert({
       </VisualContext>
     </div>
   );
+}
+
+export default function InternalAlertI18n(props: InternalAlertProps) {
+  const i18n = useI18NContext('alert');
+  return <InternalAlert {...i18n} {...props} />;
 }

@@ -25,12 +25,12 @@ const {
 
 const quickBuild = series(
   clean,
+  buildI18n,
   parallel(packageJSON, generateEnvironment, generateIcons, generateIndexFile, licenses),
   parallel(generateCustomCssPropertiesMap, styles, typescript, testUtils)
 );
 
 exports.clean = clean;
-exports['build-i18n'] = buildI18n;
 exports['build-pages'] = buildPages;
 exports['quick-build'] = quickBuild;
 exports.build = series(quickBuild, bundleVendorFiles, parallel(buildPages, themeableSource, docs));

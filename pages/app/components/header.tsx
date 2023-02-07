@@ -5,6 +5,7 @@ import React, { useContext } from 'react';
 import styles from './header.scss';
 import { Link } from 'react-router-dom';
 import ThemeSwitcher from './theme-switcher';
+import LocaleSwitcher from './locale-switcher';
 import AppContext from '../app-context';
 
 export default function Header({ sticky }: { sticky?: boolean }) {
@@ -15,6 +16,7 @@ export default function Header({ sticky }: { sticky?: boolean }) {
       <header id="h" className={clsx(styles.header, sticky && styles['header-sticky'])}>
         <Link to={`/${mode}/`}>Demo Assets</Link>
         <ThemeSwitcher />
+        <LocaleSwitcher />
       </header>
     </>
   );

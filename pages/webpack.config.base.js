@@ -125,6 +125,15 @@ module.exports = ({
           },
         ],
       }),
+      new CopyWebpackPlugin({
+        patterns: [
+          {
+            from: '**/*',
+            to: path.resolve(outputPath, 'i18n'),
+            context: path.dirname(path.join(componentsPath, 'i18n', 'messages')),
+          },
+        ],
+      }),
       new HtmlWebpackPlugin({
         template: path.join(__dirname, './app/index.html'),
       }),

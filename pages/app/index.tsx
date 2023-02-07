@@ -17,6 +17,7 @@ import IndexPage from './components/index-page';
 import Header from './components/header';
 import StrictModeWrapper from './components/strict-mode-wrapper';
 import AppContext, { AppContextProvider, parseQuery } from './app-context';
+import { I18NContextProvider } from '~components/i18n/context';
 
 function App() {
   const {
@@ -67,17 +68,37 @@ function App() {
   );
 }
 
-const history = createHashHistory();
-const { visualRefresh } = parseQuery(history.location.search);
+async function doRender() {
+  const history = createHashHistory();
+  const { visualRefresh, locale } = parseQuery(history.location.search);
 
-// The VR class needs to be set before any React rendering occurs.
-document.body.classList.toggle('awsui-visual-refresh', visualRefresh);
+  // The VR class needs to be set before any React rendering occurs.
+  document.body.classList.toggle('awsui-visual-refresh', visualRefresh);
 
-render(
-  <HashRouter>
-    <AppContextProvider>
-      <App />
-    </AppContextProvider>
-  </HashRouter>,
-  document.getElementById('app')
-);
+  document.documentElement.lang = locale;
+
+  const alert = await require(`../../lib/components/i18n/messages/components/alert/${
+    locale === 'en-US' ? 'default' : locale
+  }.json`);
+  // const tokens = await require(`./i18n/tokens/de-DE.json`);
+
+  render(
+    <HashRouter>
+      <I18NContextProvider
+        messages={{
+          '@cloudscape-design/components': {
+            alert,
+            // tokens
+          },
+        }}
+      >
+        <AppContextProvider>
+          <App />
+        </AppContextProvider>
+      </I18NContextProvider>
+    </HashRouter>,
+    document.getElementById('app')
+  );
+}
+
+doRender();
