@@ -19,7 +19,6 @@ export default function AlertScenario() {
               header="This is going to be an extremely long title for an alert not sure whether it makes any sense but whatever"
               visible={visible}
               statusIconAriaLabel="Warning"
-              dismissAriaLabel="Close alert"
               dismissible={true}
               buttonText="Button text"
               type="warning"

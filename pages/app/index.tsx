@@ -77,19 +77,15 @@ async function doRender() {
 
   document.documentElement.lang = locale;
 
-  const alert = await require(`../../lib/components/i18n/messages/components/alert/${
+  const messages = await require(`../../lib/components/i18n/messages/all.${
     locale === 'en-US' ? 'default' : locale
   }.json`);
-  // const tokens = await require(`./i18n/tokens/de-DE.json`);
 
   render(
     <HashRouter>
       <I18NContextProvider
         messages={{
-          '@cloudscape-design/components': {
-            alert,
-            // tokens
-          },
+          '@cloudscape-design/components': messages,
         }}
       >
         <AppContextProvider>

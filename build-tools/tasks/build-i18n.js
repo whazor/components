@@ -6,7 +6,6 @@ const path = require('path');
 const globby = require('globby');
 const prettier = require('prettier');
 const { pascalCase } = require('change-case');
-const { promises: fsp } = require('fs');
 const execa = require('execa');
 const { task } = require('../utils/gulp-utils');
 const themes = require('../utils/themes');
@@ -20,17 +19,18 @@ const prettierOptions = prettier.resolveConfig.sync(prettierConfigPath);
 const locales = ['default', 'de-DE'];
 
 async function buildI18n() {
-  const components = await generateComponentTypes();
+  const { componentNames, messages } = await generateComponentTypes();
 
-  await writeIndexFile(components);
+  await writeIndexFile(componentNames);
 
-  await writeTokensFile();
+  const tokens = await writeTokensFile();
 
-  await writeJSONFiles();
+  await writeJSONFiles(messages, tokens);
 }
 
 async function generateComponentTypes() {
-  const components = [];
+  const componentNames = [];
+  const messages = {};
 
   for (const sourceFilePath of await globby(path.join(messagesPath, '**', 'default.json'))) {
     try {
@@ -38,9 +38,10 @@ async function generateComponentTypes() {
         .split('/')
         .slice(-2)[0]
         .replace(/\.json/, '');
-      components.push(componentName);
+      componentNames.push(componentName);
 
       const dictionary = await getDictionary(componentName, sourceFilePath);
+      messages[componentName] = dictionary;
       const interfacesFileContent = generateInterfaceForJSON(componentName, dictionary.parsed);
 
       const interfacesFolderPath = path.join(i18nOutputPath, componentName);
@@ -52,7 +53,7 @@ async function generateComponentTypes() {
     }
   }
 
-  return components;
+  return { componentNames, messages };
 }
 
 async function writeIndexFile(components) {
@@ -124,13 +125,30 @@ async function writeTokensFile() {
   const tokensInterface = generateInterfaceForJSON('Tokens', dictionary.parsed);
 
   await fs.writeFile(path.join(i18nOutputPath, 'tokens.ts'), tokensInterface);
+
+  return dictionary;
 }
 
-async function writeJSONFiles() {
+async function writeJSONFiles(componentMessages, tokens) {
+  const combined = {};
+  for (const locale of locales) {
+    combined[locale] = {};
+    for (const component of Object.keys(componentMessages)) {
+      combined[locale][component] = componentMessages[component][locale];
+    }
+    combined[locale].Tokens = tokens[locale];
+  }
   for (const theme of themes) {
     const dest = path.join(theme.outputPath, 'i18n', 'messages');
-    await fsp.mkdir(dest, { recursive: true });
-    return execa('cp', ['-R', `${path.join(messagesPath, '/')}.`, dest]);
+    await fs.mkdir(dest, { recursive: true });
+
+    // copy raw component/token messages directly
+    await execa('rsync', ['-a', `${path.join(messagesPath, '/')}.`, dest, '--exclude', 'meta.json']);
+
+    // write combined bundles
+    for (const locale of locales) {
+      await fs.writeFile(path.join(dest, `all.${locale}.json`), JSON.stringify(combined[locale]));
+    }
   }
 }
 

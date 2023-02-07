@@ -16,7 +16,6 @@ const permutations = createPermutations<AlertProps>([
     ],
   },
   {
-    dismissAriaLabel: ['Close alert'],
     dismissible: [true],
     header: ['Default Example Header'],
   },
@@ -26,7 +25,6 @@ const permutations = createPermutations<AlertProps>([
   },
   {
     dismissible: [true],
-    dismissAriaLabel: ['Close alert'],
     buttonText: ['Button text'],
     header: [
       'Default Example Header',
@@ -39,7 +37,6 @@ const permutations = createPermutations<AlertProps>([
   },
   {
     dismissible: [true, false],
-    dismissAriaLabel: ['Close alert'],
     header: [undefined, 'Default Example Header'],
     children: [
       'Default Example Body',
