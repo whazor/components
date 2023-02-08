@@ -23,9 +23,9 @@ async function buildI18n() {
 
   await writeIndexFile(componentNames);
 
-  const tokens = await writeTokensFile();
+  await writeTokensFile();
 
-  await writeJSONFiles(messages, tokens);
+  await writeJSONFiles(messages);
 }
 
 async function generateComponentTypes() {
@@ -120,23 +120,25 @@ function generateInterfaceForJSON(componentName, messages) {
 
 async function writeTokensFile() {
   const tokensDefinitionPath = path.join(messagesPath, 'tokens', 'default.json');
-  const dictionary = await getDictionary('Tokens', tokensDefinitionPath);
+  const dictionary = await getDictionary('tokens', tokensDefinitionPath);
 
-  const tokensInterface = generateInterfaceForJSON('Tokens', dictionary.parsed);
+  const tokensInterface = generateInterfaceForJSON('tokens', dictionary.parsed);
 
   await fs.writeFile(path.join(i18nOutputPath, 'tokens.ts'), tokensInterface);
-
-  return dictionary;
 }
 
-async function writeJSONFiles(componentMessages, tokens) {
+async function writeJSONFiles(componentMessages) {
   const combined = {};
   for (const locale of locales) {
     combined[locale] = {};
     for (const component of Object.keys(componentMessages)) {
       combined[locale][component] = componentMessages[component][locale];
     }
-    combined[locale].Tokens = tokens[locale];
+    const tokens = combined[locale].tokens;
+    combined[locale].tokens = Object.keys(tokens).reduce(
+      (acc, key) => ({ ...acc, [`tokens__${key}`]: tokens[key] }),
+      {}
+    );
   }
   for (const theme of themes) {
     const dest = path.join(theme.outputPath, 'i18n', 'messages');

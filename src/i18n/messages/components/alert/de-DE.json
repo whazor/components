@@ -1,4 +1,3 @@
 {
-  "dismissAriaLabel": "Verwerfen",
-  "dismissAriaLabelFromToken": "{Tokens.dismiss}"
+  "dismissAriaLabel": "{tokens__dismiss}"
 }

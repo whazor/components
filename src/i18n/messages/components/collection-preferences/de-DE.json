@@ -1,9 +1,9 @@
 {
-  "cancelLabel": "{Tokens.cancel}",
-  "confirmLabel": "{Tokens.confirm}",
+  "cancelLabel": "{tokens__cancel}",
+  "confirmLabel": "{tokens__confirm}",
   "pageSizePreference.title": "Seitengröße",
-  "title": "{Tokens.preferences}",
+  "title": "{tokens__preferences}",
   "visibleContentPreference.title": "Sichtbare Spalten auswählen",
   "wrapLinesPreference.description": "Markieren, um den gesamten Text anzuzeigen und die Zeilen umzubrechen",
-  "wrapLinesPreference.title": "{Tokens.wrapLines}"
+  "wrapLinesPreference.title": "{tokens__wrapLines}"
 }

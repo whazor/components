@@ -1,8 +1,8 @@
 {
   "i18nStrings.chartAriaRoleDescription": "Liniendiagramm",
-  "i18nStrings.detailPopoverDismissAriaLabel": "{Tokens.dismiss}",
-  "i18nStrings.filterSelectedAriaLabel": "{Tokens.selected}",
-  "i18nStrings.legendAriaLabel": "{Tokens.legend}",
-  "i18nStrings.xAxisAriaRoleDescription": "{Tokens.xAxis}",
-  "i18nStrings.yAxisAriaRoleDescription": "{Tokens.yAxis}"
+  "i18nStrings.detailPopoverDismissAriaLabel": "{tokens__dismiss}",
+  "i18nStrings.filterSelectedAriaLabel": "{tokens__selected}",
+  "i18nStrings.legendAriaLabel": "{tokens__legend}",
+  "i18nStrings.xAxisAriaRoleDescription": "{tokens__xAxis}",
+  "i18nStrings.yAxisAriaRoleDescription": "{tokens__yAxis}"
 }

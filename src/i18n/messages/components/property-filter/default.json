@@ -1,13 +1,13 @@
 {
   "i18nStrings.allPropertiesLabel": "All properties",
-  "i18nStrings.applyActionText": "{Tokens.apply}",
-  "i18nStrings.cancelActionText": "{Tokens.cancel}",
+  "i18nStrings.applyActionText": "{tokens__apply}",
+  "i18nStrings.cancelActionText": "{tokens__cancel}",
   "i18nStrings.clearFiltersText": "Clear filters",
-  "i18nStrings.dismissAriaLabel": "{Tokens.dismiss}",
+  "i18nStrings.dismissAriaLabel": "{tokens__dismiss}",
   "i18nStrings.editTokenHeader": "Edit token",
   "i18nStrings.enteredTextLabel": "Use: \"{text}\"",
   "i18nStrings.filteringAriaLabel": "Your choice",
-  "i18nStrings.filteringPlaceholder": "{Tokens.search}",
+  "i18nStrings.filteringPlaceholder": "{tokens__search}",
   "i18nStrings.groupPropertiesText": "Properties",
   "i18nStrings.groupValuesText": "Values",
   "i18nStrings.operationAndText": "and",
@@ -24,7 +24,7 @@
   "i18nStrings.operatorsText": "Operators",
   "i18nStrings.propertyText": "Property",
   "i18nStrings.removeTokenButtonAriaLabel": "Remove token",
-  "i18nStrings.tokenLimitShowFewer": "{Tokens.showFewer}",
-  "i18nStrings.tokenLimitShowMore": "{Tokens.showMore}",
+  "i18nStrings.tokenLimitShowFewer": "{tokens__showFewer}",
+  "i18nStrings.tokenLimitShowMore": "{tokens__showMore}",
   "i18nStrings.valueText": "Value"
 }
