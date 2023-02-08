@@ -92,7 +92,7 @@ function TestComponent(propOverrides: Partial<AttributeEditorProps<Item>> = {}) 
       {...defaultProps}
       items={items}
       onRemoveButtonClick={onRemoveButtonClick}
-      i18nStrings={{ ...defaultProps.i18nStrings, removalAnnouncement: 'An item was removed.' }}
+      i18nStrings={{ ...defaultProps.i18nStrings, itemRemovedAriaLive: 'An item was removed.' }}
       additionalInfo="+++ADDN+++"
       {...propOverrides}
     />
@@ -207,25 +207,16 @@ describe('Attribute Editor', () => {
       expect(onRemoveButtonClick).toHaveBeenCalledWith(expect.objectContaining({ detail: { itemIndex: 0 } }));
     });
 
-    test('renders removalAnnouncement on remove button click', async () => {
+    test('renders itemRemovedAriaLive on remove button click', async () => {
       const { container } = render(<TestComponent />);
       const wrapper = createWrapper(container).findAttributeEditor()!;
 
       wrapper.findRow(1)!.findRemoveButton()!.click();
       await waitFor(() =>
-        expect(wrapper.findAdditionalInfo()?.getElement()).toHaveTextContent('An item was removed.+++ADDN+++')
+        expect(wrapper.find(`[data-testid="removal-announcement"]`)?.getElement()).toHaveTextContent(
+          'An item was removed.'
+        )
       );
-    });
-
-    test('renders LiveRegion properly', async () => {
-      const { container, rerender } = render(<TestComponent />);
-      const wrapper = createWrapper(container).findAttributeEditor()!;
-      expect(wrapper.findAdditionalInfo()?.getElement()).toHaveTextContent('+++ADDN+++');
-      expect(wrapper.find(`[data-testid="no-additional-info-remove-announcement"]`)?.getElement()).toBeUndefined();
-      wrapper.findRow(1)!.findRemoveButton()!.click();
-      expect(wrapper.findAdditionalInfo()?.getElement()).toHaveTextContent('An item was removed.+++ADDN+++');
-      rerender(<TestComponent items={[...defaultProps.items!]} />);
-      await waitFor(() => expect(wrapper.findAdditionalInfo()?.getElement()).toHaveTextContent('+++ADDN+++'));
     });
   });
 

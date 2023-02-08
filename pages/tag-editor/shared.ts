@@ -33,7 +33,7 @@ export const I18N_STRINGS: TagEditorProps.I18nStrings = {
     'Invalid value. Values can only contain alphanumeric characters, spaces and any of the following: _.:/=+@-',
   awsPrefixError: 'Cannot start with aws:',
   clearAriaLabel: 'Clear',
-  removalAnnouncement: 'A tag was removed.',
+  itemRemovedAriaLive: 'A tag was removed.',
   tagLimit: (availableTags, tagLimit) =>
     availableTags === tagLimit
       ? `You can up to ${tagLimit} tags.`

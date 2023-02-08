@@ -43,7 +43,7 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
     setInitialAnimationState(rects);
   }, [getElementsToAnimate]);
 
-  const { baseProps, breakpoint, isReducedMotion, isVisualRefresh, mergedRef, ref } = useFlashbar({
+  const { ariaLabel, baseProps, breakpoint, isReducedMotion, isVisualRefresh, mergedRef, ref } = useFlashbar({
     items,
     ...restProps,
     onItemsAdded: newItems => {
@@ -88,9 +88,9 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
 
   useLayoutEffect(() => {
     if (isFlashbarStackExpanded && items?.length) {
-      const lastItem = items[items.length - 1];
-      if (lastItem.id !== undefined) {
-        focusFlashById(ref.current, lastItem.id);
+      const mostRecentItem = items[0];
+      if (mostRecentItem.id !== undefined) {
+        focusFlashById(ref.current, mostRecentItem.id);
       }
     }
     // Run this after expanding, but not every time the items change.
@@ -105,16 +105,17 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
         const listElement = listElementRef?.current;
         const flashbar = listElement?.parentElement;
         if (listElement && flashbar) {
-          const bottom = listElement.getBoundingClientRect().bottom;
-          const windowHeight = window.innerHeight;
-          // Apply the class first (before rendering)
-          // so that we can make calculations based on the applied padding-bottom;
+          // Make sure the bottom padding is present when we make the calculations,
           // then we might decide to remove it or not.
-          flashbar.classList.add(styles['spaced-bottom']);
+          flashbar.classList.remove(styles.floating);
+          const windowHeight = window.innerHeight;
+          // Take the parent region into account if using the App Layout, because it might have additional margins.
+          // Otherwise we use the Flashbar component for this calculation.
+          const outerElement = flashbar.parentElement?.parentElement || flashbar;
           const applySpacing =
-            isFlashbarStackExpanded && bottom + parseInt(getComputedStyle(flashbar).paddingBottom) >= windowHeight;
+            isFlashbarStackExpanded && Math.ceil(outerElement.getBoundingClientRect().bottom) >= windowHeight;
           if (!applySpacing) {
-            flashbar.classList.remove(styles['spaced-bottom']);
+            flashbar.classList.add(styles.floating);
           }
         }
       }, resizeListenerThrottleDelay),
@@ -152,21 +153,17 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
 
   const isCollapsible = items.length > maxNonCollapsibleItems;
 
-  // When using the stacking feature, the items are shown in reverse order (last item on top)
-  const reversedItems = items.slice().reverse();
-
   const countByType = getFlashTypeCount(items);
 
   const stackDepth = Math.min(3, items.length);
 
   const itemsToShow = isFlashbarStackExpanded
-    ? reversedItems.map((item, index) => ({ ...item, expandedIndex: index }))
-    : getVisibleCollapsedItems(reversedItems, stackDepth).map((item: StackableItem, index: number) => ({
+    ? items.map((item, index) => ({ ...item, expandedIndex: index }))
+    : getVisibleCollapsedItems(items, stackDepth).map((item: StackableItem, index: number) => ({
         ...item,
         collapsedIndex: index,
       }));
 
-  const ariaLabel = i18nStrings?.ariaLabel;
   const notificationBarText = i18nStrings?.notificationBarText;
 
   const getItemId = (item: StackableItem | FlashbarProps.MessageDefinition) =>
@@ -290,7 +287,7 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
         {isCollapsible && (
           <div
             className={clsx(
-              styles.toggle,
+              styles['notification-bar'],
               isVisualRefresh && styles['visual-refresh'],
               isFlashbarStackExpanded ? styles.expanded : styles.collapsed,
               transitioning && styles['animation-running']

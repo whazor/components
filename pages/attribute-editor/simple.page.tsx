@@ -15,12 +15,13 @@ interface ControlProps extends InputProps {
   prop: keyof Tag;
 }
 
-const i18nStrings = {
+const labelProps = {
   addButtonText: 'Add new item',
   removeButtonText: 'Remove',
   empty: 'No tags associated to the resource',
-  removalAnnouncement: 'An item was removed.',
-};
+  i18nStrings: { itemRemovedAriaLive: 'An item was removed.' },
+} as AttributeEditorProps<unknown>;
+
 const tagLimit = 50;
 
 const Control = React.memo(({ value, index, setItems, prop }: ControlProps) => {
@@ -89,8 +90,8 @@ export default function AttributeEditorPage() {
   return (
     <Box margin="xl">
       <h1>Attribute Editor - Functional</h1>
-      <AttributeEditor
-        {...i18nStrings}
+      <AttributeEditor<Tag>
+        {...labelProps}
         additionalInfo={additionalInfo}
         items={items}
         definition={definition}

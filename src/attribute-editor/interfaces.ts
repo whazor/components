@@ -43,7 +43,7 @@ export namespace AttributeEditorProps {
   export interface I18nStrings {
     errorIconAriaLabel?: string;
 
-    removalAnnouncement?: string;
+    itemRemovedAriaLive?: string;
   }
 }
 

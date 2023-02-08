@@ -354,7 +354,7 @@ describe('Tag Editor component', () => {
     });
   });
 
-  test('should render removalAnnouncement when a tag is removed', () => {
+  test('should render itemRemovedAriaLive when a tag is removed', () => {
     const tags = [
       { key: 'key', value: 'value', existing: false },
       { key: 'key2', value: 'value', existing: false },
@@ -362,14 +362,14 @@ describe('Tag Editor component', () => {
     ];
 
     const { container } = render(
-      <StatefulTestComponent tags={tags} i18nStrings={{ ...i18nStrings, removalAnnouncement: 'removal-text-test' }} />
+      <StatefulTestComponent tags={tags} i18nStrings={{ ...i18nStrings, itemRemovedAriaLive: 'removal-text-test' }} />
     );
     const wrapper = createWrapper(container).findTagEditor()!;
 
     wrapper.findRow(1)!.findRemoveButton()!.click();
 
     waitFor(() => {
-      expect(wrapper.findAdditionalInfo()!.getElement()).toHaveTextContent('removal-text-test');
+      expect(wrapper.find(`[data-testid="removal-announcement"]`)!.getElement()).toHaveTextContent('removal-text-test');
     });
   });
 
