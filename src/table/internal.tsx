@@ -202,7 +202,8 @@ const InternalTable = React.forwardRef(
     const overlapElement = useDynamicOverlap({ disabled: !hasDynamicHeight });
 
     useTableFocusNavigation(selectionType, tableRefObject, visibleColumnDefinitions, items?.length);
-
+    console.log(contentDensity);
+    console.log(getVisualContextClassname(`${contentDensity}-table`));
     return (
       <ColumnWidthsProvider
         tableRef={tableRefObject}
@@ -278,7 +279,7 @@ const InternalTable = React.forwardRef(
               className={clsx(
                 styles.table,
                 resizableColumns && styles['table-layout-fixed'],
-                contentDensity === 'compact' && getVisualContextClassname('compact-table')
+                contentDensity && getVisualContextClassname(`${contentDensity}-table`)
               )}
               // Browsers have weird mechanism to guess whether it's a data table or a layout table.
               // If we state explicitly, they get it always correctly even with low number of rows.

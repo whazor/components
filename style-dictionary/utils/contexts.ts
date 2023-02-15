@@ -18,6 +18,14 @@ export const createCompactTableContext = (tokens: TokenCategory<string, GlobalVa
   };
 };
 
+export const createComfortableTableContext = (tokens: TokenCategory<string, GlobalValue | ModeValue>) => {
+  return {
+    id: 'comfortable-table',
+    selector: '.awsui-context-comfortable-table',
+    tokens,
+  };
+};
+
 export const createHeaderContext = (tokens: TokenCategory<string, GlobalValue | ModeValue>) => {
   return {
     id: 'header',

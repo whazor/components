@@ -7,6 +7,7 @@ import {
   createCompactTableContext,
   createHeaderContext,
   createFlashbarContext,
+  createComfortableTableContext,
 } from '../utils/contexts';
 import alertContextTokens from './contexts/alert';
 
@@ -36,6 +37,8 @@ export function buildVisualRefresh(builder: ThemeBuilder) {
 
   // eslint-disable-next-line @typescript-eslint/no-var-requires
   builder.addContext(createCompactTableContext(require('./contexts/compact-table').tokens));
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  builder.addContext(createComfortableTableContext(require('./contexts/comfortable-table').tokens));
   // eslint-disable-next-line @typescript-eslint/no-var-requires
   builder.addContext(createTopNavigationContext(require('./contexts/top-navigation').tokens));
   // eslint-disable-next-line @typescript-eslint/no-var-requires

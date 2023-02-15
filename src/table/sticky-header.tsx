@@ -75,7 +75,7 @@ function StickyHeader(
         className={clsx(
           styles.table,
           styles['table-layout-fixed'],
-          contentDensity === 'compact' && getVisualContextClassname('compact-table')
+          contentDensity && getVisualContextClassname(`${contentDensity}-table`)
         )}
         role="table"
         ref={secondaryTableRef}
