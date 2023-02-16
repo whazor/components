@@ -9,6 +9,7 @@ import { fireNonCancelableEvent } from '../internal/events';
 import styles from './styles.css.js';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { TextFilterProps } from './interfaces';
+import { useLiveAnnouncement } from '../internal/hooks/use-announcer';
 
 type InternalTextFilterProps = TextFilterProps & InternalBaseComponentProps;
 
@@ -33,6 +34,8 @@ const InternalTextFilter = React.forwardRef(
     useForwardFocus(ref, inputRef);
     const showResults = filteringText && countText && !disabled;
 
+    useLiveAnnouncement(showResults && countText);
+
     return (
       <div {...baseProps} className={clsx(baseProps.className, styles.root)} ref={__internalRootRef}>
         <InternalInput
@@ -48,11 +51,7 @@ const InternalTextFilter = React.forwardRef(
           onChange={event => fireNonCancelableEvent(onChange, { filteringText: event.detail.value })}
           __onDelayedInput={event => fireNonCancelableEvent(onDelayedChange, { filteringText: event.detail.value })}
         />
-        <span
-          aria-live="polite"
-          aria-atomic="true"
-          className={clsx(styles.results, showResults && styles['results-visible'])}
-        >
+        <span className={clsx(styles.results, showResults && styles['results-visible'])}>
           {showResults ? countText : ''}
         </span>
       </div>

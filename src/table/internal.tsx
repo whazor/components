@@ -33,6 +33,7 @@ import LiveRegion from '../internal/components/live-region';
 import useTableFocusNavigation from './use-table-focus-navigation';
 import { SomeRequired } from '../internal/types';
 import { TableTdElement } from './body-cell/td-element';
+import { useLiveAnnouncement } from '../internal/hooks/use-announcer';
 
 type InternalTableProps<T> = SomeRequired<TableProps<T>, 'items' | 'selectedItems' | 'variant'> &
   InternalBaseComponentProps;
@@ -201,6 +202,12 @@ const InternalTable = React.forwardRef(
     const overlapElement = useDynamicOverlap({ disabled: !hasDynamicHeight });
 
     useTableFocusNavigation(selectionType, tableRefObject, visibleColumnDefinitions, items?.length);
+
+    useLiveAnnouncement(
+      !!renderAriaLive &&
+        !!firstIndex &&
+        renderAriaLive({ totalItemsCount, firstIndex, lastIndex: firstIndex + items.length })
+    );
 
     return (
       <ColumnWidthsProvider
