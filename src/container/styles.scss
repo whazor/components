@@ -11,6 +11,41 @@
   @include styles.styles-reset;
   word-wrap: break-word;
   position: relative;
+  &.with-image {
+    .header {
+      background: none;
+    }
+  }
+  &.with-image-top {
+    .image {
+      border-top-left-radius: awsui.$border-radius-container;
+      border-top-right-radius: awsui.$border-radius-container;
+      width: 100%;
+    }
+  }
+
+  &.with-image-left {
+    display: flex;
+    flex-direction: row;
+  }
+
+  &.with-image-right {
+    display: flex;
+    flex-direction: row-reverse;
+  }
+
+  &.with-image-left {
+    .image {
+      border-top-left-radius: awsui.$border-radius-container;
+      border-bottom-left-radius: awsui.$border-radius-container;
+    }
+  }
+  &.with-image-right {
+    .image {
+      border-top-right-radius: awsui.$border-radius-container;
+      border-bottom-right-radius: awsui.$border-radius-container;
+    }
+  }
 
   &.fit-height {
     display: flex;
@@ -62,7 +97,9 @@
 }
 
 .header {
-  background-color: awsui.$color-background-container-header;
+  // &:not(.with-image) {
+  //   background-color: awsui.$color-background-container-header;
+  // }
   border-top-left-radius: awsui.$border-radius-container;
   border-top-right-radius: awsui.$border-radius-container;
 
@@ -171,5 +208,18 @@ the default white background of the container component.
 
   &.with-divider {
     @include shared.divider;
+  }
+}
+
+.image {
+  // background-color: #4158d0;
+  // background-image: linear-gradient(43deg, #4158d0 0%, #c850c0 46%, #ffcc70 100%);
+  // width: 100%;
+  //  height: 200px;
+  overflow: hidden;
+  object-fit: cover;
+  img {
+    width: 100%;
+    height: 100%;
   }
 }

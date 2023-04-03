@@ -38,6 +38,7 @@ export default function InternalContainer({
   disableHeaderPaddings = false,
   disableContentPaddings = false,
   fitHeight,
+  image,
   __stickyOffset,
   __stickyHeader = false,
   __internalRootRef = null,
@@ -88,51 +89,62 @@ export default function InternalContainer({
         baseProps.className,
         styles.root,
         styles[`variant-${variant}`],
-        fitHeight && styles['fit-height'],
-        isSticky && [styles['sticky-enabled']]
+        //fitHeight && styles['fit-height'],
+        isSticky && [styles['sticky-enabled']],
+        image && [styles[`with-image`]],
+        image && [styles[`with-image-${image.position}`]]
       )}
       ref={mergedRef}
     >
-      {header && (
-        <StickyHeaderContext.Provider value={{ isStuck }}>
-          <div
-            className={clsx(styles.header, styles[`header-variant-${variant}`], {
-              [styles['header-sticky-disabled']]: __stickyHeader && !isSticky,
-              [styles['header-sticky-enabled']]: isSticky,
-              [styles['header-dynamic-height']]: hasDynamicHeight,
-              [styles['header-stuck']]: isStuck,
-              [styles['with-paddings']]: !disableHeaderPaddings,
-              [styles['with-hidden-content']]: !children || __hiddenContent,
-            })}
-            {...headerIdProp}
-            {...stickyStyles}
-            ref={headerMergedRef}
-          >
-            {__darkHeader ? (
-              <div className={clsx(styles['dark-header'], 'awsui-context-content-header')}>{header}</div>
-            ) : (
-              header
-            )}
-          </div>
-        </StickyHeaderContext.Provider>
-      )}
-      <div
-        className={clsx(styles.content, {
-          [styles['with-paddings']]: !disableContentPaddings,
-        })}
-      >
-        {children}
-      </div>
-      {footer && (
-        <div
-          className={clsx(styles.footer, {
-            [styles['with-divider']]: !__disableFooterDivider,
-            [styles['with-paddings']]: !__disableFooterPaddings,
-          })}
-        >
-          {footer}
+      {image && (
+        <div className={clsx(styles.image)}>
+          <img style={{ height: image?.height, width: image?.width, objectFit: 'cover' }} src={image?.src}></img>
         </div>
       )}
+      <div>
+        <div className={clsx(fitHeight && styles['fit-height'])}>
+          {header && (
+            <StickyHeaderContext.Provider value={{ isStuck }}>
+              <div
+                className={clsx(styles.header, styles[`header-variant-${variant}`], {
+                  [styles['header-sticky-disabled']]: __stickyHeader && !isSticky,
+                  [styles['header-sticky-enabled']]: isSticky,
+                  [styles['header-dynamic-height']]: hasDynamicHeight,
+                  [styles['header-stuck']]: isStuck,
+                  [styles['with-paddings']]: !disableHeaderPaddings,
+                  [styles['with-hidden-content']]: !children || __hiddenContent,
+                })}
+                {...headerIdProp}
+                {...stickyStyles}
+                ref={headerMergedRef}
+              >
+                {__darkHeader ? (
+                  <div className={clsx(styles['dark-header'], 'awsui-context-content-header')}>{header}</div>
+                ) : (
+                  header
+                )}
+              </div>
+            </StickyHeaderContext.Provider>
+          )}
+          <div
+            className={clsx(styles.content, {
+              [styles['with-paddings']]: !disableContentPaddings,
+            })}
+          >
+            {children}
+          </div>
+          {footer && (
+            <div
+              className={clsx(styles.footer, {
+                [styles['with-divider']]: !__disableFooterDivider,
+                [styles['with-paddings']]: !__disableFooterPaddings,
+              })}
+            >
+              {footer}
+            </div>
+          )}
+        </div>
+      </div>
     </div>
   );
 }
