@@ -19,6 +19,7 @@ import Box from '~components/box';
 import ColumnLayout from '~components/column-layout';
 // Images in the same row
 // Pick image per container
+// Container card
 // Pick object-fit
 //
 
