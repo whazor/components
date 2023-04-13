@@ -19,6 +19,7 @@ const modes = [
 const tokenCategories = [
   require('./color-palette'),
   require('./color-charts'),
+  require('./color-illustrations'),
   require('./colors'),
   require('./typography'),
   require('./borders'),
@@ -34,19 +35,19 @@ export function buildVisualRefresh(builder: ThemeBuilder) {
     builder.addTokens(tokens, mode);
   });
 
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  /* eslint-disable @typescript-eslint/no-var-requires */
+
   builder.addContext(createCompactTableContext(require('./contexts/compact-table').tokens));
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
   builder.addContext(createTopNavigationContext(require('./contexts/top-navigation').tokens));
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
   builder.addContext(createHeaderContext(require('./contexts/header').tokens));
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
   builder.addContext(createFlashbarContext(require('./contexts/flashbar').tokens));
   builder.addContext({
     id: 'alert',
     selector: '.awsui-context-alert',
     tokens: alertContextTokens,
   });
+
+  /* eslint-enable @typescript-eslint/no-var-requires */
 
   return builder.build();
 }

@@ -1,0 +1,95 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+import { StyleDictionary } from '../utils/interfaces';
+
+import { expandColorDictionary } from '../utils';
+
+const baseColors: StyleDictionary.ColorIllustrationDictionary = {
+  colorIllustrationBlue100: '#f2f8fd',
+  colorIllustrationBlue200: '#d3e7f9',
+  colorIllustrationBlue400: '#89bdee',
+  colorIllustrationBlue500: '#539fe5',
+  colorIllustrationBlue600: '#0972d3',
+  colorIllustrationBlue700: '#0048a5',
+  colorIllustrationBluegrey600: '#39619a',
+  colorIllustrationBluegrey700: '#192c4d',
+  colorIllustrationGreen500: '#29ad32',
+  colorIllustrationGreen600: '#037f0c',
+  colorIllustrationGrey150: '#f4f4f4',
+  colorIllustrationGrey300: '#d1d5db',
+  colorIllustrationGrey400: '#9ba7b6',
+  colorIllustrationGrey600: '#414d5c',
+  colorIllustrationGrey700: '#232f3e',
+  colorIllustrationGrey900: '#000716',
+  colorIllustrationOrange200: '#fbe3cf',
+  colorIllustrationOrange400: '#f4aa70',
+  colorIllustrationOrange500: '#ec7211',
+  colorIllustrationOrange700: '#dd6b10',
+  colorIllustrationRed500: '#eb6f6f',
+  colorIllustrationRed600: '#d91515',
+  colorIllustrationSkin100: '#e8cbb7',
+  colorIllustrationSkin1000: '#5d6677',
+  colorIllustrationSkin200: '#d6aa8a',
+  colorIllustrationSkin300: '#b78159',
+  colorIllustrationSkin400: '#885e4d',
+  colorIllustrationSkin500: '#685a4f',
+  colorIllustrationSkin600: '#9da2b2',
+  colorIllustrationSkin700: '#8d96a4',
+  colorIllustrationSkin800: '#838283',
+  colorIllustrationSkin900: '#73747b',
+  colorIllustrationWarmgrey400: '#726f72',
+};
+
+const tokens: StyleDictionary.ColorIllustrationDictionary = {
+  colorIllustrationBaseStroke: { light: '{colorIllustrationGrey900}', dark: '{colorIllustrationBlue700}' },
+  colorIllustrationBaseOrange: { light: '{colorIllustrationOrange500}', dark: '{colorIllustrationOrange400}' },
+  colorIllustrationBaseBlue: { light: '{colorIllustrationBlue600}', dark: '{colorIllustrationBlue400}' },
+  colorIllustrationBaseAlertGreen: { light: '{colorIllustrationGreen600}', dark: '{colorIllustrationGreen500}' },
+  colorIllustrationBaseAlertRed: { light: '{colorIllustrationRed600}', dark: '{colorIllustrationRed500}' },
+  colorIllustrationHumanLegs: { light: '{colorIllustrationGrey700}', dark: '{colorIllustrationBluegrey700}' },
+  colorIllustrationHumanShoes: { light: '{colorIllustrationGrey400}', dark: '{colorIllustrationBluegrey600}' },
+  colorIllustrationHumanShirt: { light: '{colorIllustrationBlue600}', dark: '{colorIllustrationBlue400}' },
+  colorIllustrationHumanModifier: { light: '{colorIllustrationGrey300}', dark: '{colorIllustrationBluegrey600}' },
+  colorIllustrationHumanHairDark: { light: '{colorIllustrationGrey700}', dark: '{colorIllustrationBluegrey700}' },
+  colorIllustrationHumanHairMid: { light: '{colorIllustrationOrange700}', dark: '{colorIllustrationWarmgrey400}' },
+  colorIllustrationHumanHairLight: { light: '#ffffff', dark: '{colorIllustrationBlue400}' },
+  colorIllustrationHumanSkin500: { light: '{colorIllustrationSkin500}', dark: '{colorIllustrationSkin1000}' },
+  colorIllustrationHumanSkin400: { light: '{colorIllustrationSkin400}', dark: '{colorIllustrationSkin900}' },
+  colorIllustrationHumanSkin300: { light: '{colorIllustrationSkin300}', dark: '{colorIllustrationSkin800}' },
+  colorIllustrationHumanSkin200: { light: '{colorIllustrationSkin200}', dark: '{colorIllustrationSkin700}' },
+  colorIllustrationHumanSkin100: { light: '{colorIllustrationSkin100}', dark: '{colorIllustrationSkin600}' },
+  colorIllustrationRobotBodySecondary: { light: '{colorIllustrationGrey300}', dark: '{colorIllustrationBluegrey600}' },
+  colorIllustrationRobotBodyPrimary: { light: '{colorIllustrationGrey150}', dark: '{colorIllustrationBlue400}' },
+  colorIllustrationRobotEyes: { light: '{colorIllustrationBlue600}', dark: '{colorIllustrationBlue100}' },
+  colorIllustrationModifierPrimaryFill: { light: '{colorIllustrationBlue200}', dark: '{colorIllustrationBlue400}' },
+  colorIllustrationModifierSecondaryFill: { light: '#ffffff', dark: '{colorIllustrationBlue400}' },
+  colorIllustrationModifierShadow: { light: '{colorIllustrationGrey300}', dark: '{colorIllustrationBluegrey600}' },
+  colorIllustrationObjectGrey600: { light: '{colorIllustrationGrey600}', dark: '{colorIllustrationBluegrey700}' },
+  colorIllustrationObjectGrey400: { light: '{colorIllustrationGrey400}', dark: '{colorIllustrationBluegrey600}' },
+  colorIllustrationObjectGrey300: { light: '{colorIllustrationGrey300}', dark: '{colorIllustrationBluegrey600}' },
+  colorIllustrationObjectGrey150: { light: '{colorIllustrationGrey150}', dark: '{colorIllustrationBlue400}' },
+  colorIllustrationObjectBlue600: { light: '{colorIllustrationBlue600}', dark: '{colorIllustrationBlue400}' },
+  colorIllustrationObjectBlue500: { light: '{colorIllustrationBlue500}', dark: '{colorIllustrationBlue400}' },
+  colorIllustrationObjectBlue200: { light: '{colorIllustrationBlue200}', dark: '{colorIllustrationBlue400}' },
+  colorIllustrationObjectBlue100: { light: '{colorIllustrationBlue100}', dark: '{colorIllustrationBlue400}' },
+  colorIllustrationObjectBlueModifier: { light: '{colorIllustrationBlue400}', dark: '{colorIllustrationOrange400}' },
+  colorIllustrationObjectWhiteUi: { light: '#ffffff', dark: '{colorIllustrationBlue100}' },
+  colorIllustrationBackgroundBlue200: { light: '{colorIllustrationBlue200}', dark: '{colorIllustrationBlue500}' },
+  colorIllustrationBackgroundBlue100: { light: '{colorIllustrationBlue100}', dark: '{colorIllustrationBluegrey700}' },
+  colorIllustrationBackgroundOrange200: {
+    light: '{colorIllustrationOrange200}',
+    dark: '{colorIllustrationBluegrey700}',
+  },
+  colorIllustrationBackgroundGrey150: { light: '{colorIllustrationGrey150}', dark: '{colorIllustrationBluegrey700}' },
+  colorIllustrationHologramBlue500: { light: '{colorIllustrationBlue500}', dark: '{colorIllustrationBlue400}' },
+  colorIllustrationHologramBlue100: { light: '{colorIllustrationBlue100}', dark: '{colorIllustrationBluegrey700}' },
+  colorIllustrationHologramProjector: { light: '{colorIllustrationBlue200}', dark: '{colorIllustrationBlue400}' },
+};
+
+const expandedTokens: StyleDictionary.ExpandedColorScopeDictionary = expandColorDictionary({
+  ...baseColors,
+  ...tokens,
+});
+
+export { expandedTokens as tokens };
+export const mode: StyleDictionary.ModeIdentifier = 'color';

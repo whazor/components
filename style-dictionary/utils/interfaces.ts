@@ -15,6 +15,7 @@ import {
   MotionScopeTokenName,
   ShadowsTokenName,
   TokenName,
+  ColorIllustrationTokenName,
 } from './token-names';
 
 import { GlobalValue, ModeValue, TokenCategory } from '@cloudscape-design/theming-build';
@@ -49,6 +50,8 @@ export namespace StyleDictionary {
   export type ColorChartsDictionary = Partial<TokenCategory<ColorChartsTokenName, ColorModeEntry>>;
   export type ColorsDictionary = Partial<TokenCategory<ColorsTokenName, ColorModeEntry>>;
   export type ShadowsDictionary = Partial<TokenCategory<ShadowsTokenName, ColorModeEntry>>;
+
+  export type ColorIllustrationDictionary = Partial<TokenCategory<ColorIllustrationTokenName, ColorModeEntry>>;
 
   export type MotionDictionary = Partial<TokenCategory<MotionTokenName, MotionModeEntry>>;
   export type SizesDictionary = Partial<TokenCategory<SizesTokenName, DensityModeEntry>>;

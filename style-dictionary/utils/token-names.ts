@@ -424,6 +424,82 @@ export type ColorsTokenName =
   | 'colorBoardPlaceholderHover'
   | 'colorDragPlaceholderActive'
   | 'colorDragPlaceholderHover';
+
+export type ColorIllustrationTokenName =
+  | 'colorIllustrationBlue100'
+  | 'colorIllustrationBlue200'
+  | 'colorIllustrationBlue400'
+  | 'colorIllustrationBlue500'
+  | 'colorIllustrationBlue600'
+  | 'colorIllustrationBlue700'
+  | 'colorIllustrationBluegrey600'
+  | 'colorIllustrationBluegrey700'
+  | 'colorIllustrationGreen500'
+  | 'colorIllustrationGreen600'
+  | 'colorIllustrationGrey150'
+  | 'colorIllustrationGrey300'
+  | 'colorIllustrationGrey400'
+  | 'colorIllustrationGrey600'
+  | 'colorIllustrationGrey700'
+  | 'colorIllustrationGrey900'
+  | 'colorIllustrationOrange200'
+  | 'colorIllustrationOrange400'
+  | 'colorIllustrationOrange500'
+  | 'colorIllustrationOrange700'
+  | 'colorIllustrationRed500'
+  | 'colorIllustrationRed600'
+  | 'colorIllustrationSkin100'
+  | 'colorIllustrationSkin1000'
+  | 'colorIllustrationSkin200'
+  | 'colorIllustrationSkin300'
+  | 'colorIllustrationSkin400'
+  | 'colorIllustrationSkin500'
+  | 'colorIllustrationSkin600'
+  | 'colorIllustrationSkin700'
+  | 'colorIllustrationSkin800'
+  | 'colorIllustrationSkin900'
+  | 'colorIllustrationWarmgrey400'
+  | 'colorIllustrationBaseStroke'
+  | 'colorIllustrationBaseOrange'
+  | 'colorIllustrationBaseBlue'
+  | 'colorIllustrationBaseAlertGreen'
+  | 'colorIllustrationBaseAlertRed'
+  | 'colorIllustrationHumanLegs'
+  | 'colorIllustrationHumanShoes'
+  | 'colorIllustrationHumanShirt'
+  | 'colorIllustrationHumanModifier'
+  | 'colorIllustrationHumanHairDark'
+  | 'colorIllustrationHumanHairMid'
+  | 'colorIllustrationHumanHairLight'
+  | 'colorIllustrationHumanSkin500'
+  | 'colorIllustrationHumanSkin400'
+  | 'colorIllustrationHumanSkin300'
+  | 'colorIllustrationHumanSkin200'
+  | 'colorIllustrationHumanSkin100'
+  | 'colorIllustrationRobotBodySecondary'
+  | 'colorIllustrationRobotBodyPrimary'
+  | 'colorIllustrationRobotEyes'
+  | 'colorIllustrationModifierPrimaryFill'
+  | 'colorIllustrationModifierSecondaryFill'
+  | 'colorIllustrationModifierShadow'
+  | 'colorIllustrationObjectGrey600'
+  | 'colorIllustrationObjectGrey400'
+  | 'colorIllustrationObjectGrey300'
+  | 'colorIllustrationObjectGrey150'
+  | 'colorIllustrationObjectBlue600'
+  | 'colorIllustrationObjectBlue500'
+  | 'colorIllustrationObjectBlue200'
+  | 'colorIllustrationObjectBlue100'
+  | 'colorIllustrationObjectBlueModifier'
+  | 'colorIllustrationObjectWhiteUi'
+  | 'colorIllustrationBackgroundBlue200'
+  | 'colorIllustrationBackgroundBlue100'
+  | 'colorIllustrationBackgroundOrange200'
+  | 'colorIllustrationBackgroundGrey150'
+  | 'colorIllustrationHologramBlue500'
+  | 'colorIllustrationHologramBlue100'
+  | 'colorIllustrationHologramProjector';
+
 export type TypographyTokenName =
   | 'fontBodyMLineHeight'
   | 'fontBodyMSize'
@@ -669,7 +745,11 @@ export type ShadowsTokenName =
   | 'shadowStickyEmbedded';
 
 export type GlobalScopeTokenName = ColorPaletteTokenName | TypographyTokenName | BordersTokenName;
-export type ColorScopeTokenName = ColorChartsTokenName | ColorsTokenName | ShadowsTokenName;
+export type ColorScopeTokenName =
+  | ColorChartsTokenName
+  | ColorsTokenName
+  | ColorIllustrationTokenName
+  | ShadowsTokenName;
 export type MotionScopeTokenName = MotionTokenName;
 export type DensityScopeTokenName = SizesTokenName | SpacingTokenName;
 

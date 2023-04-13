@@ -1,0 +1,88 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+@use 'sass:map';
+@use 'sass:string';
+@use '../internal/styles/tokens' as awsui;
+
+$availableTokens: (
+  base-stroke: awsui.$color-illustration-base-stroke,
+  base-orange: awsui.$color-illustration-base-orange,
+  base-blue: awsui.$color-illustration-base-blue,
+  base-alert-green: awsui.$color-illustration-base-alert-green,
+  base-alert-red: awsui.$color-illustration-base-alert-red,
+  human-legs: awsui.$color-illustration-human-legs,
+  human-shoes: awsui.$color-illustration-human-shoes,
+  human-shirt: awsui.$color-illustration-human-shirt,
+  human-modifier: awsui.$color-illustration-human-modifier,
+  human-hair-dark: awsui.$color-illustration-human-hair-dark,
+  human-hair-mid: awsui.$color-illustration-human-hair-mid,
+  human-hair-light: awsui.$color-illustration-human-hair-light,
+  human-skin-500: awsui.$color-illustration-human-skin-500,
+  human-skin-400: awsui.$color-illustration-human-skin-400,
+  human-skin-300: awsui.$color-illustration-human-skin-300,
+  human-skin-200: awsui.$color-illustration-human-skin-200,
+  human-skin-100: awsui.$color-illustration-human-skin-100,
+  robot-body-secondary: awsui.$color-illustration-robot-body-secondary,
+  robot-body-primary: awsui.$color-illustration-robot-body-primary,
+  robot-eyes: awsui.$color-illustration-robot-eyes,
+  modifier-primary-fill: awsui.$color-illustration-modifier-primary-fill,
+  modifier-secondary-fill: awsui.$color-illustration-modifier-secondary-fill,
+  modifier-shadow: awsui.$color-illustration-modifier-shadow,
+  object-grey-600: awsui.$color-illustration-object-grey-600,
+  object-grey-400: awsui.$color-illustration-object-grey-400,
+  object-grey-300: awsui.$color-illustration-object-grey-300,
+  object-grey-150: awsui.$color-illustration-object-grey-150,
+  object-blue-600: awsui.$color-illustration-object-blue-600,
+  object-blue-500: awsui.$color-illustration-object-blue-500,
+  object-blue-200: awsui.$color-illustration-object-blue-200,
+  object-blue-100: awsui.$color-illustration-object-blue-100,
+  object-blue-modifier: awsui.$color-illustration-object-blue-modifier,
+  object-white-ui: awsui.$color-illustration-object-white-ui,
+  background-blue-200: awsui.$color-illustration-background-blue-200,
+  background-blue-100: awsui.$color-illustration-background-blue-100,
+  background-orange-200: awsui.$color-illustration-background-orange-200,
+  background-grey-150: awsui.$color-illustration-background-grey-150,
+  hologram-blue-500: awsui.$color-illustration-hologram-blue-500,
+  hologram-blue-100: awsui.$color-illustration-hologram-blue-100,
+  hologram-projector: awsui.$color-illustration-hologram-projector,
+);
+
+@mixin color($name, $token, $selector: '') {
+  & [data-fill='#{$name}']#{$selector} {
+    fill: $token !important;
+  }
+  & [data-stroke='#{$name}']#{$selector} {
+    stroke: $token !important;
+  }
+}
+
+.root {
+  @each $name, $token in $availableTokens {
+    @include color($name, $token);
+  }
+
+  /* stylelint-disable-next-line selector-max-universal, @cloudscape-design/no-implicit-descendant */
+  * {
+    vector-effect: non-scaling-stroke;
+  }
+}
+
+$skinNames: human-skin-100, human-skin-200, human-skin-300, human-skin-400, human-skin-500;
+@each $overrideName in $skinNames {
+  .#{$overrideName} {
+    @each $skinName in $skinNames {
+      @include color($skinName, map.get($availableTokens, $overrideName), ':not([data-layer="spot"])');
+    }
+  }
+}
+
+$hairNames: human-hair-dark, human-hair-mid, human-hair-light;
+@each $overrideName in $hairNames {
+  .#{$overrideName} {
+    @each $hairName in $hairNames {
+      @include color($hairName, map.get($availableTokens, $overrideName));
+    }
+  }
+}
