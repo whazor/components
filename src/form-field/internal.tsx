@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
+import React, { useEffect } from 'react';
 import clsx from 'clsx';
 
 import { getBaseProps } from '../internal/base-component';
@@ -16,6 +16,8 @@ import styles from './styles.css.js';
 import { InternalFormFieldProps } from './interfaces';
 import { joinStrings } from '../internal/utils/strings';
 import { useInternalI18n } from '../internal/i18n/context';
+import { useFunnelSubStepContext } from '../internal/analytics/context/analytics-context';
+import { funnelSubStepError } from '../internal/analytics/funnel';
 
 interface FormFieldErrorProps {
   id?: string;
@@ -80,6 +82,7 @@ export default function InternalFormField({
   const instanceUniqueId = useUniqueId('formField');
   const generatedControlId = controlId || instanceUniqueId;
   const formFieldId = controlId || generatedControlId;
+  const { funnelInteractionId, stepNumber, subStepNumber } = useFunnelSubStepContext();
 
   const slotIds = getSlotIds(formFieldId, label, description, constraintText, errorText);
 
@@ -99,11 +102,25 @@ export default function InternalFormField({
     invalid: !!errorText || !!parentInvalid,
   };
 
+  useEffect(() => {
+    if (funnelInteractionId && errorText) {
+      funnelSubStepError({
+        funnelInteractionId,
+        subStepNumber,
+        stepNumber,
+        fieldErrorSelector: `#${slotIds.error}`,
+        fieldLabelSelector: `#${slotIds.label}`,
+      });
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [funnelInteractionId, errorText]);
+
   return (
     <div {...baseProps} className={clsx(baseProps.className, styles.root)} ref={__internalRootRef}>
       <div className={clsx(__hideLabel && styles['visually-hidden'])}>
         {label && (
-          <label className={styles.label} id={slotIds.label} htmlFor={generatedControlId}>
+          <label data-analytics="field-label" className={styles.label} id={slotIds.label} htmlFor={generatedControlId}>
             {label}
           </label>
         )}

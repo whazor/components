@@ -13,6 +13,9 @@ import { InternalBaseComponentProps } from '../internal/hooks/use-base-component
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { checkSafeUrl } from '../internal/utils/check-safe-url';
+import { useFunnelContext, useFunnelSubStepContext } from '../internal/analytics/context/analytics-context';
+import { externalLinkInteracted, helpPanelInteracted } from '../internal/analytics/funnel';
+import { useUniqueId } from '../internal/hooks/use-unique-id';
 
 type InternalLinkProps = InternalBaseComponentProps &
   Omit<LinkProps, 'variant'> & {
@@ -46,8 +49,34 @@ const InternalLink = React.forwardRef(
     const baseProps = getBaseProps(props);
     const anchorTarget = target ?? (external ? '_blank' : undefined);
     const anchorRel = rel ?? (anchorTarget === '_blank' ? 'noopener noreferrer' : undefined);
+    const uniqueId = useUniqueId('link');
+
+    const { funnelInteractionId } = useFunnelContext();
+    const { stepNumber, subStepNumber } = useFunnelSubStepContext();
+
+    const fireFunnelEvent = (funnelInteractionId: string) => {
+      if (variant === 'info') {
+        helpPanelInteracted({
+          funnelInteractionId,
+          stepNumber,
+          subStepNumber,
+          selector: `[data-analytics-id="${uniqueId}"]`,
+        });
+      } else if (external) {
+        externalLinkInteracted({
+          funnelInteractionId,
+          stepNumber,
+          subStepNumber,
+          selector: `[data-analytics-id="${uniqueId}"]`,
+        });
+      }
+    };
 
     const fireFollowEvent = (event: React.SyntheticEvent) => {
+      if (funnelInteractionId) {
+        fireFunnelEvent(funnelInteractionId);
+      }
+
       fireCancelableEvent(onFollow, { href, external, target: anchorTarget }, event);
     };
 
@@ -89,6 +118,7 @@ const InternalLink = React.forwardRef(
         styles[getColorStyle(variant, color)]
       ),
       'aria-label': ariaLabel,
+      'data-analytics-id': uniqueId,
     };
 
     const content = (

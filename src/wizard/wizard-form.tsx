@@ -10,6 +10,7 @@ import { WizardProps } from './interfaces';
 import WizardFormHeader from './wizard-form-header';
 import styles from './styles.css.js';
 import { useEffectOnUpdate } from '../internal/hooks/use-effect-on-update';
+import { AnalyticsFunnelStep } from '../internal/analytics/components/analytics-funnel';
 
 interface WizardFormProps {
   steps: ReadonlyArray<WizardProps.Step>;
@@ -101,7 +102,9 @@ export default function WizardForm({
         errorText={errorText}
         errorIconAriaLabel={i18nStrings.errorIconAriaLabel}
       >
-        {content}
+        <AnalyticsFunnelStep stepName={title} stepNumber={activeStepIndex + 1}>
+          {content}
+        </AnalyticsFunnelStep>
       </InternalForm>
     </>
   );
