@@ -11,7 +11,8 @@ const { generatePackageJson } = require('./package-json');
 const { copyThirdPartyLicenses } = require('./licenses');
 const execa = require('execa');
 
-const templateDir = 'internal/template';
+const componentsTemplateDir = 'internal/template';
+const designTokensTemplateDir = 'internal/template-tokens';
 const stylesDir = 'internal/scss';
 
 const theme = themes.find(theme => theme.name === 'default');
@@ -24,6 +25,9 @@ if (theme) {
     targetDir: join(workspace.targetPath, 'components-themeable'),
     packageJson: {
       name: '@cloudscape-design/components-themed',
+    },
+    tokensPackageJson: {
+      name: '@cloudscape-design/design-tokens-themed',
     },
   });
 }
@@ -50,7 +54,7 @@ const createCopyStylesTask = themeable => {
 
 const createCopyTemplateTask = themeable => {
   return task(`themeable-source:copy-template:${themeable.name}`, async () => {
-    const dest = path.join(themeable.targetDir, templateDir);
+    const dest = path.join(themeable.targetDir, componentsTemplateDir);
     await fsp.mkdir(dest, { recursive: true });
     // The '.' tells cp to copy all files inside the source to the destination.
     // Using it as part of path.join will simply resolve it. That's why, we use template strings.
@@ -60,10 +64,11 @@ const createCopyTemplateTask = themeable => {
 
 const createGenerateExtrasTask = themeable => {
   return parallel(
-    generatePackageJson(join(themeable.targetDir, templateDir), themeable.packageJson, {
+    generatePackageJson(join(themeable.targetDir, componentsTemplateDir), themeable.packageJson, {
       injectDependencies: true,
     }),
-    copyThirdPartyLicenses('themeable', join(themeable.targetDir, templateDir))
+    generatePackageJson(join(themeable.targetDir, designTokensTemplateDir), themeable.tokensPackageJson),
+    copyThirdPartyLicenses('themeable', join(themeable.targetDir, componentsTemplateDir))
   );
 };
 
