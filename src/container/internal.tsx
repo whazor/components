@@ -11,6 +11,7 @@ import { useDynamicOverlap } from '../internal/hooks/use-dynamic-overlap';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import styles from './styles.css.js';
+import { AnalyticsFunnelSubStep } from '../internal/analytics/components/analytics-funnel';
 
 export interface InternalContainerProps extends Omit<ContainerProps, 'variant'>, InternalBaseComponentProps {
   __stickyHeader?: boolean;
@@ -82,57 +83,59 @@ export default function InternalContainer({
   }, [isSticky, setHasStickyBackground, variant]);
 
   return (
-    <div
-      {...baseProps}
-      className={clsx(
-        baseProps.className,
-        styles.root,
-        styles[`variant-${variant}`],
-        fitHeight && styles['fit-height'],
-        isSticky && [styles['sticky-enabled']]
-      )}
-      ref={mergedRef}
-    >
-      {header && (
-        <StickyHeaderContext.Provider value={{ isStuck }}>
-          <div
-            className={clsx(styles.header, styles[`header-variant-${variant}`], {
-              [styles['header-sticky-disabled']]: __stickyHeader && !isSticky,
-              [styles['header-sticky-enabled']]: isSticky,
-              [styles['header-dynamic-height']]: hasDynamicHeight,
-              [styles['header-stuck']]: isStuck,
-              [styles['with-paddings']]: !disableHeaderPaddings,
-              [styles['with-hidden-content']]: !children || __hiddenContent,
-            })}
-            {...headerIdProp}
-            {...stickyStyles}
-            ref={headerMergedRef}
-          >
-            {__darkHeader ? (
-              <div className={clsx(styles['dark-header'], 'awsui-context-content-header')}>{header}</div>
-            ) : (
-              header
-            )}
-          </div>
-        </StickyHeaderContext.Provider>
-      )}
+    <AnalyticsFunnelSubStep>
       <div
-        className={clsx(styles.content, {
-          [styles['with-paddings']]: !disableContentPaddings,
-        })}
+        {...baseProps}
+        className={clsx(
+          baseProps.className,
+          styles.root,
+          styles[`variant-${variant}`],
+          fitHeight && styles['fit-height'],
+          isSticky && [styles['sticky-enabled']]
+        )}
+        ref={mergedRef}
       >
-        {children}
-      </div>
-      {footer && (
+        {header && (
+          <StickyHeaderContext.Provider value={{ isStuck }}>
+            <div
+              className={clsx(styles.header, styles[`header-variant-${variant}`], {
+                [styles['header-sticky-disabled']]: __stickyHeader && !isSticky,
+                [styles['header-sticky-enabled']]: isSticky,
+                [styles['header-dynamic-height']]: hasDynamicHeight,
+                [styles['header-stuck']]: isStuck,
+                [styles['with-paddings']]: !disableHeaderPaddings,
+                [styles['with-hidden-content']]: !children || __hiddenContent,
+              })}
+              {...headerIdProp}
+              {...stickyStyles}
+              ref={headerMergedRef}
+            >
+              {__darkHeader ? (
+                <div className={clsx(styles['dark-header'], 'awsui-context-content-header')}>{header}</div>
+              ) : (
+                header
+              )}
+            </div>
+          </StickyHeaderContext.Provider>
+        )}
         <div
-          className={clsx(styles.footer, {
-            [styles['with-divider']]: !__disableFooterDivider,
-            [styles['with-paddings']]: !__disableFooterPaddings,
+          className={clsx(styles.content, {
+            [styles['with-paddings']]: !disableContentPaddings,
           })}
         >
-          {footer}
+          {children}
         </div>
-      )}
-    </div>
+        {footer && (
+          <div
+            className={clsx(styles.footer, {
+              [styles['with-divider']]: !__disableFooterDivider,
+              [styles['with-paddings']]: !__disableFooterPaddings,
+            })}
+          >
+            {footer}
+          </div>
+        )}
+      </div>
+    </AnalyticsFunnelSubStep>
   );
 }
