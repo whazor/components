@@ -7,7 +7,7 @@ import InternalForm from './internal';
 import useBaseComponent from '../internal/hooks/use-base-component';
 
 import { AnalyticsFunnel, AnalyticsFunnelStep } from '../internal/analytics/components/analytics-funnel';
-import { FunnelType } from '../internal/analytics/funnel';
+import { FunnelType } from '../internal/analytics/interfaces';
 
 export { FormProps };
 

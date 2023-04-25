@@ -14,20 +14,11 @@ import {
   FunnelContext,
 } from '../context/analytics-context';
 
-import {
-  funnelComplete,
-  funnelStart,
-  FunnelProps,
-  funnelStepStart,
-  funnelStepComplete,
-  funnelSubStepComplete,
-  funnelSubStepStart,
-  FUNNEL_NAME_SELECTOR,
-  findSubStepNameSelector,
-  funnelCancelled,
-} from '../funnel';
+import FunnelMetrics from '../';
+import { FunnelProps } from '../interfaces';
 
 import { useUniqueIndex } from '../../hooks/use-unique-index';
+import { getFunnelNameSelector, getSubStepNameSelector } from '../selectors';
 
 export const AnalyticsFunnel: React.FC<FunnelProps> = ({ children, ...props }) => {
   const [funnelInteractionId, setFunnelInteractionId] = useState<string>();
@@ -48,14 +39,14 @@ export const AnalyticsFunnel: React.FC<FunnelProps> = ({ children, ...props }) =
   };
 
   useEffect(() => {
-    const funnelInteractionId = funnelStart({ funnelNameSelector: FUNNEL_NAME_SELECTOR, ...props });
+    const funnelInteractionId = FunnelMetrics.funnelStart({ funnelNameSelector: getFunnelNameSelector(), ...props });
     setFunnelInteractionId(funnelInteractionId);
 
     return () => {
       if (funnelResultRef.current === true) {
-        funnelComplete({ funnelInteractionId });
+        FunnelMetrics.funnelComplete({ funnelInteractionId });
       } else {
-        funnelCancelled({ funnelInteractionId });
+        FunnelMetrics.funnelCancelled({ funnelInteractionId });
       }
     };
 
@@ -75,13 +66,13 @@ export const AnalyticsFunnelStep: React.FC<FunnelStepContextValue> = ({ children
   useEffect(() => {
     if (funnelInteractionId && focusedElement !== stepNumber) {
       setFocus(stepNumber!);
-      funnelStepStart({ funnelInteractionId, stepNumber, stepName });
+      FunnelMetrics.funnelStepStart({ funnelInteractionId, stepNumber, stepName });
     }
 
     return () => {
       if (funnelInteractionId) {
         removeFocus(stepNumber!);
-        funnelStepComplete({ funnelInteractionId, stepNumber, stepName });
+        FunnelMetrics.funnelStepComplete({ funnelInteractionId, stepNumber, stepName });
       }
     };
 
@@ -104,7 +95,7 @@ export const AnalyticsFunnelSubStep: React.FC = ({ children }) => {
 
   const rootRef = createRef<HTMLDivElement>();
   const subStepNumber = useUniqueIndex('substep');
-  const subStepNameSelector = findSubStepNameSelector(subStepNumber);
+  const subStepNameSelector = getSubStepNameSelector(subStepNumber);
 
   return (
     <FunnelSubStepContext.Provider value={{ funnelInteractionId, stepNumber, stepName, subStepNumber }}>
@@ -115,7 +106,7 @@ export const AnalyticsFunnelSubStep: React.FC = ({ children }) => {
           if (focusedElement !== subStepNumber) {
             setFocus(subStepNumber);
             if (funnelInteractionId) {
-              funnelSubStepStart({
+              FunnelMetrics.funnelSubStepStart({
                 funnelInteractionId,
                 subStepNameSelector,
                 subStepNumber,
@@ -128,7 +119,7 @@ export const AnalyticsFunnelSubStep: React.FC = ({ children }) => {
           if (focusedElement === subStepNumber && !rootRef.current?.contains(event.relatedTarget)) {
             removeFocus(subStepNumber);
             if (funnelInteractionId) {
-              funnelSubStepComplete({
+              FunnelMetrics.funnelSubStepComplete({
                 funnelInteractionId,
                 subStepNameSelector,
                 subStepNumber,

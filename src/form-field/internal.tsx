@@ -17,7 +17,7 @@ import { InternalFormFieldProps } from './interfaces';
 import { joinStrings } from '../internal/utils/strings';
 import { useInternalI18n } from '../internal/i18n/context';
 import { useFunnelSubStepContext } from '../internal/analytics/context/analytics-context';
-import { funnelSubStepError } from '../internal/analytics/funnel';
+import FunnelMetrics from '../internal/analytics';
 
 interface FormFieldErrorProps {
   id?: string;
@@ -104,7 +104,7 @@ export default function InternalFormField({
 
   useEffect(() => {
     if (funnelInteractionId && errorText) {
-      funnelSubStepError({
+      FunnelMetrics.funnelSubStepError({
         funnelInteractionId,
         subStepNumber,
         stepNumber,

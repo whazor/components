@@ -17,7 +17,8 @@ import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 
 import { useInternalI18n } from '../internal/i18n/context';
-import { funnelStepNavigation } from '../internal/analytics/funnel';
+
+import FunnelMetrics from '../internal/analytics';
 import { useFunnelContext } from '../internal/analytics/context/analytics-context';
 
 export { WizardProps };
@@ -57,7 +58,7 @@ export default function Wizard({
 
   const navigationEvent = (requestedStepIndex: number, reason: WizardProps.NavigationReason) => {
     if (funnelInteractionId) {
-      funnelStepNavigation({
+      FunnelMetrics.funnelStepNavigation({
         navigationType: reason,
         funnelInteractionId,
         stepNumber: actualActiveStepIndex + 1,

@@ -11,7 +11,8 @@ import { FormLayoutProps, FormProps } from './interfaces';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import LiveRegion from '../internal/components/live-region';
 import { useInternalI18n } from '../internal/i18n/context';
-import { funnelError } from '../internal/analytics/funnel';
+
+import FunnelMetrics from '../internal/analytics';
 import { useFunnelContext } from '../internal/analytics/context/analytics-context';
 
 type InternalFormProps = FormProps & InternalBaseComponentProps;
@@ -34,7 +35,7 @@ export default function InternalForm({
 
   useEffect(() => {
     if (funnelInteractionId && errorText) {
-      funnelError({ funnelInteractionId });
+      FunnelMetrics.funnelError({ funnelInteractionId });
     }
   }, [funnelInteractionId, errorText]);
 

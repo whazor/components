@@ -7,7 +7,7 @@ import { applyDisplayName } from '../internal/utils/apply-display-name';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import InternalWizard from './internal';
 import { AnalyticsFunnel } from '../internal/analytics/components/analytics-funnel';
-import { FunnelType } from '../internal/analytics/funnel';
+import { FunnelType } from '../internal/analytics/interfaces';
 
 export { WizardProps };
 

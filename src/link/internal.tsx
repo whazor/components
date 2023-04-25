@@ -14,7 +14,8 @@ import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { checkSafeUrl } from '../internal/utils/check-safe-url';
 import { useFunnelContext, useFunnelSubStepContext } from '../internal/analytics/context/analytics-context';
-import { externalLinkInteracted, helpPanelInteracted } from '../internal/analytics/funnel';
+
+import FunnelMetrics from '../internal/analytics';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
 
 type InternalLinkProps = InternalBaseComponentProps &
@@ -56,14 +57,14 @@ const InternalLink = React.forwardRef(
 
     const fireFunnelEvent = (funnelInteractionId: string) => {
       if (variant === 'info') {
-        helpPanelInteracted({
+        FunnelMetrics.helpPanelInteracted({
           funnelInteractionId,
           stepNumber,
           subStepNumber,
           selector: `[data-analytics-id="${uniqueId}"]`,
         });
       } else if (external) {
-        externalLinkInteracted({
+        FunnelMetrics.externalLinkInteracted({
           funnelInteractionId,
           stepNumber,
           subStepNumber,

@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { createContext, useContext, useState } from 'react';
-import { FunnelType } from '../funnel';
+import { FunnelType } from '../interfaces';
 
 export interface FunnelContextValue {
   funnelInteractionId: string | undefined;
