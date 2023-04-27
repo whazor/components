@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
-import React, { useImperativeHandle, useRef, useState } from 'react';
+import React, { useImperativeHandle, useRef, useState, useMemo } from 'react';
 import { TableForwardRefType, TableProps } from './interfaces';
 import { getVisualContextClassname } from '../internal/components/visual-context';
 import InternalContainer from '../container/internal';
@@ -33,6 +33,7 @@ import LiveRegion from '../internal/components/live-region';
 import useTableFocusNavigation from './use-table-focus-navigation';
 import { SomeRequired } from '../internal/types';
 import { TableTdElement } from './body-cell/td-element';
+import { useStickyColumns, selectionColumnId } from './use-sticky-columns';
 type InternalTableProps<T> = SomeRequired<TableProps<T>, 'items' | 'selectedItems' | 'variant'> &
   InternalBaseComponentProps;
 
@@ -77,6 +78,7 @@ const InternalTable = React.forwardRef(
       firstIndex,
       renderAriaLive,
       columnDisplay,
+      stickyColumns,
       ...rest
     }: InternalTableProps<T>,
     ref: React.Ref<TableProps.Ref>
@@ -204,6 +206,20 @@ const InternalTable = React.forwardRef(
     const overlapElement = useDynamicOverlap({ disabled: !hasDynamicHeight });
 
     useTableFocusNavigation(selectionType, tableRefObject, visibleColumnDefinitions, items?.length);
+
+    const visibleColumnsWithSelection = useMemo(() => {
+      const columnIds = visibleColumnDefinitions.map((it, index) => it.id ?? index.toString());
+      return hasSelection ? [selectionColumnId, ...columnIds] : columnIds ?? [];
+    }, [visibleColumnDefinitions, hasSelection]);
+
+    const noStickyColumns = !stickyColumns?.first && !stickyColumns?.last;
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const stickyState = useStickyColumns({
+      visibleColumns: visibleColumnsWithSelection,
+      stickyColumnsFirst: noStickyColumns ? 0 : (stickyColumns?.first || 0) + (hasSelection ? 1 : 0),
+      stickyColumnsLast: stickyColumns?.last || 0,
+    });
 
     return (
       <ColumnWidthsProvider

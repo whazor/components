@@ -205,6 +205,17 @@ export interface TableProps<T = any> extends BaseComponentProps {
   columnDisplay?: ReadonlyArray<ColumnDisplayProperties>;
 
   /**
+   * Specifies the number of first and/or last columns that should be sticky.
+   *
+   * If the available scrollable space is less than a certain threshold, the feature is deactivated.
+   *
+   * Use it in conjunction with the sticky columns preference of the
+   * [collection preferences](/components/collection-preferences/) component.
+   *
+   */
+  stickyColumns?: TableProps.StickyColumns;
+
+  /**
    * Specifies an array containing the `id`s of visible columns. If not set, all columns are displayed.
    *
    * Use it in conjunction with the visible content preference of the [collection preferences](/components/collection-preferences/) component.
@@ -403,6 +414,11 @@ export namespace TableProps {
 
   export interface ColumnWidthsChangeDetail {
     widths: ReadonlyArray<number>;
+  }
+
+  export interface StickyColumns {
+    first?: number;
+    last?: number;
   }
 
   export interface LiveAnnouncement {
