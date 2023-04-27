@@ -102,7 +102,7 @@ export function useStickyStyles({ stickyState, columnId, getClassName }: UseStic
   };
 }
 
-export function useStickyState({
+export function useStickyColumns({
   visibleColumns,
   stickyColumnsFirst,
   stickyColumnsLast,
