@@ -33,7 +33,7 @@ import LiveRegion from '../internal/components/live-region';
 import useTableFocusNavigation from './use-table-focus-navigation';
 import { SomeRequired } from '../internal/types';
 import { TableTdElement } from './body-cell/td-element';
-import { useStickyColumns, selectionColumnId } from './use-sticky-columns';
+import { selectionColumnId, useStickyColumns } from './use-sticky-columns';
 type InternalTableProps<T> = SomeRequired<TableProps<T>, 'items' | 'selectedItems' | 'variant'> &
   InternalBaseComponentProps;
 
@@ -155,6 +155,19 @@ const InternalTable = React.forwardRef(
     const hasSelection = !!selectionType;
     const hasFooter = !!footer;
 
+    const visibleColumnsWithSelection = useMemo(() => {
+      const columnIds = visibleColumnDefinitions.map((it, index) => it.id ?? index.toString());
+      return hasSelection ? [selectionColumnId, ...columnIds] : columnIds ?? [];
+    }, [visibleColumnDefinitions, hasSelection]);
+
+    const noStickyColumns = !stickyColumns?.first && !stickyColumns?.last;
+
+    const stickyState = useStickyColumns({
+      visibleColumns: visibleColumnsWithSelection,
+      stickyColumnsFirst: noStickyColumns ? 0 : (stickyColumns?.first || 0) + (hasSelection ? 1 : 0),
+      stickyColumnsLast: stickyColumns?.last || 0,
+    });
+
     const theadProps: TheadProps = {
       containerWidth,
       selectionType,
@@ -168,6 +181,7 @@ const InternalTable = React.forwardRef(
       sortingDescending,
       onSortingChange,
       onFocusMove: moveFocus,
+      stickyState,
       onResizeFinish(newWidth) {
         const widthsDetail = columnDefinitions.map(
           (column, index) => newWidth[getColumnKey(column, index)] || (column.width as number) || DEFAULT_WIDTH
@@ -206,20 +220,6 @@ const InternalTable = React.forwardRef(
     const overlapElement = useDynamicOverlap({ disabled: !hasDynamicHeight });
 
     useTableFocusNavigation(selectionType, tableRefObject, visibleColumnDefinitions, items?.length);
-
-    const visibleColumnsWithSelection = useMemo(() => {
-      const columnIds = visibleColumnDefinitions.map((it, index) => it.id ?? index.toString());
-      return hasSelection ? [selectionColumnId, ...columnIds] : columnIds ?? [];
-    }, [visibleColumnDefinitions, hasSelection]);
-
-    const noStickyColumns = !stickyColumns?.first && !stickyColumns?.last;
-
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const stickyState = useStickyColumns({
-      visibleColumns: visibleColumnsWithSelection,
-      stickyColumnsFirst: noStickyColumns ? 0 : (stickyColumns?.first || 0) + (hasSelection ? 1 : 0),
-      stickyColumnsLast: stickyColumns?.last || 0,
-    });
 
     return (
       <ColumnWidthsProvider
@@ -372,6 +372,8 @@ const InternalTable = React.forwardRef(
                             stripedRows={stripedRows}
                             hasSelection={hasSelection}
                             hasFooter={hasFooter}
+                            stickyState={stickyState}
+                            columnId={selectionColumnId.toString()}
                           >
                             <SelectionControl
                               onFocusDown={moveFocusDown}
@@ -430,6 +432,8 @@ const InternalTable = React.forwardRef(
                               hasFooter={hasFooter}
                               stripedRows={stripedRows}
                               isEvenRow={isEven}
+                              columnId={column.id ?? colIndex.toString()}
+                              stickyState={stickyState}
                               isVisualRefresh={isVisualRefresh}
                             />
                           );

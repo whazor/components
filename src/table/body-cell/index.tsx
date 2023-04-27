@@ -9,6 +9,7 @@ import { TableProps } from '../interfaces';
 import { TableTdElement, TableTdElementProps } from './td-element';
 import { InlineEditor } from './inline-editor';
 import LiveRegion from '../../internal/components/live-region/index.js';
+import { StickyStateModel } from '../use-sticky-columns.js';
 
 const submitHandlerFallback = () => {
   throw new Error('The function `handleSubmit` is required for editable columns');
@@ -23,6 +24,8 @@ interface TableBodyCellProps<ItemType> extends TableTdElementProps {
   onEditEnd: (cancelled: boolean) => void;
   submitEdit?: TableProps.SubmitEditFunction<ItemType>;
   ariaLabels: TableProps['ariaLabels'];
+  stickyState: StickyStateModel;
+  columnId: string;
 }
 
 function TableCellEditable<ItemType>({

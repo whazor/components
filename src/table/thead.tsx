@@ -13,6 +13,7 @@ import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import styles from './styles.css.js';
 import headerCellStyles from './header-cell/styles.css.js';
 import ScreenreaderOnly from '../internal/components/screenreader-only';
+import { selectionColumnId, StickyStateModel, useStickyStyles } from './use-sticky-columns';
 
 export type InteractiveComponent =
   | { type: 'selection' }
@@ -38,6 +39,7 @@ export interface TheadProps {
   stuck?: boolean;
   singleSelectionHeaderAriaLabel?: string;
   stripedRows?: boolean;
+  stickyState: StickyStateModel;
 
   focusedComponent?: InteractiveComponent | null;
   onFocusedComponentChange?: (element: InteractiveComponent | null) => void;
@@ -64,6 +66,7 @@ const Thead = React.forwardRef(
       sticky = false,
       hidden = false,
       stuck = false,
+      stickyState,
 
       focusedComponent,
       onFocusedComponentChange,
@@ -89,13 +92,31 @@ const Thead = React.forwardRef(
 
     const { columnWidths, totalWidth, updateColumn } = useColumnWidths();
 
+    const stickyStyles = useStickyStyles({
+      stickyState,
+      columnId: selectionColumnId.toString(),
+      getClassName: props => ({
+        [styles['sticky-cell']]: !!props,
+        [styles['sticky-cell-pad-left']]: !!props?.padLeft,
+        [styles['sticky-cell-last-left']]: !!props?.lastLeft,
+        [styles['sticky-cell-last-right']]: !!props?.lastRight,
+      }),
+    });
+
     return (
       <thead className={clsx(!hidden && styles['thead-active'])}>
         <tr {...focusMarkers.all} ref={outerRef} aria-rowindex={1}>
           {selectionType ? (
             <th
-              className={clsx(headerCellClass, selectionCellClass, hidden && headerCellStyles['header-cell-hidden'])}
+              className={clsx(
+                headerCellClass,
+                selectionCellClass,
+                hidden && headerCellStyles['header-cell-hidden'],
+                stickyStyles.className
+              )}
+              style={stickyStyles.style}
               scope="col"
+              ref={stickyStyles.ref}
             >
               {selectionType === 'multi' ? (
                 <SelectionControl
@@ -138,6 +159,7 @@ const Thead = React.forwardRef(
                 focusedComponent={focusedComponent}
                 onFocusedComponentChange={onFocusedComponentChange}
                 column={column}
+                columnId={column.id ?? colIndex.toString()}
                 activeSortingColumn={sortingColumn}
                 sortingDescending={sortingDescending}
                 sortingDisabled={sortingDisabled}
@@ -149,6 +171,7 @@ const Thead = React.forwardRef(
                 resizableColumns={resizableColumns}
                 onClick={detail => fireNonCancelableEvent(onSortingChange, detail)}
                 isEditable={!!column.editConfig}
+                stickyState={stickyState}
               />
             );
           })}

@@ -3,7 +3,7 @@
 import React from 'react';
 import SpaceBetween from '~components/space-between';
 import { Box, Link } from '~components';
-import { useStickyState, StickyStateModel, useStickyStyles } from '~components/table/sticky-state-model';
+import { useStickyColumns, StickyStateModel, useStickyStyles } from '~components/table/use-sticky-columns';
 import styles from './styles.scss';
 import { generateItems, Instance } from './generate-data';
 import clsx from 'clsx';
@@ -18,7 +18,7 @@ const columnDefinitions = [
 ];
 
 export default function Page() {
-  const stickyState = useStickyState({
+  const stickyState = useStickyColumns({
     visibleColumns: columnDefinitions.map(column => column.key),
     stickyColumnsFirst: 1,
     stickyColumnsLast: 1,
