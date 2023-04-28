@@ -3,7 +3,7 @@
 import clsx from 'clsx';
 import React from 'react';
 import styles from './styles.css.js';
-import { StickyStateModel, useStickyStyles } from '../use-sticky-columns.js';
+import { StickyColumnsModel, useStickyCellStyles } from '../use-sticky-columns.js';
 import { useVisualRefresh } from '../../internal/hooks/use-visual-mode/index.js';
 
 export interface TableTdElementProps {
@@ -25,7 +25,7 @@ export interface TableTdElementProps {
   hasSelection?: boolean;
   hasFooter?: boolean;
   isVisualRefresh?: boolean;
-  stickyState: StickyStateModel;
+  stickyState: StickyColumnsModel;
   columnId: string;
 }
 
@@ -51,8 +51,8 @@ export const TableTdElement = ({
   stickyState,
 }: TableTdElementProps) => {
   const isVisualRefresh = useVisualRefresh();
-  const stickyStyles = useStickyStyles({
-    stickyState,
+  const stickyStyles = useStickyCellStyles({
+    stickyColumns: stickyState,
     columnId,
     getClassName: props => ({
       [styles['sticky-cell']]: !!props,

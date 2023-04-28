@@ -13,7 +13,7 @@ import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import styles from './styles.css.js';
 import headerCellStyles from './header-cell/styles.css.js';
 import ScreenreaderOnly from '../internal/components/screenreader-only';
-import { selectionColumnId, StickyStateModel, useStickyStyles } from './use-sticky-columns';
+import { selectionColumnId, StickyColumnsModel, useStickyCellStyles } from './use-sticky-columns';
 
 export type InteractiveComponent =
   | { type: 'selection' }
@@ -39,7 +39,7 @@ export interface TheadProps {
   stuck?: boolean;
   singleSelectionHeaderAriaLabel?: string;
   stripedRows?: boolean;
-  stickyState: StickyStateModel;
+  stickyState: StickyColumnsModel;
 
   focusedComponent?: InteractiveComponent | null;
   onFocusedComponentChange?: (element: InteractiveComponent | null) => void;
@@ -92,8 +92,8 @@ const Thead = React.forwardRef(
 
     const { columnWidths, totalWidth, updateColumn } = useColumnWidths();
 
-    const stickyStyles = useStickyStyles({
-      stickyState,
+    const stickyStyles = useStickyCellStyles({
+      stickyColumns: stickyState,
       columnId: selectionColumnId.toString(),
       getClassName: props => ({
         [styles['sticky-cell']]: !!props,

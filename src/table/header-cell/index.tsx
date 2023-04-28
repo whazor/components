@@ -10,7 +10,7 @@ import styles from './styles.css.js';
 import { Resizer } from '../resizer';
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
 import { InteractiveComponent } from '../thead';
-import { StickyStateModel, useStickyStyles } from '../use-sticky-columns';
+import { StickyColumnsModel, useStickyCellStyles } from '../use-sticky-columns';
 
 interface TableHeaderCellProps<ItemType> {
   className?: string;
@@ -30,7 +30,7 @@ interface TableHeaderCellProps<ItemType> {
   onBlur?: () => void;
   resizableColumns?: boolean;
   isEditable?: boolean;
-  stickyState: StickyStateModel;
+  stickyState: StickyColumnsModel;
   columnId: string;
 
   focusedComponent?: InteractiveComponent | null;
@@ -80,8 +80,8 @@ export function TableHeaderCell<ItemType>({
 
   const headerId = useUniqueId('table-header-');
 
-  const stickyStyles = useStickyStyles({
-    stickyState,
+  const stickyStyles = useStickyCellStyles({
+    stickyColumns: stickyState,
     columnId,
     getClassName: props => ({
       [styles['sticky-cell']]: !!props,
