@@ -88,11 +88,9 @@ const InternalTable = React.forwardRef(
 
     const [containerWidth, wrapperMeasureRef] = useContainerQuery<number>(({ width }) => width);
     const wrapperRefObject = useRef(null);
-    const wrapperRef = useMergeRefs(wrapperMeasureRef, wrapperRefObject);
 
     const [tableWidth, tableMeasureRef] = useContainerQuery<number>(({ width }) => width);
     const tableRefObject = useRef(null);
-    const tableRef = useMergeRefs(tableMeasureRef, tableRefObject);
 
     const secondaryWrapperRef = React.useRef<HTMLDivElement>(null);
     const theadRef = useRef<HTMLTableRowElement>(null);
@@ -167,6 +165,9 @@ const InternalTable = React.forwardRef(
       stickyColumnsFirst: noStickyColumns ? 0 : (stickyColumns?.first || 0) + (hasSelection ? 1 : 0),
       stickyColumnsLast: stickyColumns?.last || 0,
     });
+
+    const wrapperRef = useMergeRefs(wrapperMeasureRef, wrapperRefObject, stickyState.refs.wrapper);
+    const tableRef = useMergeRefs(tableMeasureRef, tableRefObject, stickyState.refs.table);
 
     const theadProps: TheadProps = {
       containerWidth,
