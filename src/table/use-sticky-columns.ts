@@ -5,7 +5,7 @@ import React, { useCallback, useEffect, useMemo, useRef } from 'react';
 import AsyncStore from '../area-chart/model/async-store';
 import { useStableEventHandler } from '../internal/hooks/use-stable-event-handler';
 import clsx from 'clsx';
-import { useResizeObserver } from '../internal/hooks/container-queries';
+//import { useResizeObserver } from '../internal/hooks/container-queries';
 
 export const selectionColumnId = Symbol('selection-column-id');
 
@@ -78,9 +78,9 @@ export function useStickyColumns({
     }
   });
 
-  useResizeObserver(wrapperRef, updateStickyStyles);
+  //useResizeObserver(wrapperRef, updateStickyStyles);
 
-  useResizeObserver(tableRef, updateStickyStyles);
+  //useResizeObserver(tableRef, updateStickyStyles);
 
   useEffect(() => {
     if (wrapperRef.current && tableRef.current) {
