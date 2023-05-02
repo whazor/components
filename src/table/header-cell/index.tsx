@@ -80,16 +80,16 @@ export function TableHeaderCell<ItemType>({
 
   const headerId = useUniqueId('table-header-');
 
-  // const stickyStyles = useStickyCellStyles({
-  //   stickyColumns: stickyState,
-  //   columnId,
-  //   getClassName: props => ({
-  //     [styles['sticky-cell']]: !!props,
-  //     [styles['sticky-cell-pad-left']]: !!props?.padLeft,
-  //     [styles['sticky-cell-last-left']]: !!props?.lastLeft,
-  //     [styles['sticky-cell-last-right']]: !!props?.lastRight,
-  //   }),
-  // });
+  const stickyStyles = useStickyCellStyles({
+    stickyColumns: stickyState,
+    columnId,
+    getClassName: props => ({
+      [styles['sticky-cell']]: !!props,
+      [styles['sticky-cell-pad-left']]: !!props?.padLeft,
+      [styles['sticky-cell-last-left']]: !!props?.lastLeft,
+      [styles['sticky-cell-last-right']]: !!props?.lastRight,
+    }),
+  });
 
   return (
     <th
@@ -103,14 +103,13 @@ export function TableHeaderCell<ItemType>({
           [styles['header-cell-ascending']]: sortingStatus === 'ascending',
           [styles['header-cell-descending']]: sortingStatus === 'descending',
           [styles['header-cell-hidden']]: hidden,
-        }
-        // stickyStyles.className
+        },
+        stickyStyles.className
       )}
       aria-sort={sortingStatus && getAriaSort(sortingStatus)}
-      // style={{ ...style, ...stickyStyles.style }}
-      style={style}
+      style={{ ...style, ...stickyStyles.style }}
       scope="col"
-      //  ref={stickyStyles.ref}
+      ref={stickyStyles.ref}
     >
       <div
         className={clsx(styles['header-cell-content'], {

@@ -51,21 +51,20 @@ export const TableTdElement = ({
   stickyState,
 }: TableTdElementProps) => {
   const isVisualRefresh = useVisualRefresh();
-  // const stickyStyles = useStickyCellStyles({
-  //   stickyColumns: stickyState,
-  //   columnId,
-  //   getClassName: props => ({
-  //     [styles['sticky-cell']]: !!props,
-  //     [styles['sticky-cell-pad-left']]: !!props?.padLeft,
-  //     [styles['sticky-cell-last-left']]: !!props?.lastLeft,
-  //     [styles['sticky-cell-last-right']]: !!props?.lastRight,
-  //   }),
-  // });
+  const stickyStyles = useStickyCellStyles({
+    stickyColumns: stickyState,
+    columnId,
+    getClassName: props => ({
+      [styles['sticky-cell']]: !!props,
+      [styles['sticky-cell-pad-left']]: !!props?.padLeft,
+      [styles['sticky-cell-last-left']]: !!props?.lastLeft,
+      [styles['sticky-cell-last-right']]: !!props?.lastRight,
+    }),
+  });
 
   return (
     <td
-      style={style}
-      // style={{ ...style, ...stickyStyles.style }}
+      style={{ ...style, ...stickyStyles.style }}
       className={clsx(
         className,
         styles['body-cell'],
@@ -79,13 +78,13 @@ export const TableTdElement = ({
         stripedRows && styles['has-striped-rows'],
         isVisualRefresh && styles['is-visual-refresh'],
         hasSelection && styles['has-selection'],
-        hasFooter && styles['has-footer']
-        //    stickyStyles.className
+        hasFooter && styles['has-footer'],
+        stickyStyles.className
       )}
       onClick={onClick}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
-      //  ref={stickyStyles.ref}
+      ref={stickyStyles.ref}
       {...nativeAttributes}
     >
       {children}
