@@ -11,10 +11,26 @@ import Link from '~components/link';
 import Modal from '~components/modal';
 import SpaceBetween from '~components/space-between';
 import Table, { TableProps } from '~components/table';
+import Tabs, { TabsProps } from '~components/tabs';
 
 export default function () {
   const [visible, setVisible] = useState(false);
   const [expanded, setExpanded] = useState(true);
+  const tabs: Array<TabsProps.Tab> = [
+    {
+      label: 'First tab',
+      id: 'first',
+      content:
+        'Diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.',
+    },
+    {
+      label: 'Second tab',
+      id: 'second',
+      content:
+        'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.',
+    },
+  ];
+  const [selectedTab, setSelectedTab] = useState(tabs[0].id);
   return (
     <div style={{ padding: 10 }}>
       <h1>Table Variants</h1>
@@ -53,6 +69,13 @@ export default function () {
           <Container variant="stacked" header={<Header variant="h2">Stacked Container</Header>}>
             <KeyValuePairs />
           </Container>
+          <Tabs
+            tabs={tabs}
+            variant="stacked"
+            activeTabId={selectedTab}
+            onChange={event => setSelectedTab(event.detail.activeTabId)}
+            i18nStrings={{ scrollLeftAriaLabel: 'Scroll left', scrollRightAriaLabel: 'Scroll right' }}
+          />
           <StackedTable />
           <StackedTableWithFooter />
         </div>
@@ -61,12 +84,26 @@ export default function () {
             <KeyValuePairs />
           </Container>
           <DefaultTable />
+          <Tabs
+            tabs={tabs}
+            variant="container"
+            activeTabId={selectedTab}
+            onChange={event => setSelectedTab(event.detail.activeTabId)}
+            i18nStrings={{ scrollLeftAriaLabel: 'Scroll left', scrollRightAriaLabel: 'Scroll right' }}
+          />
         </div>
         <div>
           <Container header={<Header>Stacked Container (after migration)</Header>} variant="stacked">
             <KeyValuePairs />
           </Container>
           <StackedTable />
+          <Tabs
+            tabs={tabs}
+            variant="stacked"
+            activeTabId={selectedTab}
+            onChange={event => setSelectedTab(event.detail.activeTabId)}
+            i18nStrings={{ scrollLeftAriaLabel: 'Scroll left', scrollRightAriaLabel: 'Scroll right' }}
+          />
         </div>
       </SpaceBetween>
     </div>
