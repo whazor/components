@@ -58,6 +58,7 @@
 
 .identity {
   min-width: 0;
+  flex-grow: 1;
 
   > .identity-link {
     display: flex;
@@ -180,6 +181,7 @@
   // Hide dividers around primary buttons.
   left: -1px;
   border-left: 1px solid awsui.$color-background-container-content;
+
   &::after {
     display: none;
   }

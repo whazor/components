@@ -85,13 +85,19 @@ export function useTopNavigation({ identity, search, utilities }: UseTopNavigati
       return;
     }
 
+    const titleWidth = virtualRef.current.querySelector(`.${styles.title}`)?.getBoundingClientRect().width ?? 0;
+    const logoWidth = virtualRef.current.querySelector(`.${styles.logo}`)?.getBoundingClientRect().width ?? 0;
+
+    // the identity div has a flex-grow: 1 css, this makes calculating its content width requiring to calcualte both
+    // the logo and title, if we instead calculate the width of the container it'll be larger than its contnet becuase of the flex-grow.
+    const fullIdentityWidth = titleWidth + logoWidth;
     const sizeConfiguration = {
       hasSearch,
       availableWidth,
 
       // Get widths from the hidden top navigation
-      fullIdentityWidth: virtualRef.current.querySelector(`.${styles.identity}`)!.getBoundingClientRect().width,
-      titleWidth: virtualRef.current.querySelector(`.${styles.title}`)?.getBoundingClientRect().width ?? 0,
+      fullIdentityWidth,
+      titleWidth,
       searchSlotWidth: virtualRef.current.querySelector(`.${styles.search}`)?.getBoundingClientRect().width ?? 0,
       searchUtilityWidth: virtualRef.current.querySelector('[data-utility-special="search"]')!.getBoundingClientRect()
         .width,
